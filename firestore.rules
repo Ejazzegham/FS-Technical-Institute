@@ -1,0 +1,109 @@
+rules_version = '2';
+
+// Firestore Security Rules for the FSTI website + admin panel.
+//
+// HOW TO USE:
+// 1. Create your admin user in Firebase Console -> Authentication -> Users -> Add user.
+// 2. Copy that user's UID (shown in the Users table).
+// 3. Replace REPLACE_WITH_ADMIN_UID below with that UID.
+// 4. Paste this whole file into Firebase Console -> Firestore Database -> Rules, and Publish.
+//
+// See ADMIN-SETUP.md for the full walkthrough.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "REPLACE_WITH_ADMIN_UID";
+    }
+
+    // --- Editable site content (courses, gallery, testimonials, live
+    // classes, recorded lectures, stats, contact info) ---
+    // Readable by anyone (the public site needs to fetch it), writable only
+    // by the admin.
+    match /site_courses/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_gallery/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_testimonials/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_live_classes/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_recorded_lectures/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_stats/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /site_settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Certificates (public verification lookups by serial number) ---
+    // Publicly readable (the Verify page looks up a single doc by ID with no
+    // auth), writable only by the admin.
+    match /certificates/{serial} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- Public form submissions ---
+    // Anyone can create a submission (that's the point of a contact/
+    // admissions/newsletter form), but only the admin can read, list,
+    // update, or delete them afterwards.
+    match /contact_requests/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+    match /admissions/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+    match /newsletter_subscribers/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // --- Sequential enrollment/serial number counters (FSTI-2026-0001...) ---
+    // Read publicly so the Admission and Student Portal registration forms
+    // can preview the next number before submitting. Written publicly (via
+    // a transaction) because the number is issued from the public
+    // registration/admission API routes, which run unauthenticated using
+    // the client SDK. Only ever contains a per-year running total — no
+    // personal data.
+    match /counters/{id} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // --- Students ---
+    // NOTE: `read: if true` here matches the site's existing behavior — the
+    // /login page looks up a student's email by enrollment number directly
+    // from the browser (components/LoginForm.tsx), unauthenticated. That
+    // means anyone can list this collection and see student PII (name,
+    // email, mobile, CNIC, address). This was already the situation before
+    // this admin panel (see README's "Security note"). To harden it:
+    // change `allow read: if true` to
+    // `allow read: if (request.auth != null && request.auth.uid == uid) || isAdmin();`
+    // — but that will break the enrollment-number login lookup, so you'd
+    // need to switch that login option to email-only, or move the lookup
+    // into a server-side API route with the Firebase Admin SDK.
+    match /students/{uid} {
+      allow read: if true;
+      allow create: if request.auth != null && request.auth.uid == uid;
+      allow update: if (request.auth != null && request.auth.uid == uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

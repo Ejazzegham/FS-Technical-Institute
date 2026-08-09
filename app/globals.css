@@ -1,0 +1,206 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f1e3d;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-navy: #0f1e3d;
+  --color-navy-light: #16274d;
+  --color-navy-dark: #0a1530;
+  --color-gold: #f0a93b;
+  --color-gold-dark: #d98f1f;
+  --font-sans: var(--font-body-loaded), "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-display-loaded), Georgia, "Times New Roman", serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Invisible scrollbars everywhere (site + admin sidebar), scrolling still works */
+html,
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE / legacy Edge */
+}
+
+html::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Wrapped in @layer components so Tailwind's utility layer (pl-10, pr-10, etc.)
+   always wins the cascade over this base styling — without this, unlayered CSS
+   beats Tailwind utilities regardless of source order, which caused icon
+   glyphs to overlap input placeholder text wherever pl-10/pr-10 was used. */
+@layer components {
+  .input {
+    width: 100%;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(15, 30, 61, 0.12);
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: var(--foreground);
+    background: white;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .input:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(240, 169, 59, 0.2);
+  }
+
+  .input::placeholder {
+    color: rgba(15, 30, 61, 0.35);
+  }
+
+  /* Themed dropdowns: keep the native <select> (for accessibility + mobile
+     behavior) but reskin the arrow and hover/focus states to match the
+     navy/gold brand instead of the default OS control. */
+  select.input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230f1e3d' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 15px;
+    text-overflow: ellipsis;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  select.input:hover {
+    border-color: rgba(240, 169, 59, 0.5);
+  }
+
+  select.input:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23d98f1f' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  }
+
+  select.input:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  select.input option {
+    color: var(--foreground);
+    background: white;
+  }
+
+  select.input option:disabled {
+    color: rgba(15, 30, 61, 0.4);
+  }
+}
+
+/* Splash screen */
+@keyframes splashLogoIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splashGlow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes splashTextIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splashBar {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Course card flip animation */
+.flip-card {
+  perspective: 1600px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card:focus-within .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* Student ID card printing — hide everything else on the page */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .id-card-print,
+  .id-card-print * {
+    visibility: visible;
+  }
+  .id-card-print {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: 340px;
+    height: fit-content;
+    box-shadow: none !important;
+    border: 1px solid #e5e7eb !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
