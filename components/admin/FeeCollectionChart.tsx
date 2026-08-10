@@ -34,14 +34,14 @@ export default function FeeCollectionChart() {
             tickLine={false}
           />
           <YAxis
-            tickFormatter={(v) => `${v}M`}
+            tickFormatter={(v: number) => `${v}M`}
             tick={{ fontSize: 11, fill: "#0f1e3d99" }}
             axisLine={false}
             tickLine={false}
           />
           <Tooltip
             formatter={(value, name) => [
-              `PKR ${Number(value).toFixed(1)}M`,
+              `PKR ${Number(value ?? 0).toFixed(1)}M`,
               name === "collected" ? "Collected" : "Due",
             ]}
             contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #eef1f6" }}
