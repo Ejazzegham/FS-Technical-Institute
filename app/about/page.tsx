@@ -36,8 +36,8 @@ const leadership = [
     role: "Admin",
     image: "/images/team/admin-furqan-saeed.jpg",
     bio: [
-      "Mr. Furqan Saeed is a dedicated and responsible administrator who plays an important role in the smooth and effective management of the institute. He focuses on maintaining professional standards, student support, administrative coordination, and a positive learning environment.",
-      "With his organized approach and commitment to excellence, Mr. Furqan Saeed helps ensure that the institute's academic and administrative activities run efficiently. His goal is to support students and staff while contributing to the continued growth and success of FS Technical Institute.",
+      "Mr. Mian Furqan Saeed is a dedicated and responsible administrator who plays an important role in the smooth and effective management of the institute. He focuses on maintaining professional standards, student support, administrative coordination, and a positive learning environment.",
+      "With his organized approach and commitment to excellence, Mr. Mian Furqan Saeed helps ensure that the institute's academic and administrative activities run efficiently. His goal is to support students and staff while contributing to the continued growth and success of FS Technical Institute.",
     ],
   },
   {
@@ -45,7 +45,7 @@ const leadership = [
     role: "Principal",
     image: "/images/team/principal-mubashir-mukhtar.jpg",
     bio: [
-      "Mr. Mubashir Mukhtar is a dedicated and visionary Computer/IT Principal committed to providing quality technical education and practical digital skills. With a strong focus on computer education, professional IT training, and skill development, he encourages students to learn, innovate, and prepare for the demands of the modern digital world.",
+      "Mr. Muhammad Mubashir Mukhtar is a dedicated and visionary Computer/IT Principal committed to providing quality technical education and practical digital skills. With a strong focus on computer education, professional IT training, and skill development, he encourages students to learn, innovate, and prepare for the demands of the modern digital world.",
       "Under his leadership, the institute aims to create a professional learning environment where students can develop practical computer skills, confidence, and career-ready expertise. His mission is to empower students with knowledge and skills that help them build a successful future in the technology-driven world.",
     ],
   },
