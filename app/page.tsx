@@ -16,7 +16,7 @@ import { getStats, getCourses, getTestimonials } from "@/lib/content";
 
 const heroSlides: HeroSlide[] = [
   {
-    image: "/images/hero/slide-1-dream-bigger.png",
+    image: "/images/hero/Dream_Bigger__Learn_Better__Go_Further_.png",
     alt: "A door opening onto a bright skyline at the top of a glowing staircase, representing the path admission at FSTI opens",
     eyebrow: "ADMISSIONS 2026 OPEN",
     title: "Dream Bigger. Learn Better. Go Further.",
@@ -28,7 +28,7 @@ const heroSlides: HeroSlide[] = [
     secondaryCta: { label: "Explore Courses", href: "/courses" },
   },
   {
-    image: "/images/hero/slide-2-boys-girls-classes.png",
+    image: "/images/hero/Separate_Classes_for_Boys___Girls.png",
     alt: "Separate classrooms for boys and girls, with morning and evening batch timings",
     eyebrow: "COMFORTABLE LEARNING ENVIRONMENT",
     title: "Separate Classes for Boys & Girls",
@@ -40,7 +40,7 @@ const heroSlides: HeroSlide[] = [
     secondaryCta: { label: "Explore Courses", href: "/courses" },
   },
   {
-    image: "/images/hero/slide-3-graphic-design.png",
+    image: "/images/hero/Master_Graphic_Design.png",
     alt: "A designer working in Photoshop and Illustrator on a colorful graphic composition",
     eyebrow: "CREATIVE ARTS PROGRAM",
     title: "Master Graphic Design",
@@ -51,7 +51,7 @@ const heroSlides: HeroSlide[] = [
     primaryCta: { label: "View Design Courses", href: "/courses" },
   },
   {
-    image: "/images/hero/slide-4-web-development.png",
+    image: "/images/hero/Become_a_Web_Developer.png",
     alt: "A student writing HTML, CSS and JavaScript code on a laptop for a web development project",
     eyebrow: "TECH & PROGRAMMING PROGRAM",
     title: "Become a Web Developer",
@@ -62,7 +62,7 @@ const heroSlides: HeroSlide[] = [
     primaryCta: { label: "View Web Dev Courses", href: "/courses" },
   },
   {
-    image: "/images/hero/slide-5-fsti-logo.png",
+    image: "/images/hero/Empowering_Minds__Building_Futures_.png",
     alt: "FSTI Technical Institute logo — Professional IT & Digital Skills Training Institute",
     eyebrow: "WELCOME TO FSTI",
     title: "Empowering Minds. Building Futures.",

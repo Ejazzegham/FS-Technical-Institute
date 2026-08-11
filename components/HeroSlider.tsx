@@ -79,9 +79,9 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           const light = slide.theme === "light";
           return (
             <article key={slide.image} className="w-full shrink-0" aria-hidden={!active}>
-              <div className="relative md:h-[520px] lg:h-[600px]">
+              <div className="relative md:h-[380px] lg:h-[440px] xl:h-[480px]">
                 {/* Image */}
-                <div className="relative h-[300px] sm:h-[380px] md:absolute md:inset-0 md:h-full overflow-hidden">
+                <div className="relative h-[220px] sm:h-[260px] md:absolute md:inset-0 md:h-full overflow-hidden">
                   <div
                     key={active ? `kb-${index}` : "idle"}
                     className={"absolute inset-0" + (active ? " hero-kenburns" : "")}
@@ -110,11 +110,11 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 </div>
 
                 {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-8 md:px-10 lg:px-16">
+                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-6 md:px-10 lg:px-16">
                   <div key={active ? `txt-${index}` : "idle"} className={"max-w-md" + (active ? " hero-fade-up" : "")}>
                     <p
                       className={
-                        "text-xs font-bold tracking-widest mb-3 text-gold " +
+                        "text-xs font-bold tracking-widest mb-2 text-gold " +
                         (light ? "md:text-gold-dark" : "md:text-gold")
                       }
                     >
@@ -122,7 +122,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     </p>
                     <h2
                       className={
-                        "font-display font-extrabold text-2xl sm:text-3xl md:text-4xl leading-tight mb-3 text-white " +
+                        "font-display font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight mb-2 text-white " +
                         (light ? "md:text-navy" : "md:text-white")
                       }
                     >
@@ -130,7 +130,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     </h2>
                     <p
                       className={
-                        "text-sm leading-relaxed mb-6 max-w-sm text-white/70 " +
+                        "text-sm leading-relaxed mb-4 max-w-sm text-white/70 " +
                         (light ? "md:text-navy/60" : "md:text-white/70")
                       }
                     >
