@@ -32,7 +32,7 @@ const commitments = [
 
 const leadership = [
   {
-    name: "Mr. Furqan Saeed",
+    name: "Mr. Mian Furqan Saeed",
     role: "Admin",
     image: "/images/team/admin-furqan-saeed.jpg",
     bio: [
@@ -41,7 +41,7 @@ const leadership = [
     ],
   },
   {
-    name: "Mr. Mubashir Mukhtar",
+    name: "Mr. Muhammad Mubashir Mukhtar",
     role: "Principal",
     image: "/images/team/principal-mubashir-mukhtar.jpg",
     bio: [
