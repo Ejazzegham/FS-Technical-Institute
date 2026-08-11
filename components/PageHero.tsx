@@ -58,8 +58,8 @@ export default function PageHero({
             fill
             priority
             sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: focus }}
+            className="object-cover hero-media"
+            style={{ "--hero-focus": focus } as React.CSSProperties}
           />
           {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
           <div
@@ -75,8 +75,8 @@ export default function PageHero({
         </div>
 
         {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-        <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-6 md:px-10 lg:px-16">
-          <div className="max-w-md">
+        <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-16">
+          <div className="max-w-md mx-auto text-center md:mx-0 md:text-left">
             <p
               className={
                 "text-[11px] mb-3 text-white/50 " + (light ? "md:text-navy/40" : "md:text-white/50")
@@ -103,7 +103,7 @@ export default function PageHero({
             )}
             <p
               className={
-                "text-sm leading-relaxed max-w-sm text-white/70 " +
+                "text-sm leading-relaxed max-w-sm mx-auto md:mx-0 text-white/70 " +
                 (light ? "md:text-navy/60" : "md:text-white/70")
               }
             >
@@ -111,7 +111,7 @@ export default function PageHero({
             </p>
 
             {chips && chips.length > 0 && (
-              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 mt-5">
+              <div className="flex flex-col items-center sm:flex-row sm:flex-wrap justify-center gap-3 mt-5 md:items-start md:justify-start">
                 {chips.map((chip) => (
                   <div key={chip.label} className="flex items-center gap-2.5">
                     <span
@@ -131,7 +131,7 @@ export default function PageHero({
             )}
 
             {(primaryCta || secondaryCta) && (
-              <div className="flex flex-wrap items-center gap-3 mt-6">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-6">
                 {primaryCta && (
                   <Link
                     href={primaryCta.href}

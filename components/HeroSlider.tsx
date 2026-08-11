@@ -92,8 +92,8 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       fill
                       priority={i === 0}
                       sizes="100vw"
-                      className="object-cover"
-                      style={{ objectPosition: slide.focus ?? "center" }}
+                      className="object-cover hero-media"
+                      style={{ "--hero-focus": slide.focus ?? "center" } as React.CSSProperties}
                     />
                   </div>
                   {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
@@ -110,8 +110,14 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                 </div>
 
                 {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-6 md:px-10 lg:px-16">
-                  <div key={active ? `txt-${index}` : "idle"} className={"max-w-md" + (active ? " hero-fade-up" : "")}>
+                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-16">
+                  <div
+                    key={active ? `txt-${index}` : "idle"}
+                    className={
+                      "max-w-md mx-auto text-center md:mx-0 md:text-left" +
+                      (active ? " hero-fade-up" : "")
+                    }
+                  >
                     <p
                       className={
                         "text-xs font-bold tracking-widest mb-2 text-gold " +
@@ -130,13 +136,13 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     </h2>
                     <p
                       className={
-                        "text-sm leading-relaxed mb-4 max-w-sm text-white/70 " +
+                        "text-sm leading-relaxed mb-4 max-w-sm mx-auto md:mx-0 text-white/70 " +
                         (light ? "md:text-navy/60" : "md:text-white/70")
                       }
                     >
                       {slide.description}
                     </p>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
                       {slide.primaryCta && (
                         <Link
                           href={slide.primaryCta.href}

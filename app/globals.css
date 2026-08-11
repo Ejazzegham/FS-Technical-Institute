@@ -39,6 +39,20 @@ h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
 }
 
+/* Hero media (HeroSlider + PageHero): images are framed dead-center on
+   mobile, where the photo sits full-width above stacked, centered text.
+   Each slide's tuned crop (--hero-focus) only kicks in at md+, where the
+   image sits behind a left-aligned text panel and needs to keep its
+   subject clear of that panel. */
+.hero-media {
+  object-position: center;
+}
+@media (min-width: 768px) {
+  .hero-media {
+    object-position: var(--hero-focus, center);
+  }
+}
+
 /* Homepage hero slider: slow ambient zoom on the active slide + a gentle
    fade-up for its text panel each time it becomes active. */
 @keyframes hero-kenburns {
