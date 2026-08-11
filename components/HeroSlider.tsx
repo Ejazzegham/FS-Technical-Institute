@@ -7,6 +7,9 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 export type HeroSlide = {
   image: string;
+  /** Optional mobile-specific crop/composition, shown below the md breakpoint
+   *  instead of `image`. Falls back to `image` (centered) when omitted. */
+  mobileImage?: string;
   alt: string;
   eyebrow: string;
   title: string;
@@ -87,13 +90,28 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     className={"absolute inset-0" + (active ? " hero-kenburns" : "")}
                   >
                     <Image
+                      src={slide.mobileImage ?? slide.image}
+                      alt={slide.alt}
+                      fill
+                      priority={i === 0}
+                      sizes="100vw"
+                      className={
+                        "object-cover block md:hidden" + (slide.mobileImage ? "" : " hero-media")
+                      }
+                      style={
+                        slide.mobileImage
+                          ? undefined
+                          : ({ "--hero-focus": slide.focus ?? "center" } as React.CSSProperties)
+                      }
+                    />
+                    <Image
                       src={slide.image}
                       alt={slide.alt}
                       fill
                       priority={i === 0}
                       sizes="100vw"
-                      className="object-cover hero-media"
-                      style={{ "--hero-focus": slide.focus ?? "center" } as React.CSSProperties}
+                      className="object-cover hidden md:block"
+                      style={{ objectPosition: slide.focus ?? "center" }}
                     />
                   </div>
                   {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}

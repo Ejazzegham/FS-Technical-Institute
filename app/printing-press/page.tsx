@@ -12,6 +12,7 @@ const PRESS_PHONE = "+92346-7640392";
 const pressHeroSlides: HeroSlide[] = [
   {
     image: "/images/printing-press/hero-1-panaflex.png",
+    mobileImage: "/images/printing-press/hero-1-panaflex-mobile.png",
     alt: "Panaflex printing machine producing a large flex banner",
     eyebrow: "LARGE FORMAT PRINTING",
     title: "Panaflex & Banner Printing",
@@ -24,6 +25,7 @@ const pressHeroSlides: HeroSlide[] = [
   },
   {
     image: "/images/printing-press/hero-2-offset.png",
+    mobileImage: "/images/printing-press/hero-2-offset-mobile.png",
     alt: "Offset printing press producing colorful printed sheets",
     eyebrow: "OFFSET PRINTING",
     title: "High-Volume Offset Printing",
@@ -36,6 +38,7 @@ const pressHeroSlides: HeroSlide[] = [
   },
   {
     image: "/images/printing-press/hero-3-digital.png",
+    mobileImage: "/images/printing-press/hero-3-digital-mobile.png",
     alt: "Digital printing machine producing full-color printed sheets",
     eyebrow: "DIGITAL PRINTING",
     title: "Precision Digital Printing",
@@ -48,6 +51,7 @@ const pressHeroSlides: HeroSlide[] = [
   },
   {
     image: "/images/printing-press/hero-4-embossing.png",
+    mobileImage: "/images/printing-press/hero-4-embossing-mobile.png",
     alt: "Furqan Saeed Printing Press embossing and stamp-making machine",
     eyebrow: "STAMP & SEAL MAKING",
     title: "Custom Stamps, Seals & Embossing",
@@ -60,6 +64,7 @@ const pressHeroSlides: HeroSlide[] = [
   },
   {
     image: "/images/printing-press/hero-5-press.png",
+    mobileImage: "/images/printing-press/hero-5-press-mobile.png",
     alt: "Furqan Saeed Printing Press large-format press and finishing equipment",
     eyebrow: "FURQAN SAEED PRINTING PRESS",
     title: "Complete Printing Solutions, Under One Roof",

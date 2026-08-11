@@ -17,6 +17,7 @@ import { getStats, getCourses, getTestimonials } from "@/lib/content";
 const heroSlides: HeroSlide[] = [
   {
     image: "/images/hero/Dream_Bigger__Learn_Better__Go_Further_.png",
+    mobileImage: "/images/hero/Dream_Bigger__Learn_Better__Go_Further_-mobile.png",
     alt: "A door opening onto a bright skyline at the top of a glowing staircase, representing the path admission at FSTI opens",
     eyebrow: "ADMISSIONS 2026 OPEN",
     title: "Dream Bigger. Learn Better. Go Further.",
@@ -29,6 +30,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Separate_Classes_for_Boys___Girls.png",
+    mobileImage: "/images/hero/Separate_Classes_for_Boys___Girls-mobile.png",
     alt: "Separate classrooms for boys and girls, with morning and evening batch timings",
     eyebrow: "COMFORTABLE LEARNING ENVIRONMENT",
     title: "Separate Classes for Boys & Girls",
@@ -41,6 +43,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Master_Graphic_Design.png",
+    mobileImage: "/images/hero/Master_Graphic_Design-mobile.png",
     alt: "A designer working in Photoshop and Illustrator on a colorful graphic composition",
     eyebrow: "CREATIVE ARTS PROGRAM",
     title: "Master Graphic Design",
@@ -52,6 +55,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Become_a_Web_Developer.png",
+    mobileImage: "/images/hero/Become_a_Web_Developer-mobile.png",
     alt: "A student writing HTML, CSS and JavaScript code on a laptop for a web development project",
     eyebrow: "TECH & PROGRAMMING PROGRAM",
     title: "Become a Web Developer",
@@ -63,6 +67,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Empowering_Minds__Building_Futures_.png",
+    mobileImage: "/images/hero/Empowering_Minds__Building_Futures_-mobile.png",
     alt: "FSTI Technical Institute logo — Professional IT & Digital Skills Training Institute",
     eyebrow: "WELCOME TO FSTI",
     title: "Empowering Minds. Building Futures.",
@@ -75,6 +80,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Admissions_Open_Enroll_Now.png",
+    mobileImage: "/images/hero/Admissions_Open_Enroll_Now-mobile.png",
     alt: "Admissions open — enroll now. Build skills, build career, build future.",
     eyebrow: "ENROLL TODAY",
     title: "Admissions Open — Enroll Now",
@@ -87,6 +93,7 @@ const heroSlides: HeroSlide[] = [
   },
   {
     image: "/images/hero/Build_Your_Career.png",
+    mobileImage: "/images/hero/Build_Your_Career-mobile.png",
     alt: "Icons representing coding, design, growth and global career opportunities around a graduation cap",
     eyebrow: "SKILLS FOR THE FUTURE",
     title: "Build Skills. Build Your Career.",

@@ -14,6 +14,7 @@ export default async function CoursesPage() {
         tagline="Learn In-Demand Skills. Build Your Future."
         description="Explore our wide range of professional courses designed to provide you with practical knowledge and hands-on experience to excel in today's competitive world."
         image="/images/courses-hero.png"
+        mobileImage="/images/courses-hero-mobile.png"
         alt="Explore FSTI courses — coding, data, design and more"
         theme="light"
         focus="60% center"

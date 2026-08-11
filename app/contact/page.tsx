@@ -44,6 +44,7 @@ export default async function ContactPage() {
         tagline="We're Here to Help You!"
         description="Have a question or need more information? Reach out to us and our team will get back to you shortly."
         image="/images/contact-hero.png"
+        mobileImage="/images/contact-hero-mobile.png"
         alt="Contact Furqan Saeed Technical Institute — quick support, live chat, email, call and visit"
         theme="light"
         focus="68% center"

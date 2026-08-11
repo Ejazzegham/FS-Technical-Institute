@@ -25,6 +25,7 @@ export default async function AdmissionsPage() {
         tagline="Your Future Starts Here."
         description="Join Furqan Saeed Technical Institute and take the first step towards a successful and rewarding career. Our admission process is simple, transparent, and student-friendly."
         image="/images/admission-hero.png"
+        mobileImage="/images/admission-hero-mobile.png"
         alt="FSTI Admissions Open — Enroll Now. Build Skills, Build Career, Build Future."
         theme="light"
         focus="55% center"

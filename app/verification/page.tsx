@@ -30,6 +30,7 @@ export default function VerificationPage() {
         tagline="Confirm a Record in Seconds."
         description="Enter a student's serial number to instantly verify their diploma, duration, marks, and enrollment status with FSTI."
         image="/images/verification-hero.png"
+        mobileImage="/images/verification-hero-mobile.png"
         alt="FSTI Student Verification — secure verification, fast process, accurate records and data protection"
         theme="light"
         focus="66% center"

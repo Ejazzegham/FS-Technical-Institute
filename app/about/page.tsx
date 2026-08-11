@@ -62,6 +62,7 @@ export default async function AboutPage() {
         tagline="Empowering Students. Building Futures."
         description="Furqan Saeed Technical Institute is dedicated to providing quality technical education and practical training to help students gain in-demand skills and build successful careers."
         image="/images/about-hero.png"
+        mobileImage="/images/about-hero-mobile.png"
         alt="Furqan Saeed Technical Institute — student-focused, quality education, practical learning and career growth"
         theme="light"
         focus="62% center"

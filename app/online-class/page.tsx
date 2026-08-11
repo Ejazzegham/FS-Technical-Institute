@@ -38,6 +38,7 @@ export default async function OnlineClassPage() {
         }
         description="Join live interactive classes, access recorded lectures, and learn at your own pace with FSTI Online."
         image="/images/online-class-hero.png"
+        mobileImage="/images/online-class-hero-mobile.png"
         alt="FSTI Online Classes — live sessions, recorded lectures, learn anytime anywhere"
         theme="light"
         focus="62% center"

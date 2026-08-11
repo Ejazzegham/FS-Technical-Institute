@@ -20,6 +20,9 @@ export type PageHeroProps = {
   tagline?: string;
   description: string;
   image: string;
+  /** Optional mobile-specific crop/composition, shown below the md breakpoint
+   *  instead of `image`. Falls back to `image` (centered) when omitted. */
+  mobileImage?: string;
   alt: string;
   /** "light" = image has a bright area behind the text (use navy text).
    *  "dark"  = image is dark behind the text (use white text). */
@@ -38,6 +41,7 @@ export default function PageHero({
   tagline,
   description,
   image,
+  mobileImage,
   alt,
   theme = "light",
   focus = "center",
@@ -53,13 +57,22 @@ export default function PageHero({
         {/* Image */}
         <div className="relative h-[240px] sm:h-[300px] md:absolute md:inset-0 md:h-full overflow-hidden">
           <Image
+            src={mobileImage ?? image}
+            alt={alt}
+            fill
+            priority
+            sizes="100vw"
+            className={"object-cover block md:hidden" + (mobileImage ? "" : " hero-media")}
+            style={mobileImage ? undefined : ({ "--hero-focus": focus } as React.CSSProperties)}
+          />
+          <Image
             src={image}
             alt={alt}
             fill
             priority
             sizes="100vw"
-            className="object-cover hero-media"
-            style={{ "--hero-focus": focus } as React.CSSProperties}
+            className="object-cover hidden md:block"
+            style={{ objectPosition: focus }}
           />
           {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
           <div

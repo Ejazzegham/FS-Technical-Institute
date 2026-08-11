@@ -16,6 +16,7 @@ export default async function GalleryPage() {
         tagline="Glimpses of Learning, Achievements & Activities"
         description="Explore moments from classrooms, workshops, events, and student success stories at FSTI."
         image="/images/gallery-hero.png"
+        mobileImage="/images/gallery-hero-mobile.png"
         alt="FSTI Gallery — classrooms, labs, events and achievements"
         theme="light"
         focus="58% center"
