@@ -79,9 +79,9 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           const light = slide.theme === "light";
           return (
             <article key={slide.image} className="w-full shrink-0" aria-hidden={!active}>
-              <div className="relative md:h-[380px] lg:h-[440px] xl:h-[480px]">
+              <div className="relative md:aspect-[12/5] md:max-h-[560px]">
                 {/* Image */}
-                <div className="relative h-[220px] sm:h-[260px] md:absolute md:inset-0 md:h-full overflow-hidden">
+                <div className="relative h-[240px] sm:h-[300px] md:absolute md:inset-0 md:h-full overflow-hidden">
                   <div
                     key={active ? `kb-${index}` : "idle"}
                     className={"absolute inset-0" + (active ? " hero-kenburns" : "")}
@@ -96,13 +96,13 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       style={{ objectPosition: slide.focus ?? "center" }}
                     />
                   </div>
-                  {/* Desktop scrim: reinforces contrast for the overlaid text */}
+                  {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
                   <div
                     className={
                       "hidden md:block absolute inset-0 pointer-events-none " +
                       (light
-                        ? "bg-gradient-to-r from-white/90 via-white/50 to-transparent"
-                        : "bg-gradient-to-r from-navy/85 via-navy/45 to-transparent")
+                        ? "bg-gradient-to-r from-white/95 from-0% via-white/55 via-32% to-white/0 to-58%"
+                        : "bg-gradient-to-r from-navy/90 from-0% via-navy/50 via-32% to-navy/0 to-58%")
                     }
                   />
                   {/* Mobile scrim: just enough to settle the image under the panel above it */}

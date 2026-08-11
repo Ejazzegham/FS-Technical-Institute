@@ -713,5 +713,6 @@ export const navLinks: { href: string; label: string }[] = [
   { href: "/printing-press", label: "Printing Press" },
   { href: "/gallery", label: "Gallery" },
   { href: "/admissions", label: "Admissions" },
+  { href: "/verification", label: "Verification" },
   { href: "/contact", label: "Contact" },
 ];
