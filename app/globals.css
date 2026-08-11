@@ -39,6 +39,30 @@ h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
 }
 
+/* Homepage hero slider: slow ambient zoom on the active slide + a gentle
+   fade-up for its text panel each time it becomes active. */
+@keyframes hero-kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-kenburns {
+  animation: hero-kenburns 7s ease-out forwards;
+}
+.hero-fade-up {
+  animation: hero-fade-up 0.7s ease-out both;
+  animation-delay: 0.15s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-kenburns,
+  .hero-fade-up {
+    animation: none !important;
+  }
+}
+
 /* Wrapped in @layer components so Tailwind's utility layer (pl-10, pr-10, etc.)
    always wins the cascade over this base styling — without this, unlayered CSS
    beats Tailwind utilities regardless of source order, which caused icon

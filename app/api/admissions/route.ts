@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { uploadToR2 } from "@/lib/r2";
-import { getNextEnrollmentNumber } from "@/lib/enrollment";
 
 export async function POST(req: NextRequest) {
   try {
@@ -22,6 +21,7 @@ export async function POST(req: NextRequest) {
     const address = formData.get("address") as string | null;
     const photo = formData.get("photo") as File | null;
     const document = formData.get("document") as File | null;
+    const enrollmentNumber = (formData.get("enrollmentNumber") as string | null)?.trim() || null;
 
     if (!fullName || !email || !mobile || !course) {
       return NextResponse.json(
@@ -29,9 +29,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    if (!enrollmentNumber) {
+      return NextResponse.json(
+        { error: "Enrollment number is required." },
+        { status: 400 }
+      );
+    }
 
-    // Sequential FSTI-<year>-0001 style number, atomically issued.
-    const enrollmentNumber = await getNextEnrollmentNumber();
     const folderId = uid || enrollmentNumber;
 
     let photoUrl: string | null = null;

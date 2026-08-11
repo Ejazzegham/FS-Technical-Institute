@@ -25,7 +25,6 @@ import {
   type Course,
 } from "@/lib/data";
 import PremiumSelect from "@/components/PremiumSelect";
-import EnrollmentSerialBadge from "@/components/EnrollmentSerialBadge";
 
 export default function AdmissionForm({ courses = defaultCourses }: { courses?: Course[] }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +35,6 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
   const [enrollmentNumber, setEnrollmentNumber] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formKey, setFormKey] = useState(0);
-  const [serialKey, setSerialKey] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -59,7 +57,13 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
     const bloodGroup = data.get("bloodGroup") as string | null;
     const password = data.get("password") as string;
     const confirmPassword = data.get("confirmPassword") as string;
+    const enrollmentNo = (data.get("enrollmentNumber") as string)?.trim();
 
+    if (!enrollmentNo) {
+      setErrorMsg("Please enter the enrollment number.");
+      setStatus("error");
+      return;
+    }
     if (!course) {
       setErrorMsg("Please select a course.");
       setStatus("error");
@@ -93,6 +97,7 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
       // enrollment number server-side, then writes the `admissions` doc).
       const uploadData = new FormData();
       uploadData.append("uid", uid);
+      uploadData.append("enrollmentNumber", enrollmentNo);
       uploadData.append("fullName", fullName);
       if (fatherName) uploadData.append("fatherName", fatherName);
       uploadData.append("email", email);
@@ -156,7 +161,6 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
     setErrorMsg(null);
     setEnrollmentNumber(null);
     setFormKey((k) => k + 1);
-    setSerialKey((k) => k + 1);
   }
 
   if (status === "done") {
@@ -196,17 +200,22 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
 
   return (
     <div className="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden">
-      {/* Header strip: form title + live, auto-updating serial number */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-6 md:px-7 pt-6 md:pt-7 pb-5 border-b border-black/5">
-        <div>
-          <h2 className="font-display font-bold text-navy text-xl mb-1">Admission Form</h2>
-          <p className="text-sm text-navy/50">Fill out the form below to apply for admission.</p>
-        </div>
-        <EnrollmentSerialBadge refreshKey={serialKey} variant="dark" label="Enrollment No." />
+      <div className="px-6 md:px-7 pt-6 md:pt-7 pb-5 border-b border-black/5">
+        <h2 className="font-display font-bold text-navy text-xl mb-1">Admission Form</h2>
+        <p className="text-sm text-navy/50">Fill out the form below to apply for admission.</p>
       </div>
 
       <form ref={formRef} key={formKey} onSubmit={handleSubmit} className="p-6 md:p-7 space-y-8">
         <FormSection icon={UserRound} title="Personal Information">
+          <Field label="Enrollment Number" required hint="e.g. FSTI-2026-0001">
+            <input
+              name="enrollmentNumber"
+              required
+              placeholder="Enter enrollment number"
+              className="input"
+            />
+          </Field>
+
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Full Name" required>
               <input name="fullName" required placeholder="Enter your full name" className="input" />

@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
-  PlayCircle,
   GraduationCap,
   Users2,
   Wrench,
@@ -12,7 +11,69 @@ import {
 import StatsBar from "@/components/StatsBar";
 import CourseCard from "@/components/CourseCard";
 import CTABanner from "@/components/CTABanner";
+import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import { getStats, getCourses, getTestimonials } from "@/lib/content";
+
+const heroSlides: HeroSlide[] = [
+  {
+    image: "/images/hero/slide-1-dream-bigger.png",
+    alt: "A door opening onto a bright skyline at the top of a glowing staircase, representing the path admission at FSTI opens",
+    eyebrow: "ADMISSIONS 2026 OPEN",
+    title: "Dream Bigger. Learn Better. Go Further.",
+    description:
+      "Practical IT and digital skills training that turns ambition into a real career.",
+    theme: "light",
+    focus: "70% center",
+    primaryCta: { label: "Apply for Admission", href: "/admissions" },
+    secondaryCta: { label: "Explore Courses", href: "/courses" },
+  },
+  {
+    image: "/images/hero/slide-2-boys-girls-classes.png",
+    alt: "Separate classrooms for boys and girls, with morning and evening batch timings",
+    eyebrow: "COMFORTABLE LEARNING ENVIRONMENT",
+    title: "Separate Classes for Boys & Girls",
+    description:
+      "Morning and evening batches, so you can learn on a schedule that actually fits your day.",
+    theme: "light",
+    focus: "68% center",
+    primaryCta: { label: "View Batch Timings", href: "/admissions" },
+    secondaryCta: { label: "Explore Courses", href: "/courses" },
+  },
+  {
+    image: "/images/hero/slide-3-graphic-design.png",
+    alt: "A designer working in Photoshop and Illustrator on a colorful graphic composition",
+    eyebrow: "CREATIVE ARTS PROGRAM",
+    title: "Master Graphic Design",
+    description:
+      "Photoshop, Illustrator and real design projects, taught by working creative professionals.",
+    theme: "dark",
+    focus: "72% center",
+    primaryCta: { label: "View Design Courses", href: "/courses" },
+  },
+  {
+    image: "/images/hero/slide-4-web-development.png",
+    alt: "A student writing HTML, CSS and JavaScript code on a laptop for a web development project",
+    eyebrow: "TECH & PROGRAMMING PROGRAM",
+    title: "Become a Web Developer",
+    description:
+      "HTML, CSS and JavaScript fundamentals through to real, deployed projects.",
+    theme: "dark",
+    focus: "70% center",
+    primaryCta: { label: "View Web Dev Courses", href: "/courses" },
+  },
+  {
+    image: "/images/hero/slide-5-fsti-logo.png",
+    alt: "FSTI Technical Institute logo — Professional IT & Digital Skills Training Institute",
+    eyebrow: "WELCOME TO FSTI",
+    title: "Empowering Minds. Building Futures.",
+    description:
+      "Professional IT & digital skills training designed to launch your career.",
+    theme: "light",
+    focus: "68% center",
+    primaryCta: { label: "Apply Now", href: "/admissions" },
+    secondaryCta: { label: "About FSTI", href: "/about" },
+  },
+];
 
 const whyChooseUs = [
   {
@@ -46,55 +107,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[2.5rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 grid md:grid-cols-2 gap-8 items-center relative z-10">
-          <div>
-            <p className="text-gold text-xs font-bold tracking-widest mb-2">
-              BUILD SKILLS. BUILD YOUR FUTURE
-            </p>
-            <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl leading-tight">
-              Empowering Minds.
-              <br />
-              <span className="text-gold">Building Futures.</span>
-            </h1>
-            <p className="text-white/60 mt-3 max-w-md leading-relaxed text-sm">
-              Quality technical education to help you gain in-demand skills, start your
-              career and shape a better tomorrow.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 mt-6">
-              <Link
-                href="/courses"
-                className="inline-flex items-center gap-2 bg-gold hover:bg-gold-dark text-navy font-semibold px-6 py-2.5 rounded-lg transition-colors"
-              >
-                Explore Courses <ArrowRight size={16} />
-              </Link>
-              <button className="inline-flex items-center gap-2 border border-white/25 hover:border-gold text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
-                <PlayCircle size={18} /> Watch Intro
-              </button>
-            </div>
-          </div>
-
-          <div className="relative hidden sm:block">
-            <div className="relative rounded-2xl overflow-hidden aspect-[1717/916] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/home-hero.png"
-                alt="FSTI Technical Institute — modern IT labs, practical skills and career growth"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-            <div className="absolute -bottom-5 -right-2 md:-right-6 bg-white rounded-full w-24 h-24 flex flex-col items-center justify-center text-center shadow-xl">
-              <GraduationCap size={18} className="text-gold-dark mb-1" />
-              <span className="text-[9px] text-navy/60 leading-tight">Admissions</span>
-              <span className="font-display font-bold text-navy text-sm leading-tight">Open</span>
-              <span className="text-[9px] text-navy/60">[Add intake term]</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider slides={heroSlides} />
 
       <StatsBar stats={stats} />
 

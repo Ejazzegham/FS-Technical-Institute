@@ -25,7 +25,6 @@ import {
   type Course,
 } from "@/lib/data";
 import PremiumSelect from "@/components/PremiumSelect";
-import EnrollmentSerialBadge from "@/components/EnrollmentSerialBadge";
 
 export default function RegisterForm({ courses = defaultCourses }: { courses?: Course[] }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +35,6 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [enrollmentNumber, setEnrollmentNumber] = useState<string | null>(null);
-  const [serialKey, setSerialKey] = useState(0);
   const [formKey, setFormKey] = useState(0);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -58,7 +56,13 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
     const qualification = data.get("qualification") as string | null;
     const religion = data.get("religion") as string | null;
     const bloodGroup = data.get("bloodGroup") as string | null;
+    const enrollmentNo = (data.get("enrollmentNumber") as string)?.trim();
 
+    if (!enrollmentNo) {
+      setErrorMsg("Please enter the enrollment number.");
+      setStatus("error");
+      return;
+    }
     if (!course) {
       setErrorMsg("Please select a course.");
       setStatus("error");
@@ -110,7 +114,7 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
       // for the `request.auth.uid == uid` security rule to pass.
       await setDoc(doc(db, "students", uid), {
         uid,
-        enrollmentNumber: result.enrollmentNumber,
+        enrollmentNumber: enrollmentNo,
         fullName,
         fatherName: fatherName || null,
         email,
@@ -127,7 +131,7 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
         createdAt: serverTimestamp(),
       });
 
-      setEnrollmentNumber(result.enrollmentNumber);
+      setEnrollmentNumber(enrollmentNo);
       setStatus("done");
     } catch (err) {
       const message =
@@ -147,7 +151,6 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
     setDocName(null);
     setAgreed(false);
     setFormKey((k) => k + 1);
-    setSerialKey((k) => k + 1);
   }
 
   if (status === "done") {
@@ -178,17 +181,22 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
 
   return (
     <div className="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden">
-      {/* Header strip: form title + live, auto-updating serial number */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-6 md:px-7 pt-6 md:pt-7 pb-5 border-b border-black/5">
-        <div>
-          <h2 className="font-display font-bold text-navy text-xl mb-1">Portal Registration Form</h2>
-          <p className="text-sm text-navy/50">Fill out the form below to create your student account.</p>
-        </div>
-        <EnrollmentSerialBadge refreshKey={serialKey} variant="dark" label="Enrollment No." />
+      <div className="px-6 md:px-7 pt-6 md:pt-7 pb-5 border-b border-black/5">
+        <h2 className="font-display font-bold text-navy text-xl mb-1">Portal Registration Form</h2>
+        <p className="text-sm text-navy/50">Fill out the form below to create your student account.</p>
       </div>
 
       <form key={formKey} onSubmit={handleSubmit} className="p-6 md:p-7 space-y-8">
         <FormSection icon={UserRound} title="Personal Information">
+          <Field label="Enrollment Number" required hint="e.g. FSTI-2026-0001">
+            <input
+              name="enrollmentNumber"
+              required
+              placeholder="Enter enrollment number"
+              className="input"
+            />
+          </Field>
+
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Full Name" required>
               <input name="fullName" required placeholder="Full Name" className="input" />

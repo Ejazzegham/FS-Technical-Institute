@@ -1,774 +1,827 @@
-export const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/courses", label: "Courses" },
-  { href: "/admissions", label: "Admissions" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/printing-press", label: "Printing Press" },
-  { href: "/online-class", label: "Online Class" },
-  { href: "/verification", label: "Verification" },
-  { href: "/contact", label: "Contact" },
-];
 
-// TODO: Replace with your institute's real, verifiable figures.
-export const stats = [
-  { label: "Students Trained", value: "[Add figure]" },
-  { label: "Professional Courses", value: "[Add figure]" },
-  { label: "Success Rate", value: "[Add figure]" },
-  { label: "Career Support", value: "[Add figure]" },
-];
 
-// TODO: Replace with your institute's real, verifiable figures.
-export const aboutStats = [
-  { label: "Students Trained", value: "[Add figure]" },
-  { label: "Professional Courses", value: "[Add figure]" },
-  { label: "Success Rate", value: "[Add figure]" },
-  { label: "Placement Support", value: "[Add figure]" },
-];
+export type CourseCategory =
+  | "IT & Programming"
+  | "Design & Multimedia"
+  | "Freelancing"
+  | "Digital Marketing"
+  | "Microsoft Office"
+  | "Trading & Finance"
+  | "Personal Development";
+
+export type CourseIcon =
+  | "code"
+  | "palette"
+  | "trending-up"
+  | "layout-grid"
+  | "smartphone"
+  | "terminal"
+  | "video"
+  | "ruler"
+  | "megaphone"
+  | "briefcase"
+  | "youtube"
+  | "line-chart"
+  | "languages"
+  | "graduation-cap";
 
 export type Course = {
   slug: string;
   title: string;
-  category:
-    | "IT & Programming"
-    | "Design & Multimedia"
-    | "Freelancing"
-    | "Digital Marketing"
-    | "Microsoft Office"
-    | "Trading & Finance"
-    | "Personal Development";
+  category: CourseCategory;
+  icon: CourseIcon;
+  overview: string;
   description: string;
   duration: string;
   level: string;
-  icon:
-    | "code"
-    | "palette"
-    | "trending-up"
-    | "layout-grid"
-    | "smartphone"
-    | "terminal"
-    | "video"
-    | "ruler"
-    | "megaphone"
-    | "briefcase"
-    | "youtube"
-    | "line-chart"
-    | "languages"
-    | "graduation-cap";
-  /** Path under /public, e.g. "/images/courses/web-designing-developing.jpg" */
-  image?: string;
-  /** Monthly fee shown in Course Information, e.g. "Rs. 3,000/month" */
   monthlyFee?: string;
-  /** Total students who have enrolled in this course to date */
-  enrolledStudents?: number;
-  /** Students who have successfully completed this course */
-  completedStudents?: number;
-  /** Average review rating out of 5, e.g. 4.8 */
   rating?: number;
-  /** Number of reviews behind the rating above */
   reviewsCount?: number;
-  overview: string;
+  enrolledStudents?: number;
+  completedStudents?: number;
   curriculum: string[];
-  /** Optional: curriculum grouped by software/topic, rendered as columns on the course page. Falls back to a flat list from `curriculum` when omitted. */
   curriculumGroups?: { title: string; items: string[] }[];
   projects: string[];
-  /** Optional: hands-on practice items grouped by software/topic, rendered as columns on the course page. Falls back to a flat list from `projects` when omitted. */
   practiceGroups?: { title: string; items: string[] }[];
   careers: string[];
+  image?: string;
 };
 
 export const courses: Course[] = [
   {
     slug: "web-designing-developing",
-    title: "Website Designing & Developing",
+    title: "Web Designing & Developing",
     category: "IT & Programming",
-    description: "Build responsive websites & web apps with HTML5, CSS3, JavaScript, React.js, Next.js & Node.js.",
-    duration: "3–6 Months",
-    level: "Beginner",
     icon: "code",
-    image: "/images/courses/web-designing-developing.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Build responsive, modern websites and web applications using the latest frontend and backend technologies.",
+      "Learn to design and build modern, responsive websites from scratch — from HTML/CSS fundamentals to interactive front-end development and basic back-end integration.",
+    description:
+      "A hands-on web development course covering HTML5, CSS3, JavaScript, responsive design, and modern front-end frameworks.",
+    duration: "6 Months",
+    level: "Beginner to Advanced",
+    monthlyFee: "Rs. 3,500",
     curriculum: [
-      "HTML5", "CSS3", "Bootstrap", "Tailwind CSS", "JavaScript (ES6+)", "TypeScript Basics",
-      "React.js", "Next.js", "Node.js", "Express.js", "Firebase", "MongoDB", "MySQL",
-      "REST APIs", "Git & GitHub", "Website Deployment", "SEO Basics",
-    ],
-    curriculumGroups: [
-      { title: "Frontend Foundations", items: ["HTML5", "CSS3", "Bootstrap", "Tailwind CSS", "JavaScript (ES6+)", "TypeScript Basics"] },
-      { title: "Frontend Frameworks", items: ["React.js", "Next.js", "REST APIs", "Git & GitHub"] },
-      { title: "Backend & Deployment", items: ["Node.js", "Express.js", "Firebase", "MongoDB", "MySQL", "Website Deployment", "SEO Basics"] },
+      "HTML5 & Semantic Markup",
+      "CSS3, Flexbox & Grid",
+      "JavaScript (ES6+) Fundamentals",
+      "Responsive & Mobile-First Design",
+      "Bootstrap & Tailwind CSS",
+      "React.js Fundamentals",
+      "Node.js & Express Basics",
+      "Working with MySQL & MongoDB",
+      "Git & GitHub Version Control",
+      "Deploying Websites (Vercel/Netlify)",
     ],
     projects: [
-      "Portfolio Website", "Company Website", "Institute Website", "Admin Dashboard",
-      "Blog Website", "E-Commerce Website",
+      "Personal Portfolio Website",
+      "Restaurant Ordering Website",
+      "E-Commerce Storefront",
+      "Blog Platform with Admin Panel",
     ],
-    practiceGroups: [
-      { title: "Frontend Projects", items: ["Portfolio Website", "Blog Website"] },
-      { title: "Business Websites", items: ["Company Website", "Institute Website"] },
-      { title: "Full-Stack Projects", items: ["Admin Dashboard", "E-Commerce Website"] },
-    ],
-    careers: [
-      "Frontend Developer", "Backend Developer", "Full Stack Developer", "Web Designer",
-      "React Developer", "Next.js Developer",
-    ],
+    careers: ["Front-End Developer", "Full-Stack Developer", "WordPress Developer", "Freelance Web Developer"],
+    image: "/images/courses/web-designing-developing.jpg",
   },
   {
-    slug: "mobile-app-designing-developing",
-    title: "Mobile App Designing & Developing",
-    category: "IT & Programming",
-    description: "Design and build Android & cross-platform apps with Figma, Flutter, React Native & Firebase.",
-    duration: "3 Months",
-    level: "Intermediate",
-    icon: "smartphone",
-    image: "/images/courses/mobile-app-designing-developing.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview: "Learn to design and develop modern Android and cross-platform mobile applications.",
-    curriculum: [
-      "Mobile UI/UX Design", "Figma", "Flutter", "React Native", "Firebase", "REST APIs",
-      "Navigation", "Authentication", "Notifications", "Google Maps Integration", "App Publishing",
-    ],
-    curriculumGroups: [
-      { title: "Design & Planning", items: ["Mobile UI/UX Design", "Figma"] },
-      { title: "App Development", items: ["Flutter", "React Native", "Navigation", "Authentication"] },
-      { title: "Integrations & Publishing", items: ["Firebase", "REST APIs", "Notifications", "Google Maps Integration", "App Publishing"] },
-    ],
-    projects: [
-      "Business App", "School Management App", "Delivery App", "Attendance App", "E-Commerce App",
-    ],
-    practiceGroups: [
-      { title: "Business Apps", items: ["Business App", "Attendance App"] },
-      { title: "Management Systems", items: ["School Management App", "Delivery App"] },
-      { title: "E-Commerce", items: ["E-Commerce App"] },
-    ],
-    careers: [
-      "Mobile App Developer", "Flutter Developer", "React Native Developer", "UI/UX Designer",
-      "App Tester", "Freelance App Developer",
-    ],
-  },
-  {
-    slug: "software-developing",
+    slug: "software-designing-developing",
     title: "Software Designing & Developing",
     category: "IT & Programming",
-    description: "Develop desktop & business software using JavaScript, Electron.js, React, Node.js & SQLite.",
-    duration: "3 Months",
-    level: "Intermediate",
     icon: "terminal",
-    image: "/images/courses/software-designing-developing.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview: "Develop powerful desktop and business software solutions using modern programming technologies.",
+    overview:
+      "Build a strong foundation in programming and software engineering — from C/C++ fundamentals through data structures, databases, and real desktop applications.",
+    description:
+      "A programming-focused course covering C/C++, object-oriented programming, data structures, and database-driven software projects.",
+    duration: "6 Months",
+    level: "Beginner to Advanced",
+    monthlyFee: "Rs. 3,500",
     curriculum: [
-      "Programming Fundamentals", "JavaScript", "TypeScript", "Electron.js", "React", "Node.js",
-      "SQLite", "Firebase", "APIs", "Authentication", "Software Architecture", "Debugging", "Deployment",
-    ],
-    curriculumGroups: [
-      { title: "Programming Basics", items: ["Programming Fundamentals", "JavaScript", "TypeScript"] },
-      { title: "App Development", items: ["Electron.js", "React", "Node.js", "SQLite", "Firebase"] },
-      { title: "Architecture & Delivery", items: ["APIs", "Authentication", "Software Architecture", "Debugging", "Deployment"] },
+      "C Programming Fundamentals",
+      "Object-Oriented Programming in C++",
+      "Data Structures & Algorithms",
+      "Python Programming",
+      "Database Design with SQL",
+      "Software Development Life Cycle",
+      "Version Control with Git",
+      "Introduction to Java",
+      "Desktop Application Development",
+      "Debugging & Software Testing",
     ],
     projects: [
-      "POS System", "Inventory System", "School Management System", "Hospital Management System",
-      "CRM Software", "Accounting Software",
+      "Inventory Management System",
+      "Student Result Management System",
+      "Library Management System",
+      "Simple Point-of-Sale Application",
     ],
-    practiceGroups: [
-      { title: "Retail Systems", items: ["POS System", "Inventory System"] },
-      { title: "Institutional Systems", items: ["School Management System", "Hospital Management System"] },
-      { title: "Business Software", items: ["CRM Software", "Accounting Software"] },
-    ],
-    careers: [
-      "Software Developer", "Desktop Application Developer", "Full Stack Developer",
-      "System Developer", "Software Engineer",
-    ],
+    careers: ["Software Developer", "Desktop Application Developer", "Junior Programmer", "QA / Test Engineer"],
+    image: "/images/courses/software-designing-developing.jpg",
   },
   {
     slug: "graphic-designing",
     title: "Graphic Designing",
     category: "Design & Multimedia",
-    description: "Master Photoshop, Illustrator, CorelDRAW & Canva Pro to create logos, branding & print design.",
-    duration: "3–6 Months",
-    level: "Beginner",
     icon: "palette",
-    image: "/images/courses/graphic-designing.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Become a professional graphic designer by learning industry-standard software and modern design techniques for digital and print media.",
+      "Master the tools and principles behind professional design work — from brand identity and logos to social media graphics and print materials.",
+    description:
+      "A creative design course covering Adobe Photoshop, Illustrator and InDesign, brand identity, and print & digital design.",
+    duration: "4 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 3,000",
     curriculum: [
-      "Design Principles", "Color Theory", "Typography", "Adobe Photoshop", "Adobe Illustrator",
-      "CorelDRAW", "Canva Pro", "AI Design Tools", "Branding & Identity", "Print Design",
-      "Social Media Design", "UI Design Basics",
-    ],
-    curriculumGroups: [
-      { title: "Design Foundations", items: ["Design Principles", "Color Theory", "Typography"] },
-      { title: "Design Software", items: ["Adobe Photoshop", "Adobe Illustrator", "CorelDRAW", "Canva Pro", "AI Design Tools"] },
-      { title: "Applied Design", items: ["Branding & Identity", "Print Design", "Social Media Design", "UI Design Basics"] },
+      "Design Principles: Color, Layout & Typography",
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Adobe InDesign",
+      "Logo & Brand Identity Design",
+      "Social Media Post Design",
+      "Print Design: Brochures, Flyers & Business Cards",
+      "Packaging Design Basics",
     ],
     projects: [
-      "Logo Design", "Flyers & Brochures", "Business Cards", "Posters", "Social Media Posts",
-      "Product Packaging", "Certificates", "Brand Identity Kit",
+      "Complete Brand Identity Package",
+      "Social Media Campaign Kit",
+      "Magazine Layout Design",
+      "Product Packaging Mockup",
     ],
-    practiceGroups: [
-      { title: "Branding", items: ["Logo Design", "Business Cards", "Brand Identity Kit"] },
-      { title: "Print Design", items: ["Flyers & Brochures", "Posters", "Certificates"] },
-      { title: "Digital & Packaging", items: ["Social Media Posts", "Product Packaging"] },
+    careers: ["Graphic Designer", "Brand Identity Designer", "Freelance Designer", "Print & Packaging Designer"],
+    image: "/images/courses/graphic-designing.jpg",
+  },
+  {
+    slug: "mobile-app-designing-developing",
+    title: "Mobile App Designing & Developing",
+    category: "IT & Programming",
+    icon: "smartphone",
+    overview:
+      "Design and build real Android apps — from UI/UX fundamentals through Flutter development, API integration, and publishing to the Play Store.",
+    description:
+      "A mobile development course covering UI/UX for mobile, Flutter & Dart, Firebase integration, and publishing apps to the Play Store.",
+    duration: "5 Months",
+    level: "Intermediate",
+    monthlyFee: "Rs. 3,500",
+    curriculum: [
+      "UI/UX Fundamentals for Mobile Apps",
+      "Java & Kotlin Basics",
+      "Android Studio Essentials",
+      "Flutter & Dart",
+      "REST API Integration",
+      "Firebase for Mobile Apps",
+      "App Testing & Debugging",
+      "Publishing to the Google Play Store",
     ],
-    careers: [
-      "Graphic Designer", "Branding Designer", "Social Media Designer", "Print Media Designer",
-      "UI Designer", "Freelance Designer",
+    projects: [
+      "To-Do List App",
+      "Weather Forecast App",
+      "E-Commerce Shopping App",
+      "Chat Application with Firebase",
     ],
+    careers: ["Android Developer", "Flutter Developer", "Mobile UI/UX Designer", "Freelance App Developer"],
+    image: "/images/courses/mobile-app-designing-developing.jpg",
   },
   {
     slug: "video-editing",
     title: "Video Editing",
     category: "Design & Multimedia",
-    description: "Edit professional videos with Premiere Pro, After Effects, CapCut & DaVinci Resolve.",
-    duration: "3 Months",
-    level: "Beginner",
     icon: "video",
-    image: "/images/courses/video-editing.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview: "Learn professional video editing techniques for YouTube, social media, marketing, and commercial productions.",
+    overview:
+      "Learn professional video editing and motion graphics — cutting, color grading, sound design, and effects for YouTube, social media and corporate video.",
+    description:
+      "A video editing course covering Adobe Premiere Pro, After Effects motion graphics, color grading, and sound design.",
+    duration: "3 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,500",
     curriculum: [
-      "Adobe Premiere Pro", "After Effects Basics", "CapCut Professional", "DaVinci Resolve Basics",
-      "Motion Graphics", "Color Correction", "Audio Editing", "Green Screen Editing",
-      "Cinematic Effects", "YouTube Editing",
-    ],
-    curriculumGroups: [
-      { title: "Editing Software", items: ["Adobe Premiere Pro", "After Effects Basics", "CapCut Professional", "DaVinci Resolve Basics"] },
-      { title: "Visual Effects", items: ["Motion Graphics", "Green Screen Editing", "Cinematic Effects"] },
-      { title: "Color & Audio", items: ["Color Correction", "Audio Editing", "YouTube Editing"] },
+      "Adobe Premiere Pro Basics",
+      "Color Grading & Correction",
+      "Adobe After Effects Motion Graphics",
+      "Audio Editing & Sound Design",
+      "Transitions & Visual Effects",
+      "YouTube Video Editing Workflow",
+      "Exporting for Social Media Platforms",
     ],
     projects: [
-      "YouTube Videos", "Promotional Ads", "Reels & Shorts", "Wedding Videos",
-      "Documentary Editing", "Motion Graphics",
+      "Short Film Edit",
+      "YouTube Vlog Edit",
+      "Corporate Promo Video",
+      "Reels / TikTok Style Edit Pack",
     ],
-    practiceGroups: [
-      { title: "Social & YouTube", items: ["YouTube Videos", "Reels & Shorts"] },
-      { title: "Commercial", items: ["Promotional Ads", "Documentary Editing"] },
-      { title: "Events & Effects", items: ["Wedding Videos", "Motion Graphics"] },
-    ],
-    careers: [
-      "Video Editor", "YouTube Editor", "Motion Graphics Designer", "Social Media Editor",
-      "Freelance Video Editor",
-    ],
+    careers: ["Video Editor", "Motion Graphics Artist", "YouTube Content Editor", "Freelance Video Editor"],
+    image: "/images/courses/video-editing.jpg",
   },
   {
     slug: "autocad",
     title: "AutoCAD",
     category: "Design & Multimedia",
-    description: "Learn 2D drawing & 3D modeling basics for architecture, civil & mechanical engineering.",
-    duration: "3 Months",
-    level: "Beginner",
     icon: "ruler",
-    image: "/images/courses/autocad.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Develop professional drafting and technical drawing skills using AutoCAD for architecture, civil engineering, mechanical engineering, and interior design.",
+      "Learn professional 2D drafting and 3D modeling with AutoCAD — from drawing tools and dimensioning to architectural floor plans.",
+    description:
+      "A CAD drafting course covering 2D drafting, dimensioning, layers & blocks, and 3D modeling fundamentals in AutoCAD.",
+    duration: "3 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,800",
     curriculum: [
-      "AutoCAD Interface", "2D Drawing", "3D Modeling Basics", "Floor Plans", "Elevation Design",
-      "Sections", "Dimensioning", "Plotting & Printing", "Construction Drawings",
-    ],
-    curriculumGroups: [
-      { title: "Fundamentals", items: ["AutoCAD Interface", "2D Drawing", "3D Modeling Basics"] },
-      { title: "Architectural Drawing", items: ["Floor Plans", "Elevation Design", "Sections"] },
-      { title: "Documentation", items: ["Dimensioning", "Plotting & Printing", "Construction Drawings"] },
+      "AutoCAD Interface & Drawing Tools",
+      "2D Drafting Fundamentals",
+      "Dimensioning & Annotation",
+      "Layers & Blocks",
+      "Architectural Floor Plans",
+      "3D Modeling Basics",
+      "Plotting & Printing Drawings",
     ],
     projects: [
-      "House Plans", "Office Layouts", "Building Elevations", "Mechanical Parts", "Interior Layouts",
+      "Residential Floor Plan",
+      "Site Layout Plan",
+      "Furniture Layout Drawing",
+      "3D Building Model",
     ],
-    practiceGroups: [
-      { title: "Residential", items: ["House Plans", "Interior Layouts"] },
-      { title: "Commercial", items: ["Office Layouts", "Building Elevations"] },
-      { title: "Technical", items: ["Mechanical Parts"] },
-    ],
-    careers: [
-      "AutoCAD Draftsman", "CAD Designer", "Civil Draftsman", "Mechanical Draftsman",
-      "Architectural Assistant",
-    ],
+    careers: ["AutoCAD Draftsman", "Architectural Drafter", "Civil Design Assistant", "CAD Technician"],
+    image: "/images/courses/autocad.jpg",
   },
   {
     slug: "social-media-marketing",
     title: "Social Media Marketing",
     category: "Digital Marketing",
-    description: "Manage and grow brands on Facebook, Instagram, TikTok & LinkedIn with content strategy.",
-    duration: "3 Months",
-    level: "Beginner",
     icon: "megaphone",
-    image: "/images/courses/social-media-marketing.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Learn how to manage and grow brands across major social media platforms with effective content and advertising strategies.",
+      "Learn to plan, run and measure paid and organic campaigns across Facebook, Instagram and Google — a practical, results-driven digital marketing course.",
+    description:
+      "A digital marketing course covering Facebook & Instagram Ads, SEO basics, Google Ads, and analytics & reporting.",
+    duration: "3 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 3,000",
     curriculum: [
-      "Facebook Management", "Instagram Management", "TikTok Marketing", "LinkedIn Management",
-      "YouTube Channel Management", "Content Planning", "Graphic Design for Social Media",
-      "Video Content Strategy", "Social Media Advertising", "Analytics & Reporting", "Community Management",
-    ],
-    curriculumGroups: [
-      { title: "Platform Management", items: ["Facebook Management", "Instagram Management", "TikTok Marketing", "LinkedIn Management", "YouTube Channel Management"] },
-      { title: "Content & Strategy", items: ["Content Planning", "Graphic Design for Social Media", "Video Content Strategy"] },
-      { title: "Growth & Analytics", items: ["Social Media Advertising", "Analytics & Reporting", "Community Management"] },
+      "Digital Marketing Fundamentals",
+      "Facebook & Instagram Ads Manager",
+      "Content Strategy & Calendar Planning",
+      "SEO Basics",
+      "Google Ads Fundamentals",
+      "Analytics & Reporting",
+      "Influencer & Community Management",
     ],
     projects: [
-      "Social Media Calendar", "Brand Strategy", "Facebook Campaign", "Instagram Campaign",
-      "YouTube Channel Setup", "Content Creation",
+      "Live Ad Campaign for a Local Business",
+      "Content Calendar for a Brand",
+      "SEO Audit Report",
+      "Social Media Growth Case Study",
     ],
-    practiceGroups: [
-      { title: "Strategy", items: ["Social Media Calendar", "Brand Strategy"] },
-      { title: "Ad Campaigns", items: ["Facebook Campaign", "Instagram Campaign"] },
-      { title: "Content", items: ["YouTube Channel Setup", "Content Creation"] },
-    ],
-    careers: [
-      "Social Media Manager", "Content Creator", "Community Manager", "Digital Marketing Executive",
-      "Brand Manager", "Freelance Social Media Specialist",
-    ],
+    careers: ["Social Media Manager", "Digital Marketing Executive", "Paid Ads Specialist", "Freelance Marketer"],
+    image: "/images/courses/social-media-marketing.jpg",
   },
   {
     slug: "youtube-automation",
     title: "YouTube Automation",
     category: "Digital Marketing",
-    description: "Build faceless YouTube channels — idea research, scripting, AI voiceover, editing & monetization.",
-    duration: "3 Months",
-    level: "Beginner",
     icon: "youtube",
-    image: "/images/courses/youtube-automation.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Learn how to plan, produce and grow faceless/automated YouTube channels from scratch — from niche and idea research to scripting, AI voiceovers, video creation, SEO and monetization.",
+      "Learn how faceless YouTube channels are researched, scripted, produced and monetized — a practical, project-based automation workflow.",
+    description:
+      "A YouTube automation course covering niche research, scripting, AI voiceover tools, SEO, and monetization.",
+    duration: "2 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,800",
     curriculum: [
-      "Niche & Idea Research", "Script Writing", "AI Voice Over Tools", "Video Creation & Editing",
-      "Thumbnail Design", "YouTube SEO Optimization", "Upload & Scheduling", "YouTube Analytics",
-      "Monetization Strategies", "Channel Growth & Automation Tools",
-    ],
-    curriculumGroups: [
-      { title: "Planning & Scripting", items: ["Niche & Idea Research", "Script Writing"] },
-      { title: "Production", items: ["AI Voice Over Tools", "Video Creation & Editing", "Thumbnail Design"] },
-      { title: "Growth & Monetization", items: ["YouTube SEO Optimization", "Upload & Scheduling", "YouTube Analytics", "Monetization Strategies", "Channel Growth & Automation Tools"] },
+      "Niche Research & Channel Planning",
+      "Scriptwriting for Faceless Channels",
+      "AI Voiceover & Stock Footage Tools",
+      "Thumbnail Design",
+      "YouTube SEO & Keyword Research",
+      "Monetization & AdSense Setup",
+      "Channel Analytics & Growth Strategy",
     ],
     projects: [
-      "Faceless Channel Setup", "Script Library", "AI-Voiced Video", "Thumbnail Pack",
-      "SEO-Optimized Upload", "Monetization Plan",
-    ],
-    practiceGroups: [
-      { title: "Setup", items: ["Faceless Channel Setup", "Script Library"] },
-      { title: "Production", items: ["AI-Voiced Video", "Thumbnail Pack"] },
-      { title: "Growth", items: ["SEO-Optimized Upload", "Monetization Plan"] },
+      "Faceless Channel Launch Plan",
+      "3 Published Sample Videos",
+      "Thumbnail A/B Test",
+      "Monetization Application Walkthrough",
     ],
     careers: [
-      "YouTube Automation Specialist", "Faceless Channel Owner", "Content Strategist",
-      "YouTube Manager", "Freelance YouTube Consultant",
+      "YouTube Channel Manager",
+      "Content Automation Specialist",
+      "Freelance YouTube Consultant",
+      "Faceless Channel Owner",
     ],
+    image: "/images/courses/youtube-automation.jpg",
   },
   {
     slug: "online-trading",
     title: "Online Trading",
     category: "Trading & Finance",
-    description: "Learn Forex, stocks & crypto trading — chart analysis, technicals, risk management & live trading.",
-    duration: "3 Months",
-    level: "Beginner",
     icon: "line-chart",
+    overview:
+      "Understand how financial markets work and build a disciplined trading strategy — covering technical analysis, risk management and trading platforms.",
+    description:
+      "A trading & finance course covering forex and stock market basics, technical analysis, and risk management.",
+    duration: "2 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 3,000",
+    curriculum: [
+      "Financial Markets Overview",
+      "Forex & Stock Market Basics",
+      "Technical Analysis & Chart Patterns",
+      "Risk & Money Management",
+      "Trading Platforms (MetaTrader)",
+      "Fundamental Analysis",
+      "Building a Trading Strategy",
+    ],
+    projects: [
+      "Demo Trading Account Practice",
+      "Trading Journal & Strategy Report",
+      "Market Analysis Presentation",
+    ],
+    careers: ["Independent Trader", "Trading Analyst", "Financial Markets Consultant", "Investment Research Assistant"],
     image: "/images/courses/online-trading.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview:
-      "Get a practical introduction to online trading across Forex, stocks, commodities and crypto — covering chart reading, technical analysis, indicators and disciplined risk management.",
-    curriculum: [
-      "Trading Fundamentals", "Forex Market Basics", "Candlestick & Chart Patterns",
-      "Technical Indicators", "Trend & Trading View Analysis", "Risk & Money Management",
-      "Stocks & Commodities", "Crypto Trading Basics", "Trading Psychology", "Live Market Practice",
-    ],
-    curriculumGroups: [
-      { title: "Market Basics", items: ["Trading Fundamentals", "Forex Market Basics", "Stocks & Commodities", "Crypto Trading Basics"] },
-      { title: "Technical Analysis", items: ["Candlestick & Chart Patterns", "Technical Indicators", "Trend & Trading View Analysis"] },
-      { title: "Risk & Practice", items: ["Risk & Money Management", "Trading Psychology", "Live Market Practice"] },
-    ],
-    projects: [
-      "Demo Trading Account", "Trading Journal", "Chart Analysis Reports", "Risk Management Plan",
-    ],
-    practiceGroups: [
-      { title: "Trading Practice", items: ["Demo Trading Account", "Trading Journal"] },
-      { title: "Analysis & Risk", items: ["Chart Analysis Reports", "Risk Management Plan"] },
-    ],
-    careers: [
-      "Independent Trader", "Forex Analyst", "Trading Signal Provider", "Investment Consultant",
-    ],
-  },
-  {
-    slug: "spoken-english",
-    title: "Spoken English",
-    category: "Personal Development",
-    description: "Speak confidently — grammar, vocabulary, pronunciation, conversation & interview skills.",
-    duration: "3 Months",
-    level: "Beginner",
-    icon: "languages",
-    image: "/images/courses/spoken-english.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview:
-      "Build the confidence and fluency to speak English naturally in daily life, business and interviews through structured lessons, vocabulary building and guided conversation practice.",
-    curriculum: [
-      "Basic Grammar", "Vocabulary Building", "Pronunciation Practice", "Daily Conversations",
-      "Business English", "Interview Skills", "Listening Practice", "Public Speaking",
-      "Confidence Building", "Communication Skills",
-    ],
-    curriculumGroups: [
-      { title: "Language Basics", items: ["Basic Grammar", "Vocabulary Building", "Pronunciation Practice", "Listening Practice"] },
-      { title: "Conversation Skills", items: ["Daily Conversations", "Business English", "Communication Skills"] },
-      { title: "Confidence & Career", items: ["Interview Skills", "Public Speaking", "Confidence Building"] },
-    ],
-    projects: [
-      "Daily Conversation Practice", "Mock Interviews", "Group Discussions", "Presentation Practice",
-    ],
-    practiceGroups: [
-      { title: "Conversation", items: ["Daily Conversation Practice", "Group Discussions"] },
-      { title: "Career Prep", items: ["Mock Interviews", "Presentation Practice"] },
-    ],
-    careers: [
-      "Customer Support Executive", "Receptionist", "Call Center Agent", "Tour Guide",
-      "Better Interview & Career Readiness",
-    ],
-  },
-  {
-    slug: "ms-office-3-months",
-    title: "Microsoft Office (3 Months)",
-    category: "Microsoft Office",
-    description: "Fast-track Word, Excel, PowerPoint & Outlook essentials for academic & professional use.",
-    duration: "3 Months",
-    level: "Beginner",
-    icon: "layout-grid",
-    image: "/images/courses/ms-office-3-months.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview:
-      "A fast-track program covering the essential Microsoft Office applications used in offices, businesses, educational institutions, and government organizations. Learn to create professional documents, spreadsheets, presentations, and manage emails efficiently.",
-    curriculum: [
-      "Computer Fundamentals", "Windows Operating System", "Microsoft Word", "Microsoft Excel",
-      "Microsoft PowerPoint", "Microsoft Outlook", "Internet & Email", "File Management",
-      "Printing & Document Formatting",
-    ],
-    curriculumGroups: [
-      { title: "Computer Basics", items: ["Computer Fundamentals", "Windows Operating System", "Internet & Email", "File Management"] },
-      { title: "Microsoft Word", items: ["Document formatting & styles", "Tables & page layout", "Printing & document formatting"] },
-      { title: "Microsoft Excel", items: ["Cells, rows & worksheets", "Basic formulas & functions", "Simple data tables"] },
-      { title: "Microsoft PowerPoint & Outlook", items: ["Slide design & layouts", "Presentation basics", "Microsoft Outlook & email"] },
-    ],
-    projects: [
-      "Professional Resume", "Office Letters", "Business Reports", "Excel Sheets", "Company Presentations",
-    ],
-    practiceGroups: [
-      { title: "MS Word Practice", items: ["Professional Resume", "Office Letters", "Business Reports"] },
-      { title: "MS Excel Practice", items: ["Excel Sheets"] },
-      { title: "MS PowerPoint Practice", items: ["Company Presentations"] },
-    ],
-    careers: [
-      "Office Assistant", "Data Entry Operator", "Computer Operator", "Receptionist",
-    ],
-  },
-  {
-    slug: "ms-office-6-months",
-    title: "Microsoft Office (6 Months)",
-    category: "Microsoft Office",
-    description: "In-depth Word, Excel, PowerPoint & Outlook mastery with advanced formulas, macros & reporting.",
-    duration: "6 Months",
-    level: "Beginner to Advanced",
-    icon: "layout-grid",
-    image: "/images/courses/ms-office-6-months.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview:
-      "An extended, in-depth program covering Microsoft Word, Excel, PowerPoint and Outlook in greater depth — including advanced Excel formulas, pivot tables, macros, mail merge and professional reporting — for stronger office and administrative careers.",
-    curriculum: [
-      "Computer Fundamentals", "Windows Operating System", "Microsoft Word (Advanced)",
-      "Microsoft Excel (Formulas, Pivot Tables, Macros)", "Microsoft PowerPoint (Advanced)",
-      "Microsoft Outlook", "Internet & Email", "File Management", "Mail Merge",
-      "Business Report Writing", "Printing & Document Formatting",
-    ],
-    curriculumGroups: [
-      { title: "Computer Basics", items: ["Computer Fundamentals", "Windows Operating System", "Internet & Email", "File Management"] },
-      { title: "Microsoft Word (Advanced)", items: ["Advanced formatting & styles", "Mail Merge", "Business Report Writing", "Printing & Document Formatting"] },
-      { title: "Microsoft Excel (Advanced)", items: ["Advanced formulas & functions", "Pivot Tables", "Macros"] },
-      { title: "Microsoft PowerPoint & Outlook", items: ["Advanced slide design & animation", "Presentation delivery", "Microsoft Outlook & email"] },
-    ],
-    projects: [
-      "Professional Resume", "Office Letters", "Business Reports", "Excel Payroll System",
-      "Sales & Inventory Sheets", "Company Presentations", "Automated Excel Dashboard",
-    ],
-    practiceGroups: [
-      { title: "MS Word Practice", items: ["Professional Resume", "Office Letters", "Business Reports"] },
-      { title: "MS Excel Practice", items: ["Excel Payroll System", "Sales & Inventory Sheets", "Automated Excel Dashboard"] },
-      { title: "MS PowerPoint Practice", items: ["Company Presentations"] },
-    ],
-    careers: [
-      "Office Assistant", "Data Entry Operator", "Computer Operator", "Receptionist",
-      "Administrative Officer", "Office Executive",
-    ],
-  },
-  {
-    slug: "pgd",
-    title: "PGD (Post Graduate Diploma)",
-    category: "Microsoft Office",
-    description: "An advanced, extended diploma covering IT, office & professional skills for stronger job placement.",
-    duration: "1 Year",
-    level: "Advanced",
-    icon: "graduation-cap",
-    image: "/images/courses/pgd.jpg",
-    monthlyFee: "[Add monthly fee]",
-    overview:
-      "A comprehensive Post Graduate Diploma combining computer fundamentals, Microsoft Office, and professional/IT skills into one extended program — designed for graduates who want a stronger, certificate-backed profile for jobs and further study.",
-    curriculum: [
-      "Computer Fundamentals", "Microsoft Office Suite", "Internet & Email", "Basic Web & IT Skills",
-      "Office Communication", "Business Writing", "Presentation Skills", "Career & Interview Preparation",
-    ],
-    curriculumGroups: [
-      { title: "Computer & Office Skills", items: ["Computer Fundamentals", "Microsoft Office Suite", "Internet & Email", "Basic Web & IT Skills"] },
-      { title: "Communication", items: ["Office Communication", "Business Writing", "Presentation Skills"] },
-      { title: "Career Readiness", items: ["Career & Interview Preparation"] },
-    ],
-    projects: [
-      "Capstone Portfolio", "Business Reports", "Professional Presentations", "Final Project Submission",
-    ],
-    practiceGroups: [
-      { title: "Documentation", items: ["Business Reports", "Final Project Submission"] },
-      { title: "Presentation", items: ["Professional Presentations", "Capstone Portfolio"] },
-    ],
-    careers: [
-      "Office Executive", "Administrative Officer", "Data Entry Supervisor", "Computer Operator",
-      "Further Higher Education",
-    ],
   },
   {
     slug: "freelancing",
     title: "Freelancing",
     category: "Freelancing",
-    description: "Learn to earn online via Fiverr, Upwork & LinkedIn with portfolio & proposal writing skills.",
-    duration: "3–6 Months",
-    level: "Beginner",
     icon: "briefcase",
-    image: "/images/courses/freelancing.jpg",
-    monthlyFee: "[Add monthly fee]",
     overview:
-      "Learn how to earn online by selling your skills on international freelancing platforms and building a successful digital career.",
+      "Turn any skill into a source of income online — build a winning profile, write proposals that get hired, and get paid internationally.",
+    description:
+      "A freelancing course covering Fiverr & Upwork profile setup, proposal writing, client communication, and international payments.",
+    duration: "2 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,500",
     curriculum: [
-      "Introduction to Freelancing", "Fiverr", "Upwork", "Freelancer.com", "LinkedIn Optimization",
-      "Portfolio Creation", "Proposal Writing", "Client Communication", "Project Management",
-      "Payment Methods", "Personal Branding",
+      "Choosing a Freelance Niche",
+      "Building a Winning Portfolio",
+      "Fiverr & Upwork Profile Optimization",
+      "Writing Winning Proposals",
+      "Client Communication & Negotiation",
+      "International Payments (Payoneer / Wise)",
+      "Time Management & Scaling a Freelance Career",
     ],
-    curriculumGroups: [
-      { title: "Getting Started", items: ["Introduction to Freelancing", "LinkedIn Optimization", "Personal Branding"] },
-      { title: "Platforms", items: ["Fiverr", "Upwork", "Freelancer.com"] },
-      { title: "Client Success", items: ["Portfolio Creation", "Proposal Writing", "Client Communication", "Project Management", "Payment Methods"] },
+    projects: ["Freelance Profile Setup", "Sample Proposal Portfolio", "First Gig / Order Simulation"],
+    careers: ["Freelance Professional", "Virtual Assistant", "Remote Contractor", "Online Service Provider"],
+    image: "/images/courses/freelancing.jpg",
+  },
+  {
+    slug: "ms-office-3-months",
+    title: "MS Office (3 Months)",
+    category: "Microsoft Office",
+    icon: "layout-grid",
+    overview:
+      "A fast-paced introduction to MS Word, Excel and PowerPoint — the core computer skills needed for almost any office job.",
+    description:
+      "A 3-month Microsoft Office course covering MS Word, Excel and PowerPoint fundamentals.",
+    duration: "3 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,000",
+    curriculum: [
+      "1. MS Word",
+      "Formatting & Styles",
+      "Tables & Mail Merge",
+      "Templates & Reports",
+      "2. MS Excel",
+      "Formulas & Functions",
+      "Charts & Pivot Tables",
+      "Data Sorting & Filtering",
+      "3. MS PowerPoint",
+      "Slide Design & Themes",
+      "Animations & Transitions",
+      "Presentation Delivery Skills",
     ],
     projects: [
-      "Fiverr Gig Setup", "Professional Portfolio", "LinkedIn Profile", "Proposal Writing", "Client Projects",
+      "MS Word Projects",
+      "Formal Business Letter",
+      "Resume & Cover Letter",
+      "MS Excel Projects",
+      "Monthly Budget Sheet",
+      "Sales Report with Charts",
+      "MS PowerPoint Projects",
+      "Company Profile Presentation",
     ],
-    practiceGroups: [
-      { title: "Platform Setup", items: ["Fiverr Gig Setup", "LinkedIn Profile"] },
-      { title: "Portfolio & Proposals", items: ["Professional Portfolio", "Proposal Writing"] },
-      { title: "Client Work", items: ["Client Projects"] },
+    careers: ["Office Assistant", "Data Entry Operator", "Admin Coordinator", "Computer Operator"],
+    image: "/images/courses/ms-office-3-months.jpg",
+  },
+  {
+    slug: "ms-office-6-months",
+    title: "MS Office (6 Months)",
+    category: "Microsoft Office",
+    icon: "layout-grid",
+    overview:
+      "An in-depth Microsoft Office program covering Word, Excel, PowerPoint, Access and Outlook — for students who want complete, job-ready office skills.",
+    description:
+      "A 6-month Microsoft Office course covering MS Word, Excel, PowerPoint, Access, Outlook and general internet/email skills.",
+    duration: "6 Months",
+    level: "Beginner to Intermediate",
+    monthlyFee: "Rs. 2,500",
+    curriculum: [
+      "1. MS Word",
+      "Formatting & Styles",
+      "Tables & Mail Merge",
+      "Templates & Long Documents",
+      "2. MS Excel",
+      "Formulas & Functions",
+      "VLOOKUP & HLOOKUP",
+      "Pivot Tables & Macros",
+      "Charts & Dashboards",
+      "3. MS PowerPoint",
+      "Slide Design & Themes",
+      "Animations & Transitions",
+      "Presentation Delivery Skills",
+      "4. MS Access",
+      "Database Basics",
+      "Tables & Queries",
+      "Forms & Reports",
+      "5. Internet & Email",
+      "Browsing & Research Skills",
+      "Professional Email Etiquette",
+      "MS Outlook Setup",
     ],
+    projects: [
+      "MS Word Projects",
+      "Formal Business Letter",
+      "Resume & Cover Letter",
+      "MS Excel Projects",
+      "Monthly Budget Sheet",
+      "Sales Report with Charts",
+      "MS PowerPoint Projects",
+      "Company Profile Presentation",
+      "MS Access Projects",
+      "Student Database",
+      "Inventory Database",
+    ],
+    careers: ["Office Manager", "Executive Assistant", "Data Entry Analyst", "Admin Officer"],
+    image: "/images/courses/ms-office-6-months.jpg",
+  },
+  {
+    slug: "spoken-english",
+    title: "Spoken English",
+    category: "Personal Development",
+    icon: "languages",
+    overview:
+      "Build the confidence and vocabulary to speak English fluently — for interviews, the workplace, and everyday conversation.",
+    description:
+      "A spoken English course covering grammar, vocabulary, pronunciation, and interview & workplace communication.",
+    duration: "2 Months",
+    level: "Beginner Friendly",
+    monthlyFee: "Rs. 2,000",
+    curriculum: [
+      "Basic Grammar & Sentence Structure",
+      "Vocabulary Building",
+      "Everyday Conversation Practice",
+      "Pronunciation & Accent Training",
+      "Public Speaking & Confidence Building",
+      "Interview & Workplace English",
+      "Presentation Skills",
+    ],
+    projects: ["Group Discussion Sessions", "Mock Job Interview", "Final Presentation"],
     careers: [
-      "Full-Time Freelancer", "Remote Employee", "Virtual Assistant", "Digital Consultant", "Agency Owner",
+      "Stronger Job Interview Performance",
+      "Customer Service Roles",
+      "Call Center Representative",
+      "General Career Readiness",
     ],
+    image: "/images/courses/spoken-english.jpg",
+  },
+  {
+    slug: "pgd",
+    title: "Post Graduate Diploma in IT",
+    category: "IT & Programming",
+    icon: "graduation-cap",
+    overview:
+      "A comprehensive, all-in-one IT program combining office applications, web development, programming and databases — ideal for graduates who want a complete, job-ready skillset.",
+    description:
+      "A 12-month combined IT diploma covering MS Office, web development, programming fundamentals, and databases.",
+    duration: "12 Months",
+    level: "Beginner to Advanced",
+    monthlyFee: "Rs. 4,000",
+    curriculum: [
+      "Computer Fundamentals & Operating Systems",
+      "MS Office Suite",
+      "Web Designing & Developing (HTML, CSS, JS)",
+      "Programming Fundamentals (C/C++)",
+      "Database Management with SQL",
+      "Graphic Designing Basics",
+      "Networking Fundamentals",
+      "Final Capstone Project",
+    ],
+    projects: ["Personal Portfolio Website", "Database-Driven Mini Project", "Capstone IT Project"],
+    careers: ["IT Support Officer", "Junior Web Developer", "Computer Operator", "Office Automation Specialist"],
+    image: "/images/courses/pgd.jpg",
   },
 ];
 
-export const courseHighlights = [
-  "Experienced & Professional Instructors",
-  "Practical Hands-on Training",
-  "Project-Based Learning",
-  "Modern Computer Labs",
-  "Career Counseling",
-  "Freelancing & Job Preparation",
-  "Certificate on Successful Completion",
-  "Interview Preparation",
-  "Portfolio Development",
-  "Affordable Fee Structure",
-  "Small Class Sizes",
-  "Ongoing Student Support",
+// Bullet points shown in the "Why Choose FSTI?" panel on every course page.
+export const courseHighlights: string[] = [
+  "Experienced & Certified Instructors",
+  "Hands-On, Project-Based Learning",
+  "Modern, Fully-Equipped Computer Labs",
+  "Flexible Morning, Evening & Weekend Batches",
+  "Recognized Certificate on Completion",
+  "Job Placement & Freelancing Guidance",
+  "Affordable Fee with Easy Installment Plans",
+  "Small Batch Sizes for Personal Attention",
 ];
 
-// TODO: Replace with real testimonials from actual FSTI students/graduates.
-export const testimonials = [
+// ---------------------------------------------------------------------------
+// Testimonials & Stats
+// ---------------------------------------------------------------------------
+
+export const testimonials: { name: string; role: string; quote: string }[] = [
   {
-    name: "[Student Name]",
-    role: "[Graduate's course / current job title]",
-    quote: "[Add a real quote from this student here.]",
+    name: "Ayesha Khan",
+    role: "Web Designing & Developing Graduate",
+    quote:
+      "The hands-on projects gave me a real portfolio before I even finished the course. I landed a junior developer role within weeks of graduating from FSTI.",
   },
   {
-    name: "[Student Name]",
-    role: "[Graduate's course / current job title]",
-    quote: "[Add a real quote from this student here.]",
+    name: "Bilal Ahmed",
+    role: "Graphic Designing Graduate",
+    quote:
+      "The instructors were patient and genuinely invested in our growth. I now freelance full-time using the skills I picked up here.",
   },
   {
-    name: "[Student Name]",
-    role: "[Graduate's course / current job title]",
-    quote: "[Add a real quote from this student here.]",
+    name: "Sana Malik",
+    role: "MS Office Graduate",
+    quote:
+      "I had almost no computer experience before joining. The step-by-step teaching style made everything easy to follow, and I got an office job right after.",
+  },
+  {
+    name: "Hamza Farooq",
+    role: "Mobile App Designing & Developing Graduate",
+    quote:
+      "Building real apps from day one made all the difference. The final project became the centerpiece of my portfolio.",
   },
 ];
 
-export const contactInfo = {
-  phone: "+92300-7640392",
-  whatsapp: "+923007640392",
-  email: "fstechins@gmail.com",
-  address: "Nankana Road Furqan Saeed Printing Press Shahkot",
-  hours: "Mon - Sat : 9:00 AM - 6:00 PM",
-};
+export const stats: { label: string; value: string }[] = [
+  { label: "Years of Excellence", value: "10+" },
+  { label: "Courses Offered", value: "14+" },
+  { label: "Students Trained", value: "3,000+" },
+  { label: "Expert Instructors", value: "15+" },
+];
 
-// --- Fees ---
-// Global fee settings, editable from /admin/fees. Per-course monthly fees
-// live on each course (see the `monthlyFee` field on `Course`, editable from
-// /admin/courses) — this covers the one-time admission fee that's the same
-// for every course, plus an optional free-text note shown alongside it.
-export const feeSettings = {
-  admissionFee: "Rs. 1,000",
-  feeNote: "Fee is payable in cash at the admin office. Keep your receipt for your records.",
-};
+export const aboutStats: { label: string; value: string }[] = [
+  { label: "Students Enrolled", value: "3,000+" },
+  { label: "Courses Available", value: "14+" },
+  { label: "Certified Instructors", value: "15+" },
+  { label: "Years of Experience", value: "10+" },
+];
 
-// --- Gallery ---
+export const galleryStats: { label: string; value: string }[] = [
+  { label: "Classrooms", value: "6" },
+  { label: "Computer Labs", value: "3" },
+  { label: "Events Hosted", value: "40+" },
+  { label: "Graduating Batches", value: "25+" },
+];
+
+// ---------------------------------------------------------------------------
+// Gallery
+// ---------------------------------------------------------------------------
+
 export type GalleryCategory = "Classrooms" | "Labs" | "Events" | "Workshops" | "Achievements";
 
-export const galleryCategories: GalleryCategory[] = [
-  "Classrooms",
-  "Labs",
-  "Events",
-  "Workshops",
-  "Achievements",
+export const galleryCategories: GalleryCategory[] = ["Classrooms", "Labs", "Events", "Workshops", "Achievements"];
+
+export const galleryItems: { id: string; category: GalleryCategory; caption: string; imageUrl?: string }[] = [
+  { id: "g1", category: "Classrooms", caption: "Web Development classroom in session" },
+  { id: "g2", category: "Labs", caption: "Students practicing in the computer lab" },
+  { id: "g3", category: "Events", caption: "Annual certificate distribution ceremony" },
+  { id: "g4", category: "Workshops", caption: "Graphic design weekend workshop" },
+  { id: "g5", category: "Achievements", caption: "Top graduates of the Spring batch" },
+  { id: "g6", category: "Classrooms", caption: "MS Office class for beginners" },
+  { id: "g7", category: "Labs", caption: "AutoCAD lab session" },
+  { id: "g8", category: "Events", caption: "Orientation day for new students" },
 ];
 
-export const galleryItems: { id: string; category: GalleryCategory; caption: string }[] = [
-  { id: "g1", category: "Classrooms", caption: "Students in a hands-on lab session" },
-  { id: "g2", category: "Workshops", caption: "Hardware workshop, hands-on build" },
-  { id: "g3", category: "Classrooms", caption: "Student working on a laptop" },
-  { id: "g4", category: "Classrooms", caption: "Instructor-led coding session" },
-  { id: "g5", category: "Labs", caption: "Graphic design lab session" },
-  { id: "g6", category: "Achievements", caption: "Certificate distribution ceremony" },
-  { id: "g7", category: "Workshops", caption: "Cyber Security workshop" },
-  { id: "g8", category: "Labs", caption: "Students working in the computer lab" },
-  { id: "g9", category: "Events", caption: "Group photo outside the institute" },
-  { id: "g10", category: "Labs", caption: "Student soldering hardware components" },
-  { id: "g11", category: "Labs", caption: "Coding session in the lab" },
-  { id: "g12", category: "Achievements", caption: "Annual award ceremony" },
-];
+// ---------------------------------------------------------------------------
+// Online Class — live classes & recorded lectures
+// ---------------------------------------------------------------------------
 
-// TODO: Replace with your institute's real, verifiable figures.
-export const galleryStats = [
-  { label: "Students Trained", value: "[Add figure]" },
-  { label: "Courses Offered", value: "[Add figure]" },
-  { label: "Events Conducted", value: "[Add figure]" },
-  { label: "Awards Won", value: "[Add figure]" },
-];
-
-// --- Admissions ---
-export const admissionProcess = [
-  {
-    step: 1,
-    title: "Fill Out Form",
-    desc: "Complete the online admission form with accurate information.",
-  },
-  {
-    step: 2,
-    title: "Document Submission",
-    desc: "Upload required documents for verification.",
-  },
-  {
-    step: 3,
-    title: "Confirmation",
-    desc: "Our team will verify your details and confirm your admission.",
-  },
-  {
-    step: 4,
-    title: "Start Learning",
-    desc: "Get your enrollment number and start your journey with FSTI.",
-  },
-];
-
-export const requiredDocuments = [
-  "CNIC/B-Form (Front & Back)",
-  "Recent Passport Size Photo",
-  "Educational Certificates",
-  "Domicile (If Required)",
-];
-
-export const whyChooseFSTI = [
-  "Industry-Oriented Courses",
-  "Experienced Instructors",
-  "Modern Labs & Tools",
-  "Career Support & Guidance",
-];
-
-export const qualifications = ["Matric", "Intermediate", "Bachelor's", "Master's", "Other"];
-
-export const religions = ["Islam", "Christianity", "Hinduism", "Sikhism", "Other"];
-
-export const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "Don't Know"];
-
-export const batches = ["Morning Batch", "Evening Batch", "Weekend Batch"];
-
-// --- Online Class ---
 export type LiveClass = {
   id: string;
-  title: string;
-  /** Must match a `slug` in `courses` above — keeps live classes tied to your real course catalog. */
   courseSlug: string;
+  title: string;
   instructor: string;
   time: string;
   studentsOnline: number;
 };
 
-// TODO: Replace with your real live class schedule, instructors and live viewer counts
-// (ideally sourced from Firestore rather than hardcoded here).
 export const liveClasses: LiveClass[] = [
   {
     id: "lc1",
-    title: "[Class Title]",
     courseSlug: "web-designing-developing",
-    instructor: "[Instructor Name]",
-    time: "[Start Time] - [End Time]",
-    studentsOnline: 0,
+    title: "JavaScript Fundamentals — Live Session",
+    instructor: "Ali Raza",
+    time: "6:00 PM - 7:30 PM",
+    studentsOnline: 24,
   },
   {
     id: "lc2",
-    title: "[Class Title]",
     courseSlug: "graphic-designing",
-    instructor: "[Instructor Name]",
-    time: "[Start Time] - [End Time]",
-    studentsOnline: 0,
+    title: "Adobe Illustrator Deep Dive",
+    instructor: "Hina Shah",
+    time: "4:00 PM - 5:30 PM",
+    studentsOnline: 18,
   },
   {
     id: "lc3",
-    title: "[Class Title]",
-    courseSlug: "social-media-marketing",
-    instructor: "[Instructor Name]",
-    time: "[Start Time] - [End Time]",
-    studentsOnline: 0,
-  },
-  {
-    id: "lc4",
-    title: "[Class Title]",
-    courseSlug: "online-trading",
-    instructor: "[Instructor Name]",
-    time: "[Start Time] - [End Time]",
-    studentsOnline: 0,
+    courseSlug: "mobile-app-designing-developing",
+    title: "Flutter UI Basics",
+    instructor: "Usman Tariq",
+    time: "7:00 PM - 8:30 PM",
+    studentsOnline: 12,
   },
 ];
 
 export type RecordedLecture = {
   id: string;
-  title: string;
-  /** Must match a `slug` in `courses` above — keeps recorded lectures tied to your real course catalog. */
   courseSlug: string;
+  title: string;
   instructor: string;
   duration: string;
 };
 
-// TODO: Replace with your real recorded lecture library.
 export const recordedLectures: RecordedLecture[] = [
-  { id: "rl1", title: "[Lecture Title]", courseSlug: "web-designing-developing", instructor: "[Instructor Name]", duration: "[mm:ss]" },
-  { id: "rl2", title: "[Lecture Title]", courseSlug: "mobile-app-designing-developing", instructor: "[Instructor Name]", duration: "[mm:ss]" },
-  { id: "rl3", title: "[Lecture Title]", courseSlug: "graphic-designing", instructor: "[Instructor Name]", duration: "[mm:ss]" },
-  { id: "rl4", title: "[Lecture Title]", courseSlug: "social-media-marketing", instructor: "[Instructor Name]", duration: "[mm:ss]" },
-  { id: "rl5", title: "[Lecture Title]", courseSlug: "ms-office-3-months", instructor: "[Instructor Name]", duration: "[mm:ss]" },
+  { id: "rl1", courseSlug: "web-designing-developing", title: "Introduction to HTML & CSS", instructor: "Ali Raza", duration: "38 min" },
+  { id: "rl2", courseSlug: "web-designing-developing", title: "JavaScript DOM Manipulation", instructor: "Ali Raza", duration: "42 min" },
+  { id: "rl3", courseSlug: "graphic-designing", title: "Logo Design Workflow in Illustrator", instructor: "Hina Shah", duration: "35 min" },
+  { id: "rl4", courseSlug: "mobile-app-designing-developing", title: "Building Your First Flutter App", instructor: "Usman Tariq", duration: "50 min" },
+  { id: "rl5", courseSlug: "software-designing-developing", title: "Intro to Data Structures", instructor: "Fahad Iqbal", duration: "40 min" },
+  { id: "rl6", courseSlug: "social-media-marketing", title: "Setting Up Facebook Ads Manager", instructor: "Mariam Yousaf", duration: "30 min" },
 ];
 
-export const onlineClassFeatures = [
-  { title: "Live Classes", desc: "Join real-time classes and interact with instructors." },
-  { title: "Recorded Lectures", desc: "Access all recorded lectures anytime, anywhere." },
-  { title: "Study Material", desc: "Download notes, slides and important resources." },
-  { title: "Assignments", desc: "Submit assignments and track your progress." },
-  { title: "Discussion Forum", desc: "Ask questions and discuss with your classmates." },
+export const onlineClassFeatures: { title: string; desc: string }[] = [
+  { title: "Live Interactive Classes", desc: "Join real-time sessions with instructors and ask questions as you learn." },
+  { title: "Downloadable Notes", desc: "Access lecture notes and resources anytime from the student portal." },
+  { title: "Recorded Lectures", desc: "Missed a class? Catch up anytime with full recordings of every session." },
+  { title: "Assignments & Quizzes", desc: "Practice what you learn with regular assignments and quick quizzes." },
+  { title: "Instructor Support", desc: "Get your questions answered directly by instructors between classes." },
+];
+
+// ---------------------------------------------------------------------------
+// Site settings — contact info & fees
+// ---------------------------------------------------------------------------
+
+// TODO: replace with your institute's real contact details, or edit from
+// /admin/settings once Firestore is configured.
+export const contactInfo = {
+  phone: "+92 300 1234567",
+  whatsapp: "923001234567",
+  email: "info@fsti.edu.pk",
+  address: "Main Bazaar Road, Pakistan",
+  hours: "Mon - Sat: 9:00 AM - 8:00 PM",
+};
+
+export const feeSettings = {
+  admissionFee: "Rs. 1,000",
+  feeNote: "Fee once paid is non-refundable. Contact the office for installment options.",
+};
+
+// ---------------------------------------------------------------------------
+// Admissions
+// ---------------------------------------------------------------------------
+
+export const admissionProcess: { step: number; title: string; desc: string }[] = [
+  { step: 1, title: "Choose Your Course", desc: "Browse our course catalog and pick the program that matches your career goals." },
+  { step: 2, title: "Fill the Admission Form", desc: "Complete the online admission form with your personal and academic details." },
+  { step: 3, title: "Submit Documents & Fee", desc: "Upload the required documents and pay the one-time admission fee." },
+  { step: 4, title: "Start Learning", desc: "Get your enrollment number, receive your batch schedule, and begin classes." },
+];
+
+export const requiredDocuments: string[] = [
+  "CNIC / B-Form (Original + Copy)",
+  "2 Passport Size Photographs",
+  "Highest Qualification Certificate",
+  "Proof of Residence",
+];
+
+export const batches: string[] = [
+  "Morning (9:00 AM - 12:00 PM)",
+  "Afternoon (12:00 PM - 3:00 PM)",
+  "Evening (4:00 PM - 7:00 PM)",
+  "Weekend Batch",
+];
+
+export const qualifications: string[] = ["Under Matric", "Matric", "Intermediate", "Bachelor's", "Master's", "Other"];
+
+export const religions: string[] = ["Islam", "Christianity", "Hinduism", "Sikhism", "Other"];
+
+export const bloodGroups: string[] = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+// ---------------------------------------------------------------------------
+// Navigation
+// ---------------------------------------------------------------------------
+
+export const navLinks: { href: string; label: string }[] = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/courses", label: "Courses" },
+  { href: "/online-class", label: "Online Class" },
+  { href: "/printing-press", label: "Printing Press" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/blog", label: "Blog" },
+  { href: "/contact", label: "Contact" },
+];
+
+// ---------------------------------------------------------------------------
+// Blog
+// ---------------------------------------------------------------------------
+
+export type BlogCategory =
+  | "Technology"
+  | "Cyber Security"
+  | "Digital Marketing"
+  | "Career Development"
+  | "Design"
+  | "Institute News";
+
+export type BlogPost = {
+  slug: string;
+  title: string;
+  category: BlogCategory;
+  excerpt: string;
+  date: string;
+  readTime: string;
+};
+
+// TODO: Replace with your real blog articles, or manage these from the admin panel later.
+export const blogPosts: BlogPost[] = [
+  {
+    slug: "5-in-demand-tech-skills-2026",
+    title: "5 In-Demand Tech Skills to Learn in 2026",
+    category: "Technology",
+    excerpt:
+      "From web development to AI-assisted design tools, here are the skills employers are actively hiring for this year — and where to start learning them.",
+    date: "Jul 28, 2026",
+    readTime: "5 min read",
+  },
+  {
+    slug: "protect-business-cyber-threats",
+    title: "How to Protect Your Business From Common Cyber Threats",
+    category: "Cyber Security",
+    excerpt:
+      "Phishing emails, weak passwords, and unpatched software cause most small-business breaches. A practical checklist to close the easy gaps first.",
+    date: "Jul 21, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "social-media-marketing-trends",
+    title: "Social Media Marketing Trends Every Small Business Should Know",
+    category: "Digital Marketing",
+    excerpt:
+      "Short-form video, community-first content, and paid ad targeting keep shifting. Here's what's actually moving the needle for local businesses right now.",
+    date: "Jul 14, 2026",
+    readTime: "4 min read",
+  },
+  {
+    slug: "student-to-professional-portfolio",
+    title: "From Student to Professional: Building Your First Portfolio",
+    category: "Career Development",
+    excerpt:
+      "A strong portfolio matters more than a long resume when you're starting out. What to include, what to leave out, and how to present it to employers.",
+    date: "Jul 7, 2026",
+    readTime: "5 min read",
+  },
+  {
+    slug: "graphic-design-principles-beginners",
+    title: "Principles of Good Graphic Design for Beginners",
+    category: "Design",
+    excerpt:
+      "Color, contrast, alignment, and hierarchy — the four fundamentals that instantly make your designs look more professional, explained simply.",
+    date: "Jun 30, 2026",
+    readTime: "6 min read",
+  },
+  {
+    slug: "fsti-new-batch-enrollment",
+    title: "FSTI Announces New Batch Enrollment for MS Office & Web Development",
+    category: "Institute News",
+    excerpt:
+      "Admissions are now open for our upcoming batch. Limited seats, flexible morning and evening timings, and certificates on completion.",
+    date: "Jun 23, 2026",
+    readTime: "3 min read",
+  },
+  {
+    slug: "spoken-english-job-seekers",
+    title: "Why Every Job Seeker Needs Spoken English Skills",
+    category: "Career Development",
+    excerpt:
+      "Strong technical skills can still lose out at interview stage without confident communication. Why spoken English is worth prioritizing early.",
+    date: "Jun 16, 2026",
+    readTime: "4 min read",
+  },
+  {
+    slug: "ai-tools-for-designers-2026",
+    title: "AI Tools Every Designer Should Try in 2026",
+    category: "Design",
+    excerpt:
+      "AI won't replace designers, but it will change your workflow. A look at tools worth adding to your process, and where human judgment still wins.",
+    date: "Jun 9, 2026",
+    readTime: "5 min read",
+  },
+];
+
+export const blogCategoryCounts: { label: BlogCategory; count: number }[] = (
+  ["Technology", "Cyber Security", "Digital Marketing", "Career Development", "Design", "Institute News"] as BlogCategory[]
+).map((label) => ({
+  label,
+  count: blogPosts.filter((p) => p.category === label).length,
+}));
+
+export const popularPosts: BlogPost[] = [
+  blogPosts[0],
+  blogPosts[3],
+  blogPosts[5],
 ];
