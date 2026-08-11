@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   ShieldCheck,
   FileText,
@@ -9,6 +8,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import AdmissionForm from "@/components/AdmissionForm";
+import PageHero from "@/components/PageHero";
 import { admissionProcess, requiredDocuments } from "@/lib/data";
 import { getCourses } from "@/lib/content";
 
@@ -19,36 +19,20 @@ export default async function AdmissionsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; Admissions</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl mb-3">Admissions</h1>
-              <p className="text-gold font-semibold mb-4">Your Future Starts Here.</p>
-              <p className="text-white/60 leading-relaxed max-w-md">
-                Join Furqan Saeed Technical Institute and take the first step towards a
-                successful and rewarding career. Our admission process is simple,
-                transparent, and student-friendly.
-              </p>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/admission-hero.jpg"
-                alt="FSTI Admissions Open"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Home > Admissions"
+        title="Admissions Open"
+        tagline="Your Future Starts Here."
+        description="Join Furqan Saeed Technical Institute and take the first step towards a successful and rewarding career. Our admission process is simple, transparent, and student-friendly."
+        image="/images/admission-hero.png"
+        alt="FSTI Admissions Open — Enroll Now. Build Skills, Build Career, Build Future."
+        theme="light"
+        focus="55% center"
+        primaryCta={{ label: "Start Your Application", href: "#admission-form" }}
+      />
 
       {/* Form + process */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-20 grid lg:grid-cols-2 gap-8">
+      <section id="admission-form" className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-20 grid lg:grid-cols-2 gap-8">
         <AdmissionForm courses={courses} />
 
         <div className="space-y-8">

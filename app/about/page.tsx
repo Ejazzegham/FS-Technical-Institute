@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Target, Eye, Gem, Check, ArrowRight, GraduationCap } from "lucide-react";
 import { getStats } from "@/lib/content";
+import PageHero from "@/components/PageHero";
 
 const missionVisionValues = [
   {
@@ -55,35 +56,18 @@ export default async function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; About Us</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl mb-3">About Us</h1>
-              <p className="text-gold font-semibold mb-4">
-                Empowering Students. Building Futures.
-              </p>
-              <p className="text-white/60 leading-relaxed max-w-md">
-                Furqan Saeed Technical Institute is dedicated to providing quality technical
-                education and practical training to help students gain in-demand skills and
-                build successful careers.
-              </p>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/about-hero.jpg"
-                alt="Furqan Saeed Technical Institute — About Us"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Home > About Us"
+        title="About Us"
+        tagline="Empowering Students. Building Futures."
+        description="Furqan Saeed Technical Institute is dedicated to providing quality technical education and practical training to help students gain in-demand skills and build successful careers."
+        image="/images/about-hero.png"
+        alt="Furqan Saeed Technical Institute — student-focused, quality education, practical learning and career growth"
+        theme="light"
+        focus="62% center"
+        primaryCta={{ label: "Apply for Admission", href: "/admissions" }}
+        secondaryCta={{ label: "Explore Courses", href: "/courses" }}
+      />
 
       {/* Who we are */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-2 gap-12 items-center">

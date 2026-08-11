@@ -1,5 +1,5 @@
-import Image from "next/image";
 import GalleryExplorer from "@/components/GalleryExplorer";
+import PageHero from "@/components/PageHero";
 import { GraduationCap, Trophy, Users2, CalendarDays } from "lucide-react";
 import { getStats, getGalleryItems } from "@/lib/content";
 
@@ -10,34 +10,16 @@ export default async function GalleryPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; Gallery</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl mb-3">Gallery</h1>
-              <p className="text-gold font-semibold mb-4">
-                Glimpses of Learning, Achievements &amp; Activities
-              </p>
-              <p className="text-white/60 leading-relaxed max-w-md">
-                Explore moments from classrooms, workshops, events, and student success
-                stories at FSTI.
-              </p>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/gallery-hero.jpg"
-                alt="FSTI classrooms, labs and workspaces"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Home > Gallery"
+        title="Gallery"
+        tagline="Glimpses of Learning, Achievements & Activities"
+        description="Explore moments from classrooms, workshops, events, and student success stories at FSTI."
+        image="/images/gallery-hero.png"
+        alt="FSTI Gallery — classrooms, labs, events and achievements"
+        theme="light"
+        focus="58% center"
+      />
 
       {/* Filter + grid */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-20">

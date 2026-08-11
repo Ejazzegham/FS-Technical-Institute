@@ -1,7 +1,7 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Phone, Mail, MapPin, Clock, Headphones, ArrowRight, MessageCircle } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import PageHero from "@/components/PageHero";
 import { getContactInfo } from "@/lib/content";
 
 export default async function ContactPage() {
@@ -38,32 +38,17 @@ export default async function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; Contact Us</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl mb-3">Contact Us</h1>
-              <p className="text-gold font-semibold mb-4">We&apos;re Here to Help You!</p>
-              <p className="text-white/60 leading-relaxed max-w-md">
-                Have a question or need more information? Reach out to us and our team will
-                get back to you shortly.
-              </p>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/contact-hero.jpg"
-                alt="Contact Furqan Saeed Technical Institute"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Home > Contact Us"
+        title="Contact Us"
+        tagline="We're Here to Help You!"
+        description="Have a question or need more information? Reach out to us and our team will get back to you shortly."
+        image="/images/contact-hero.png"
+        alt="Contact Furqan Saeed Technical Institute — quick support, live chat, email, call and visit"
+        theme="light"
+        focus="68% center"
+        primaryCta={{ label: "Get in Touch", href: "#contact-form" }}
+      />
 
       {/* Info cards */}
       <section className="max-w-6xl mx-auto px-6 lg:px-10 -mt-10 relative z-10 mb-16">
@@ -87,7 +72,7 @@ export default async function ContactPage() {
       </section>
 
       {/* Form + Map */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-16 grid lg:grid-cols-2 gap-8">
+      <section id="contact-form" className="max-w-7xl mx-auto px-6 lg:px-10 pb-16 grid lg:grid-cols-2 gap-8">
         <ContactForm />
 
         <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-6 md:p-7 flex flex-col">

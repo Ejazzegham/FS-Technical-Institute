@@ -1,12 +1,76 @@
 import Image from "next/image";
 import { Printer, LayoutTemplate, Layers, Scissors, Stamp, Truck, PenTool, Phone, MapPin } from "lucide-react";
 import PrintingPressSlider from "@/components/PrintingPressSlider";
+import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
 import { getContactInfo } from "@/lib/content";
 
 // Kept independent from the shared site contact number so it stays fixed
 // even if the institute's main phone number (header/footer/contact page)
 // changes in the future.
-const PRESS_PHONE = "+92300-7640392";
+const PRESS_PHONE = "+92346-7640392";
+
+const pressHeroSlides: HeroSlide[] = [
+  {
+    image: "/images/printing-press/hero-1-panaflex.png",
+    alt: "Panaflex printing machine producing a large flex banner",
+    eyebrow: "LARGE FORMAT PRINTING",
+    title: "Panaflex & Banner Printing",
+    description:
+      "Vibrant, weatherproof banners, hoardings and signage — printed sharp and built to last.",
+    theme: "light",
+    focus: "65% center",
+    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
+    secondaryCta: { label: "View Services", href: "#services" },
+  },
+  {
+    image: "/images/printing-press/hero-2-offset.png",
+    alt: "Offset printing press producing colorful printed sheets",
+    eyebrow: "OFFSET PRINTING",
+    title: "High-Volume Offset Printing",
+    description:
+      "Crisp, consistent color for brochures, stationery and bulk print runs — production-scale quality.",
+    theme: "light",
+    focus: "65% center",
+    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
+    secondaryCta: { label: "View Services", href: "#services" },
+  },
+  {
+    image: "/images/printing-press/hero-3-digital.png",
+    alt: "Digital printing machine producing full-color printed sheets",
+    eyebrow: "DIGITAL PRINTING",
+    title: "Precision Digital Printing",
+    description:
+      "Sharp detail and fast turnaround for short runs, proofs, and full-color photo-quality prints.",
+    theme: "light",
+    focus: "65% center",
+    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
+    secondaryCta: { label: "View Services", href: "#services" },
+  },
+  {
+    image: "/images/printing-press/hero-4-embossing.png",
+    alt: "Furqan Saeed Printing Press embossing and stamp-making machine",
+    eyebrow: "STAMP & SEAL MAKING",
+    title: "Custom Stamps, Seals & Embossing",
+    description:
+      "Precision-engineered stamps and embossed finishes for certificates, ID cards and official documents.",
+    theme: "light",
+    focus: "62% center",
+    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
+    secondaryCta: { label: "View Services", href: "#services" },
+  },
+  {
+    image: "/images/printing-press/hero-5-press.png",
+    alt: "Furqan Saeed Printing Press large-format press and finishing equipment",
+    eyebrow: "FURQAN SAEED PRINTING PRESS",
+    title: "Complete Printing Solutions, Under One Roof",
+    description:
+      "From design to finishing — professional printing equipment delivering quality and precision on every job.",
+    theme: "light",
+    focus: "65% center",
+    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
+    secondaryCta: { label: "View Services", href: "#services" },
+  },
+];
 
 const highlights = [
   { icon: Printer, label: "High Quality Printing" },
@@ -59,43 +123,7 @@ export default async function PrintingPressPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; Printing Press</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl mb-3">
-                Furqan Saeed Printing Press
-              </h1>
-              <p className="text-gold font-semibold mb-4">
-                Professional Printing Solutions Under One Roof
-              </p>
-              <p className="text-white/60 leading-relaxed max-w-md">
-                Complete and professional printing solutions for individuals, businesses,
-                educational institutions, organizations, and events — high quality, sharp
-                colors, durable materials, and timely service on every project.
-              </p>
-              <a
-                href={`tel:${PRESS_PHONE.replace(/\s/g, "")}`}
-                className="inline-flex items-center gap-2 mt-6 bg-gold hover:bg-gold-dark text-navy font-semibold text-sm px-5 py-3 rounded-lg transition-colors"
-              >
-                <Phone size={15} /> {PRESS_PHONE}
-              </a>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/printing-press/press-hero.png"
-                alt="Furqan Saeed Printing Press — printing and finishing equipment"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider slides={pressHeroSlides} />
 
       {/* Highlights strip */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 -mt-6 md:-mt-8 relative z-10">
@@ -151,7 +179,7 @@ export default async function PrintingPressPage() {
       </section>
 
       {/* Services */}
-      <section className="bg-navy/[0.03] py-20">
+      <section id="services" className="bg-navy/[0.03] py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-10">
           <p className="text-gold-dark text-xs font-bold tracking-widest mb-2 text-center">
             OUR PRINTING SERVICES

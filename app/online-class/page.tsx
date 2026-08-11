@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Video,
   Users2,
@@ -12,6 +11,7 @@ import {
 import JoinLiveClass from "@/components/JoinLiveClass";
 import RecordedLecturesGrid from "@/components/RecordedLecturesGrid";
 import CTABanner from "@/components/CTABanner";
+import PageHero from "@/components/PageHero";
 import { onlineClassFeatures, courses } from "@/lib/data";
 import { getLiveClasses, getRecordedLectures } from "@/lib/content";
 import { courseIconMap, courseChipColors } from "@/lib/courseVisuals";
@@ -27,50 +27,26 @@ export default async function OnlineClassPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-navy overflow-hidden rounded-b-[3rem]">
-        <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 md:py-10 relative z-10">
-          <p className="text-white/50 text-xs mb-4">Home &gt; Online Class</p>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="font-display font-extrabold text-white text-3xl md:text-4xl leading-tight mb-3">
-                Learn From Anywhere,
-                <br />
-                <span className="text-gold">Achieve Everywhere</span>
-              </h1>
-              <p className="text-white/60 leading-relaxed max-w-md mb-6">
-                Join live interactive classes, access recorded lectures, and learn at your
-                own pace with FSTI Online.
-              </p>
-
-              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-4">
-                {[
-                  { icon: Video, label: "Live Interactive Classes" },
-                  { icon: Users2, label: "Expert Instructors" },
-                  { icon: Monitor, label: "Learn from Any Device" },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-2.5">
-                    <span className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                      <item.icon size={16} className="text-gold" />
-                    </span>
-                    <span className="text-white/70 text-sm font-medium">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden aspect-[16/9] bg-gradient-to-br from-navy-light to-navy-dark border border-white/10">
-              <Image
-                src="/images/online-class-hero.jpg"
-                alt="FSTI Online Classes"
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        breadcrumb="Home > Online Class"
+        title={
+          <>
+            Learn From Anywhere,
+            <br />
+            <span className="text-gold">Achieve Everywhere</span>
+          </>
+        }
+        description="Join live interactive classes, access recorded lectures, and learn at your own pace with FSTI Online."
+        image="/images/online-class-hero.png"
+        alt="FSTI Online Classes — live sessions, recorded lectures, learn anytime anywhere"
+        theme="light"
+        focus="62% center"
+        chips={[
+          { icon: Video, label: "Live Interactive Classes" },
+          { icon: Users2, label: "Expert Instructors" },
+          { icon: Monitor, label: "Learn from Any Device" },
+        ]}
+      />
 
       {/* Feature cards */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 mb-16">

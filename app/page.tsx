@@ -73,6 +73,30 @@ const heroSlides: HeroSlide[] = [
     primaryCta: { label: "Apply Now", href: "/admissions" },
     secondaryCta: { label: "About FSTI", href: "/about" },
   },
+  {
+    image: "/images/hero/Admissions_Open_Enroll_Now.png",
+    alt: "Admissions open — enroll now. Build skills, build career, build future.",
+    eyebrow: "ENROLL TODAY",
+    title: "Admissions Open — Enroll Now",
+    description:
+      "Build Skills. Build Career. Build Future. Limited seats for morning and evening batches — secure yours today.",
+    theme: "light",
+    focus: "70% center",
+    primaryCta: { label: "Apply for Admission", href: "/admissions" },
+    secondaryCta: { label: "Explore Courses", href: "/courses" },
+  },
+  {
+    image: "/images/hero/Build_Your_Career.png",
+    alt: "Icons representing coding, design, growth and global career opportunities around a graduation cap",
+    eyebrow: "SKILLS FOR THE FUTURE",
+    title: "Build Skills. Build Your Career.",
+    description:
+      "From coding and design to digital tools — practical training mapped directly to real career growth.",
+    theme: "light",
+    focus: "55% center",
+    primaryCta: { label: "Explore Courses", href: "/courses" },
+    secondaryCta: { label: "Apply for Admission", href: "/admissions" },
+  },
 ];
 
 const whyChooseUs = [
