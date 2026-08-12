@@ -23,7 +23,7 @@ import {
   PhoneCall,
   type LucideIcon,
 } from "lucide-react";
-import { socialIcons } from "@/components/SocialIcons";
+import { socialLinks } from "@/components/SocialIcons";
 import { navLinks, contactInfo as defaultContactInfo } from "@/lib/data";
 import type { ContactInfo } from "@/lib/content";
 
@@ -91,11 +91,13 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
           </Link>
           <span className="w-px h-3 bg-white/20" />
           <span className="text-white/70">Follow Us:</span>
-          {socialIcons.map((Icon, i) => (
+          {socialLinks.map(({ Icon, href, label }) => (
             <a
-              key={i}
-              href="#"
-              aria-label="social link"
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
               className="hover:text-gold transition-colors"
             >
               <Icon size={13} />
@@ -286,11 +288,13 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
             Apply Now <ArrowRight size={15} />
           </Link>
           <div className="flex items-center justify-center gap-2.5">
-            {socialIcons.map((Icon, i) => (
+            {socialLinks.map(({ Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="social link"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
                 className="w-7 h-7 flex items-center justify-center rounded-full border border-navy/10 text-navy/50 hover:border-gold-dark hover:text-gold-dark transition-colors"
               >
                 <Icon size={12} />

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
-import { socialIcons } from "@/components/SocialIcons";
+import { socialLinks } from "@/components/SocialIcons";
 import { contactInfo as defaultContactInfo } from "@/lib/data";
 import type { ContactInfo } from "@/lib/content";
 
@@ -56,11 +56,13 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
             Empowering students with in-demand skills and practical knowledge for a better future.
           </p>
           <div className="flex items-center gap-3 mt-5">
-            {socialIcons.map((Icon, i) => (
+            {socialLinks.map(({ Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="social link"
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
                 className="w-9 h-9 flex items-center justify-center rounded-full border border-white/20 hover:border-gold hover:text-gold hover:bg-white/5 transition-colors"
               >
                 <Icon size={15} />

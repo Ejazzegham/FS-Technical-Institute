@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { GraduationCap, BookOpen, Award, Monitor, Users2 } from "lucide-react";
 import LoginForm from "@/components/LoginForm";
+import { getContactInfo } from "@/lib/content";
 
 const features = [
   { icon: BookOpen, label: "Quality\nEducation" },
@@ -10,7 +11,8 @@ const features = [
   { icon: Users2, label: "Career\nSupport" },
 ];
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const contactInfo = await getContactInfo();
   return (
     <div className="lg:h-screen lg:overflow-hidden grid lg:grid-cols-2 bg-white">
       {/* Left branding / info panel — hidden on small screens */}
@@ -19,7 +21,7 @@ export default function LoginPage() {
         <GraduationCap size={140} className="absolute -bottom-8 -right-8 text-white/5 rotate-[-8deg]" />
         <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
 
-        <div className="relative z-10 flex flex-col items-center pt-6">
+        <div className="relative z-10 flex flex-col items-center pt-6 text-center">
           <Link href="/">
             <Image
               src="/images/logo-v2.png"
@@ -30,6 +32,10 @@ export default function LoginPage() {
               className="drop-shadow-2xl"
             />
           </Link>
+          <p className="font-display font-extrabold text-white text-lg tracking-wide mt-4">
+            Furqan Saeed Technical Institute
+          </p>
+          <p className="text-white/55 text-sm mt-1.5">Contact: {contactInfo.phone}</p>
         </div>
       </div>
 

@@ -14,23 +14,10 @@ export function FacebookIcon({ size = 16, ...props }: IconProps) {
   );
 }
 
-export function InstagramIcon({ size = 16, ...props }: IconProps) {
-  return (
-    <svg {...base(size)} fill="none" stroke="currentColor" strokeWidth="1.8" {...props}>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="4.5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-export function LinkedinIcon({ size = 16, ...props }: IconProps) {
+export function TwitterIcon({ size = 16, ...props }: IconProps) {
   return (
     <svg {...base(size)} {...props}>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
-      <circle cx="7.7" cy="8.2" r="1.3" />
-      <rect x="6.7" y="10.8" width="2" height="6.8" />
-      <path d="M11.3 10.8h2v1c.5-.75 1.3-1.2 2.3-1.2 1.9 0 2.9 1.25 2.9 3.4v3.6h-2v-3.2c0-1-.4-1.7-1.4-1.7-.8 0-1.3.55-1.5 1.05-.08.2-.1.45-.1.75v3.1h-2v-6.75Z" />
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
   );
 }
@@ -44,4 +31,20 @@ export function YoutubeIcon({ size = 16, ...props }: IconProps) {
   );
 }
 
-export const socialIcons = [FacebookIcon, InstagramIcon, LinkedinIcon, YoutubeIcon];
+export const socialLinks = [
+  {
+    label: "Facebook",
+    Icon: FacebookIcon,
+    href: "https://www.facebook.com/people/Furqan-Saeed-Technical-Institute/61591534803467/",
+  },
+  {
+    label: "Twitter",
+    Icon: TwitterIcon,
+    href: "https://x.com/fstechins",
+  },
+  {
+    label: "YouTube",
+    Icon: YoutubeIcon,
+    href: "https://www.youtube.com/@FurqanSaeedTechnicalInstitute",
+  },
+];
