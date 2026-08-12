@@ -53,9 +53,9 @@ export default function PageHero({
 
   return (
     <section className="relative w-full overflow-hidden bg-navy rounded-b-[3rem]">
-      <div className="relative md:aspect-[12/5] md:max-h-[560px]">
+      <div className="relative md:aspect-[12/5] md:max-h-[480px]">
         {/* Image */}
-        <div className="relative h-[240px] sm:h-[300px] md:absolute md:inset-0 md:h-full overflow-hidden">
+        <div className="relative aspect-[12/5] md:aspect-auto md:absolute md:inset-0 md:h-full overflow-hidden">
           <Image
             src={mobileImage ?? image}
             alt={alt}

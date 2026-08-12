@@ -1,21 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { LockKeyhole, ShieldAlert } from "lucide-react";
 import { getFirebaseAuth } from "@/lib/firebase";
+import { isAdminEmail } from "@/lib/adminAuth";
 
-export default function AdminLoginPage() {
+function AdminLoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(() =>
+    searchParams.get("denied") === "1"
+      ? "That account doesn't have admin access. Please sign in with the admin email."
+      : null
+  );
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(getFirebaseAuth(), (u) => {
-      if (u) router.replace("/admin");
+      if (u && isAdminEmail(u.email)) router.replace("/admin");
     });
     return () => unsub();
   }, [router]);
@@ -25,7 +31,16 @@ export default function AdminLoginPage() {
     setError(null);
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(getFirebaseAuth(), email.trim(), password);
+      const cred = await signInWithEmailAndPassword(getFirebaseAuth(), email.trim(), password);
+      if (!isAdminEmail(cred.user.email)) {
+        // Correct password, but not the admin account — this is a valid
+        // Firebase login (e.g. a student's account), just not one that's
+        // allowed into the admin panel. Sign them back out immediately.
+        await signOut(getFirebaseAuth());
+        setError("This account doesn't have admin access.");
+        setLoading(false);
+        return;
+      }
       router.replace("/admin");
     } catch {
       setError("Invalid email or password.");
@@ -89,5 +104,13 @@ export default function AdminLoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function AdminLoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <AdminLoginForm />
+    </Suspense>
   );
 }

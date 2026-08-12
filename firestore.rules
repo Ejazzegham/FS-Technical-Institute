@@ -3,10 +3,14 @@ rules_version = '2';
 // Firestore Security Rules for the FSTI website + admin panel.
 //
 // HOW TO USE:
-// 1. Create your admin user in Firebase Console -> Authentication -> Users -> Add user.
-// 2. Copy that user's UID (shown in the Users table).
-// 3. Replace REPLACE_WITH_ADMIN_UID below with that UID.
-// 4. Paste this whole file into Firebase Console -> Firestore Database -> Rules, and Publish.
+// 1. Create your admin user in Firebase Console -> Authentication -> Users -> Add user,
+//    using the exact email address below (fstechins@gmail.com).
+// 2. Paste this whole file into Firebase Console -> Firestore Database -> Rules, and Publish.
+//
+// Admin access is gated by email address (must match lib/adminAuth.ts on the
+// app side) rather than a UID, so there's nothing to look up or keep in
+// sync if you ever recreate the account — just make sure both places use
+// the same email.
 //
 // See ADMIN-SETUP.md for the full walkthrough.
 
@@ -14,7 +18,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     function isAdmin() {
-      return request.auth != null && request.auth.uid == "REPLACE_WITH_ADMIN_UID";
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email.lower() == "fstechins@gmail.com";
     }
 
     // --- Editable site content (courses, gallery, testimonials, live
@@ -48,6 +54,14 @@ service cloud.firestore {
     match /site_settings/{id} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    // --- Software & tools reference list ---
+    // Internal admin reference only (not used anywhere on the public site),
+    // so unlike the site_* collections above, this is admin-only for reads
+    // too — no reason to expose it publicly.
+    match /site_software/{id} {
+      allow read, write: if isAdmin();
     }
 
     // --- Certificates (public verification lookups by serial number) ---

@@ -13,6 +13,7 @@ export default function AdminCertificatesPage() {
       columns={["serialNumber", "studentName", "course", "status"]}
       fields={[
         { key: "serialNumber", label: "Serial Number", required: true, placeholder: "FSTI-2026-0001", helpText: "This is what students enter on the Verify page. Will be uppercased." },
+        { key: "photoUrl", label: "Student Photo URL", type: "url", helpText: "Paste a photo link (e.g. copy it from the student's record under Students). Shown on the public verification result." },
         { key: "studentName", label: "Student Name", required: true },
         { key: "fatherName", label: "Father's Name" },
         { key: "course", label: "Course", required: true },

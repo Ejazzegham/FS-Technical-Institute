@@ -82,9 +82,9 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
           const light = slide.theme === "light";
           return (
             <article key={slide.image} className="w-full shrink-0" aria-hidden={!active}>
-              <div className="relative md:aspect-[12/5] md:max-h-[560px]">
+              <div className="relative md:aspect-[12/5] md:max-h-[480px]">
                 {/* Image */}
-                <div className="relative h-[240px] sm:h-[300px] md:absolute md:inset-0 md:h-full overflow-hidden">
+                <div className="relative aspect-[12/5] md:aspect-auto md:absolute md:inset-0 md:h-full overflow-hidden">
                   <div
                     key={active ? `kb-${index}` : "idle"}
                     className={"absolute inset-0" + (active ? " hero-kenburns" : "")}

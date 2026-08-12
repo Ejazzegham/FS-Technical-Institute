@@ -652,6 +652,34 @@ export const onlineClassFeatures: { title: string; desc: string }[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// Admin reference: software used for recording lectures & running online
+// classes. Purely an internal reference list shown in the admin panel (not
+// on the public site) — edit or add to it from /admin/software.
+// ---------------------------------------------------------------------------
+
+export type SoftwareTool = {
+  id: string;
+  name: string;
+  category: "Live Classes" | "Recording Lectures" | "Both";
+  purpose: string;
+  website?: string;
+};
+
+export const softwareTools: SoftwareTool[] = [
+  { id: "sw1", name: "Zoom", category: "Live Classes", purpose: "Hosting live interactive class sessions with students.", website: "https://zoom.us" },
+  { id: "sw2", name: "Google Meet", category: "Live Classes", purpose: "Backup / lightweight option for live classes, no download needed.", website: "https://meet.google.com" },
+  { id: "sw3", name: "Microsoft Teams", category: "Live Classes", purpose: "Live sessions with built-in chat and file sharing.", website: "https://www.microsoft.com/microsoft-teams" },
+  { id: "sw4", name: "OBS Studio", category: "Recording Lectures", purpose: "Free screen + webcam recording and live streaming for lecture videos.", website: "https://obsproject.com" },
+  { id: "sw5", name: "Camtasia", category: "Recording Lectures", purpose: "Screen recording with built-in editing for polished lecture videos.", website: "https://www.techsmith.com/camtasia" },
+  { id: "sw6", name: "Loom", category: "Recording Lectures", purpose: "Quick screen + webcam recordings, auto-uploaded and easy to share.", website: "https://www.loom.com" },
+  { id: "sw7", name: "HandBrake", category: "Recording Lectures", purpose: "Compressing recorded lecture videos before uploading to the site.", website: "https://handbrake.fr" },
+  { id: "sw8", name: "DaVinci Resolve", category: "Recording Lectures", purpose: "Editing and trimming recorded lectures before publishing.", website: "https://www.blackmagicdesign.com/products/davinciresolve" },
+  { id: "sw9", name: "VLC Media Player", category: "Both", purpose: "Previewing/checking recordings and stream test playback.", website: "https://www.videolan.org" },
+  { id: "sw10", name: "Google Drive", category: "Both", purpose: "Storing and sharing lecture recordings and class materials with staff.", website: "https://drive.google.com" },
+  { id: "sw11", name: "WhatsApp", category: "Both", purpose: "Sending class links and quick reminders to students/instructors.", website: "https://www.whatsapp.com" },
+];
+
+// ---------------------------------------------------------------------------
 // Site settings — contact info & fees
 // ---------------------------------------------------------------------------
 

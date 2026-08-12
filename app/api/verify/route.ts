@@ -45,6 +45,7 @@ export async function GET(req: NextRequest) {
       startDate: data.startDate ?? null,
       completionDate: data.completionDate ?? null,
       certificateNumber: data.certificateNumber ?? null,
+      photoUrl: data.photoUrl ?? null,
     });
   } catch (err) {
     console.error("verify error", err);

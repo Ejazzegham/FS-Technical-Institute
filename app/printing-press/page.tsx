@@ -131,7 +131,7 @@ export default async function PrintingPressPage() {
       <HeroSlider slides={pressHeroSlides} />
 
       {/* Highlights strip */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 -mt-6 md:-mt-8 relative z-10">
+      <section className="max-w-7xl mx-auto px-6 lg:px-10 mt-6 md:mt-8">
         <div className="bg-white rounded-2xl border border-black/5 shadow-sm px-4 md:px-8 py-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
           {highlights.map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center text-center gap-2">

@@ -154,7 +154,7 @@ export default function SubmissionList({
                         value={(row[statusField] as string) ?? statusOptions?.[0]}
                         disabled={updatingId === row._id}
                         onChange={(e) => handleStatusChange(row._id, e.target.value)}
-                        className="text-xs rounded-md border border-black/10 px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-gold"
+                        className="select-compact"
                       >
                         {statusOptions?.map((o) => (
                           <option key={o} value={o}>

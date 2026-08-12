@@ -14,6 +14,7 @@ export type SidebarLink = {
     | "expenses"
     | "staff"
     | "courses"
+    | "onlineClasses"
     | "classes"
     | "attendance"
     | "exams"
@@ -44,6 +45,16 @@ export const sidebarLinks: SidebarLink[] = [
   { label: "Expenses", icon: "expenses", href: "/admin/expenses" },
   { label: "Staff Management", icon: "staff", href: "/admin/staff" },
   { label: "Courses", icon: "courses", href: "/admin/courses" },
+  {
+    label: "Online Classes",
+    icon: "onlineClasses",
+    href: "/admin/live-classes",
+    children: [
+      { label: "Live Classes", href: "/admin/live-classes" },
+      { label: "Recorded Lectures", href: "/admin/recorded-lectures" },
+      { label: "Software & Tools", href: "/admin/software" },
+    ],
+  },
   { label: "Classes & Batches", icon: "classes", href: "/admin/classes" },
   { label: "Attendance", icon: "attendance", href: "/admin/attendance" },
   { label: "Examinations", icon: "exams", href: "/admin/examinations" },

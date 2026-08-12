@@ -50,7 +50,7 @@ export default async function OnlineClassPage() {
       />
 
       {/* Feature cards */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 mb-16">
+      <section className="max-w-7xl mx-auto px-6 lg:px-10 mt-8 md:mt-10 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {onlineClassFeatures.map((f, i) => {
             const Icon = featureIcons[i];

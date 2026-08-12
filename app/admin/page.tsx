@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Bell,
   Users,
+  MonitorPlay,
   Loader2,
 } from "lucide-react";
 import { db } from "@/lib/firebase";
@@ -21,6 +22,7 @@ const cards = [
   { key: "admissions", label: "Admissions", icon: ClipboardList, href: "/admin/submissions/admissions" },
   { key: "newsletter_subscribers", label: "Subscribers", icon: Bell, href: "/admin/submissions/newsletter" },
   { key: "students", label: "Students", icon: Users, href: "/admin/students" },
+  { key: "site_software", label: "Software & Tools", icon: MonitorPlay, href: "/admin/software" },
 ];
 
 export default function AdminDashboardPage() {

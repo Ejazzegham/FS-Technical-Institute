@@ -15,6 +15,7 @@ import {
   recordedLectures,
   contactInfo,
   feeSettings,
+  softwareTools,
 } from "@/lib/data";
 
 type TaskResult = { label: string; status: "pending" | "running" | "done" | "skipped" | "error"; detail?: string };
@@ -25,6 +26,7 @@ const TASKS = [
   "site_testimonials",
   "site_live_classes",
   "site_recorded_lectures",
+  "site_software",
   "site_stats (home/about/gallery)",
   "site_settings (contact)",
   "site_settings (fees)",
@@ -105,22 +107,34 @@ export default function AdminSeedPage() {
         update(4, { status: "skipped", detail: "already has data" });
       }
 
-      // 6. Stats
+      // 6. Software & tools reference list
       update(5, { status: "running" });
+      if (overwrite || (await isEmpty("site_software"))) {
+        for (let i = 0; i < softwareTools.length; i++) {
+          const sw = softwareTools[i];
+          await setDoc(doc(db, "site_software", sw.id), { ...sw, order: i });
+        }
+        update(5, { status: "done", detail: `${softwareTools.length} tools` });
+      } else {
+        update(5, { status: "skipped", detail: "already has data" });
+      }
+
+      // 7. Stats
+      update(6, { status: "running" });
       await setDoc(doc(db, "site_stats", "home"), { items: stats });
       await setDoc(doc(db, "site_stats", "about"), { items: aboutStats });
       await setDoc(doc(db, "site_stats", "gallery"), { items: galleryStats });
-      update(5, { status: "done" });
-
-      // 7. Contact settings
-      update(6, { status: "running" });
-      await setDoc(doc(db, "site_settings", "contact"), contactInfo);
       update(6, { status: "done" });
 
-      // 8. Fee settings
+      // 8. Contact settings
       update(7, { status: "running" });
-      await setDoc(doc(db, "site_settings", "fees"), feeSettings);
+      await setDoc(doc(db, "site_settings", "contact"), contactInfo);
       update(7, { status: "done" });
+
+      // 9. Fee settings
+      update(8, { status: "running" });
+      await setDoc(doc(db, "site_settings", "fees"), feeSettings);
+      update(8, { status: "done" });
     } catch (err) {
       console.error(err);
       const i = results.findIndex((r) => r.status === "running");

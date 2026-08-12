@@ -52,7 +52,7 @@ export default async function ContactPage() {
       />
 
       {/* Info cards */}
-      <section className="max-w-6xl mx-auto px-6 lg:px-10 -mt-10 relative z-10 mb-16">
+      <section className="max-w-6xl mx-auto px-6 lg:px-10 mt-8 md:mt-10 mb-16">
         <div className="bg-white rounded-2xl shadow-xl shadow-navy/10 border border-black/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-black/5">
           {infoCards.map((card) => (
             <div key={card.title} className="flex items-start gap-3 px-6 py-6">

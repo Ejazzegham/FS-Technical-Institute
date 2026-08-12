@@ -8,7 +8,7 @@ export default function StatsBar({
   stats: { label: string; value: string }[];
 }) {
   return (
-    <div className="relative z-10 -mt-10 mx-4 md:mx-auto max-w-5xl bg-white rounded-2xl shadow-xl shadow-navy/10 border border-black/5 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/5">
+    <div className="relative z-10 mt-8 md:mt-10 mx-4 md:mx-auto max-w-5xl bg-white rounded-2xl shadow-xl shadow-navy/10 border border-black/5 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/5">
       {stats.map((stat, i) => {
         const Icon = icons[i % icons.length];
         return (
