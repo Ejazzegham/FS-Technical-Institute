@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { uploadToR2 } from "@/lib/r2";
+import { getNextEnrollmentNumber } from "@/lib/enrollment";
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,7 +22,6 @@ export async function POST(req: NextRequest) {
     const address = formData.get("address") as string | null;
     const photo = formData.get("photo") as File | null;
     const document = formData.get("document") as File | null;
-    const enrollmentNumber = (formData.get("enrollmentNumber") as string | null)?.trim() || null;
 
     if (!fullName || !email || !mobile || !course) {
       return NextResponse.json(
@@ -29,12 +29,12 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    if (!enrollmentNumber) {
-      return NextResponse.json(
-        { error: "Enrollment number is required." },
-        { status: 400 }
-      );
-    }
+
+    // Auto-assign the next serial number here (atomically, inside a Firestore
+    // transaction) instead of trusting a client-supplied value — this is
+    // what makes the enrollment number/username genuinely automatic rather
+    // than something the student has to type in themselves.
+    const enrollmentNumber = await getNextEnrollmentNumber();
 
     const folderId = uid || enrollmentNumber;
 

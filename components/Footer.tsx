@@ -37,7 +37,7 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
         <div className="lg:col-span-1 flex flex-col items-center text-center md:items-start md:text-left">
           <div className="flex flex-col items-center md:flex-row md:items-center gap-3 mb-4">
             <Image
-              src="/images/logo.png"
+              src="/images/logo-v2.png"
               alt="FSTI logo"
               width={48}
               height={48}
@@ -141,19 +141,19 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
           <p className="text-sm text-white/60 mb-4 max-w-[260px] md:max-w-none">
             Subscribe to get updates on new courses and events.
           </p>
-          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5 w-full max-w-[280px] md:max-w-none">
+          <form onSubmit={handleSubscribe} className="flex flex-col gap-2.5 w-full max-w-[280px] md:max-w-none">
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="flex-1 min-w-0 rounded-lg px-3.5 py-2.5 text-sm text-navy bg-white focus:outline-none focus:ring-2 focus:ring-gold"
+              className="w-full rounded-lg px-3.5 py-2.5 text-sm text-navy bg-white focus:outline-none focus:ring-2 focus:ring-gold"
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="bg-gold hover:bg-gold-dark text-navy text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors disabled:opacity-60 shrink-0"
+              className="w-full bg-gold hover:bg-gold-dark text-navy text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors disabled:opacity-60"
             >
               {status === "loading" ? "..." : "Subscribe"}
             </button>

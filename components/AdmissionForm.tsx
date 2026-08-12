@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Send,
   CheckCircle2,
@@ -12,6 +12,7 @@ import {
   FileStack,
   ShieldCheck,
   RotateCcw,
+  Loader2,
 } from "lucide-react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
@@ -33,11 +34,24 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
   const [docName, setDocName] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [enrollmentNumber, setEnrollmentNumber] = useState<string | null>(null);
+  const [previewNumber, setPreviewNumber] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [formKey, setFormKey] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
 
+  // The enrollment number/username is assigned automatically — this is just
+  // a live preview of what it will be, so the student can see it while
+  // filling the form. The real, final number is reserved server-side on
+  // submit (see /api/admissions), which is what actually gets saved.
+  useEffect(() => {
+    fetch("/api/enrollment-number")
+      .then((res) => res.json())
+      .then((data) => setPreviewNumber(data.enrollmentNumber ?? null))
+      .catch(() => setPreviewNumber(null));
+  }, [formKey]);
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+
     e.preventDefault();
     setErrorMsg(null);
 
@@ -57,13 +71,7 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
     const bloodGroup = data.get("bloodGroup") as string | null;
     const password = data.get("password") as string;
     const confirmPassword = data.get("confirmPassword") as string;
-    const enrollmentNo = (data.get("enrollmentNumber") as string)?.trim();
 
-    if (!enrollmentNo) {
-      setErrorMsg("Please enter the enrollment number.");
-      setStatus("error");
-      return;
-    }
     if (!course) {
       setErrorMsg("Please select a course.");
       setStatus("error");
@@ -97,7 +105,6 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
       // enrollment number server-side, then writes the `admissions` doc).
       const uploadData = new FormData();
       uploadData.append("uid", uid);
-      uploadData.append("enrollmentNumber", enrollmentNo);
       uploadData.append("fullName", fullName);
       if (fatherName) uploadData.append("fatherName", fatherName);
       uploadData.append("email", email);
@@ -207,13 +214,10 @@ export default function AdmissionForm({ courses = defaultCourses }: { courses?: 
 
       <form ref={formRef} key={formKey} onSubmit={handleSubmit} className="p-6 md:p-7 space-y-8">
         <FormSection icon={UserRound} title="Personal Information">
-          <Field label="Enrollment Number" required hint="e.g. FSTI-2026-0001">
-            <input
-              name="enrollmentNumber"
-              required
-              placeholder="Enter enrollment number"
-              className="input"
-            />
+          <Field label="Enrollment Number" hint="Assigned automatically">
+            <div className="input flex items-center gap-2 bg-navy/[0.03] text-navy/70 font-semibold cursor-not-allowed">
+              {previewNumber ?? <Loader2 size={14} className="animate-spin text-navy/30" />}
+            </div>
           </Field>
 
           <div className="grid sm:grid-cols-2 gap-4">
