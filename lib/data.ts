@@ -686,10 +686,10 @@ export const softwareTools: SoftwareTool[] = [
 // TODO: replace with your institute's real contact details, or edit from
 // /admin/settings once Firestore is configured.
 export const contactInfo = {
-  phone: "+92 300 1234567",
-  whatsapp: "923001234567",
-  email: "info@fsti.edu.pk",
-  address: "Main Bazaar Road, Pakistan",
+  phone: "+92 3007640392",
+  whatsapp: "923007640392",
+  email: "fstechins@gmail.com",
+  address: "Furqan Saeed Printing Press, Nankana Road, Shahkot",
   hours: "Mon - Sat: 9:00 AM - 8:00 PM",
 };
 
