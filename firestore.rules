@@ -118,6 +118,17 @@ service cloud.firestore {
       allow create: if request.auth != null && request.auth.uid == uid;
       allow update: if (request.auth != null && request.auth.uid == uid) || isAdmin();
       allow delete: if isAdmin();
+
+      // --- Daily attendance records ---
+      // One document per calendar day (ID = "YYYY-MM-DD", field: status).
+      // Written by the admin panel (app/admin/attendance and
+      // app/admin/students/[id]); read by both the student's own mobile
+      // app session and the admin panel. See the mobile app repo's
+      // ADMIN_INTEGRATION.md for the full schema this implements.
+      match /attendance/{date} {
+        allow read: if (request.auth != null && request.auth.uid == uid) || isAdmin();
+        allow write: if isAdmin();
+      }
     }
   }
 }

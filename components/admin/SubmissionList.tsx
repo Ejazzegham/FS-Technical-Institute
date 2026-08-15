@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
-import { Trash2, Loader2, ExternalLink } from "lucide-react";
+import { Trash2, Loader2, ExternalLink, ChevronRight } from "lucide-react";
 import { db } from "@/lib/firebase";
 
 export type ColumnDef = {
@@ -29,6 +30,7 @@ export default function SubmissionList({
   columns,
   statusField,
   statusOptions,
+  rowHref,
 }: {
   title: string;
   description?: string;
@@ -37,6 +39,8 @@ export default function SubmissionList({
   /** If set, renders an editable status dropdown for this field (e.g. "status" on admissions) */
   statusField?: string;
   statusOptions?: string[];
+  /** If set, each row links to this URL (e.g. a per-student detail page) */
+  rowHref?: (row: Row) => string;
 }) {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -165,18 +169,29 @@ export default function SubmissionList({
                     </td>
                   )}
                   <td className="px-5 py-3 text-right">
-                    <button
-                      onClick={() => handleDelete(row._id)}
-                      disabled={deletingId === row._id}
-                      className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
-                      aria-label="Delete"
-                    >
-                      {deletingId === row._id ? (
-                        <Loader2 size={14} className="animate-spin" />
-                      ) : (
-                        <Trash2 size={14} />
+                    <div className="flex items-center justify-end gap-1">
+                      {rowHref && (
+                        <Link
+                          href={rowHref(row)}
+                          className="p-1.5 rounded-md text-navy/50 hover:text-navy hover:bg-slate-100"
+                          aria-label="View details"
+                        >
+                          <ChevronRight size={14} />
+                        </Link>
                       )}
-                    </button>
+                      <button
+                        onClick={() => handleDelete(row._id)}
+                        disabled={deletingId === row._id}
+                        className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
+                        aria-label="Delete"
+                      >
+                        {deletingId === row._id ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : (
+                          <Trash2 size={14} />
+                        )}
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
