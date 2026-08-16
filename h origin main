@@ -1,0 +1,70 @@
+warning: in the working copy of 'app/admin/attendance/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/admin/students/[id]/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'app/admin/students/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/admin/AdminShell.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'components/admin/SubmissionList.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'firestore.rules', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'lib/studentAttendance.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/components/admin/AdminShell.tsx b/components/admin/AdminShell.tsx[m
+[1mindex db9b8d4..6a4cb81 100644[m
+[1m--- a/components/admin/AdminShell.tsx[m
+[1m+++ b/components/admin/AdminShell.tsx[m
+[36m@@ -49,6 +49,7 @@[m [mconst nav = [[m
+       { href: "/admin/submissions/newsletter", label: "Newsletter", icon: Bell },[m
+       { href: "/admin/students", label: "Students", icon: Users },[m
+       { href: "/admin/attendance", label: "Attendance", icon: CalendarCheck },[m
+[32m+[m[32m      { href: "/admin/notifications", label: "Notifications", icon: Bell },[m
+     ],[m
+   },[m
+   { section: "Setup", items: [{ href: "/admin/seed", label: "Seed Content", icon: DatabaseZap }] },[m
+[1mdiff --git a/firestore.rules b/firestore.rules[m
+[1mindex 1d72cca..fc8d084 100644[m
+[1m--- a/firestore.rules[m
+[1m+++ b/firestore.rules[m
+[36m@@ -130,5 +130,14 @@[m [mservice cloud.firestore {[m
+         allow write: if isAdmin();[m
+       }[m
+     }[m
+[32m+[m
+[32m+[m[32m    // --- Notifications ---[m
+[32m+[m[32m    // audience is either "all" (broadcast) or a student's uid (personal:[m
+[32m+[m[32m    // fee reminders, exam schedules, absence alerts). Students can only[m
+[32m+[m[32m    // read their own or broadcast notifications; only admins write.[m
+[32m+[m[32m    match /notifications/{id} {[m
+[32m+[m[32m      allow read: if resource.data.audience == "all" || (request.auth != null && request.auth.uid == resource.data.audience) || isAdmin();[m
+[32m+[m[32m      allow write: if isAdmin();[m
+[32m+[m[32m    }[m
+   }[m
+ }[m
+[1mdiff --git a/lib/studentAttendance.ts b/lib/studentAttendance.ts[m
+[1mindex 2412898..02bbd63 100644[m
+[1m--- a/lib/studentAttendance.ts[m
+[1m+++ b/lib/studentAttendance.ts[m
+[36m@@ -9,6 +9,7 @@[m
+ [m
+ import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc, query, orderBy, limit } from "firebase/firestore";[m
+ import { db } from "@/lib/firebase";[m
+[32m+[m[32mimport { createNotification } from "@/lib/notifications";[m
+ [m
+ export type AttendanceStatus = "Present" | "Absent";[m
+ export type AttendanceRecord = { id: string /* YYYY-MM-DD */; status: AttendanceStatus };[m
+[36m@@ -53,7 +54,19 @@[m [mexport async function recomputeAttendanceSummary(uid: string) {[m
+ }[m
+ [m
+ export async function setAttendanceRecord(uid: string, isoDate: string, status: AttendanceStatus) {[m
+[32m+[m[32m  // Only notify on a genuinely new "Absent" mark, not on every edit/toggle[m
+[32m+[m[32m  // back and forth, so re-marking the same day doesn't spam the student.[m
+[32m+[m[32m  const previous = await fetchTodayAttendance(uid, isoDate);[m
+   await setDoc(doc(db, "students", uid, "attendance", isoDate), { status });[m
+[32m+[m[32m  if (status === "Absent" && previous !== "Absent") {[m
+[32m+[m[32m    const { label } = formatIsoDate(isoDate);[m
+[32m+[m[32m    await createNotification({[m
+[32m+[m[32m      audience: uid,[m
+[32m+[m[32m      type: "absent",[m
+[32m+[m[32m      title: "Marked Absent",[m
+[32m+[m[32m      body: `You were marked absent on ${label}. Contact the office if this looks wrong.`,[m
+[32m+[m[32m    }).catch((err) => console.error("Couldn't create absence notification", err));[m
+[32m+[m[32m  }[m
+   return recomputeAttendanceSummary(uid);[m
+ }[m
+ [m

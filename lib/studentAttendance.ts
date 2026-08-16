@@ -9,6 +9,7 @@
 
 import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc, query, orderBy, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { createNotification } from "@/lib/notifications";
 
 export type AttendanceStatus = "Present" | "Absent";
 export type AttendanceRecord = { id: string /* YYYY-MM-DD */; status: AttendanceStatus };
@@ -53,7 +54,19 @@ export async function recomputeAttendanceSummary(uid: string) {
 }
 
 export async function setAttendanceRecord(uid: string, isoDate: string, status: AttendanceStatus) {
+  // Only notify on a genuinely new "Absent" mark, not on every edit/toggle
+  // back and forth, so re-marking the same day doesn't spam the student.
+  const previous = await fetchTodayAttendance(uid, isoDate);
   await setDoc(doc(db, "students", uid, "attendance", isoDate), { status });
+  if (status === "Absent" && previous !== "Absent") {
+    const { label } = formatIsoDate(isoDate);
+    await createNotification({
+      audience: uid,
+      type: "absent",
+      title: "Marked Absent",
+      body: `You were marked absent on ${label}. Contact the office if this looks wrong.`,
+    }).catch((err) => console.error("Couldn't create absence notification", err));
+  }
   return recomputeAttendanceSummary(uid);
 }
 

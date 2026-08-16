@@ -49,6 +49,7 @@ const nav = [
       { href: "/admin/submissions/newsletter", label: "Newsletter", icon: Bell },
       { href: "/admin/students", label: "Students", icon: Users },
       { href: "/admin/attendance", label: "Attendance", icon: CalendarCheck },
+      { href: "/admin/notifications", label: "Notifications", icon: Bell },
     ],
   },
   { section: "Setup", items: [{ href: "/admin/seed", label: "Seed Content", icon: DatabaseZap }] },

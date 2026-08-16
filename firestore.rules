@@ -130,5 +130,14 @@ service cloud.firestore {
         allow write: if isAdmin();
       }
     }
+
+    // --- Notifications ---
+    // audience is either "all" (broadcast) or a student's uid (personal:
+    // fee reminders, exam schedules, absence alerts). Students can only
+    // read their own or broadcast notifications; only admins write.
+    match /notifications/{id} {
+      allow read: if resource.data.audience == "all" || (request.auth != null && request.auth.uid == resource.data.audience) || isAdmin();
+      allow write: if isAdmin();
+    }
   }
 }
