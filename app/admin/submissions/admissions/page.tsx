@@ -6,10 +6,11 @@ export default function AdminAdmissionsSubmissionsPage() {
   return (
     <SubmissionList
       title="Admissions"
-      description="Applications from the Admissions form."
+      description="Applications from the Admissions form. Click a row to edit, or use the status dropdown for a quick update."
       collectionName="admissions"
       statusField="status"
       statusOptions={["New", "Contacted", "Enrolled", "Rejected"]}
+      rowHref={(row) => `/admin/submissions/admissions/${row._id}`}
       columns={[
         { key: "createdAt", label: "Received" },
         { key: "enrollmentNumber", label: "Enrollment #" },
