@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { Trash2, Loader2, ExternalLink, Pencil } from "lucide-react";
-import { db } from "@/lib/firebase";
+import { db, getFirebaseAuth } from "@/lib/firebase";
 
 export type ColumnDef = {
   key: string;
@@ -78,11 +78,24 @@ export default function SubmissionList({
     if (!confirm("Delete this record? This can't be undone.")) return;
     setDeletingId(id);
     try {
-      await deleteDoc(doc(db, collectionName, id));
+      // Goes through the server (not a plain client-side deleteDoc) so the
+      // linked Firebase Auth account and any uploaded files get removed
+      // too, not just the Firestore document — see /api/admin/delete-record.
+      const token = await getFirebaseAuth().currentUser?.getIdToken();
+      const res = await fetch("/api/admin/delete-record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ collection: collectionName, id }),
+      });
+      const result = await res.json().catch(() => ({}) as { error?: string });
+      if (!res.ok) throw new Error(result.error || "Delete failed");
       await load();
     } catch (err) {
       console.error(err);
-      alert("Couldn't delete. Check Firestore rules.");
+      alert(`Couldn't delete. ${err instanceof Error ? err.message : "Please try again."}`);
     } finally {
       setDeletingId(null);
     }

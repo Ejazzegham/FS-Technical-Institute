@@ -3,9 +3,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ArrowLeft, Loader2, Save, Check, Trash2, ExternalLink } from "lucide-react";
-import { db } from "@/lib/firebase";
+import { db, getFirebaseAuth } from "@/lib/firebase";
 import { courses, batches, qualifications, religions, bloodGroups } from "@/lib/data";
 
 const statusOptions = ["New", "Contacted", "Enrolled", "Rejected"];
@@ -101,11 +101,24 @@ export default function AdminAdmissionDetailPage() {
     if (!confirm("Delete this admission application? This can't be undone.")) return;
     setDeleting(true);
     try {
-      await deleteDoc(doc(db, "admissions", id));
+      // Goes through the server so the linked Firebase Auth account and any
+      // uploaded files get removed too, not just the Firestore document —
+      // see /api/admin/delete-record.
+      const token = await getFirebaseAuth().currentUser?.getIdToken();
+      const res = await fetch("/api/admin/delete-record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ collection: "admissions", id }),
+      });
+      const result = await res.json().catch(() => ({}) as { error?: string });
+      if (!res.ok) throw new Error(result.error || "Delete failed");
       router.push("/admin/submissions/admissions");
     } catch (err) {
       console.error(err);
-      alert("Couldn't delete. Check Firestore rules.");
+      alert(`Couldn't delete. ${err instanceof Error ? err.message : "Please try again."}`);
       setDeleting(false);
     }
   }
