@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
-import { Trash2, Loader2, ExternalLink, ChevronRight } from "lucide-react";
+import { Trash2, Loader2, ExternalLink, Pencil } from "lucide-react";
 import { db } from "@/lib/firebase";
 
 export type ColumnDef = {
@@ -131,12 +131,14 @@ export default function SubmissionList({
                   </th>
                 ))}
                 {statusField && <th className="px-5 py-3 font-semibold whitespace-nowrap">Status</th>}
-                <th className="px-5 py-3 w-16"></th>
+                <th className="px-5 py-3 w-24 sticky right-0 z-10 bg-white border-l border-black/5 shadow-[-6px_0_8px_-4px_rgba(0,0,0,0.06)]">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row._id} className="border-b border-black/5 last:border-0 hover:bg-slate-50">
+                <tr key={row._id} className="group border-b border-black/5 last:border-0 hover:bg-slate-50">
                   {columns.map((c) => (
                     <td key={c.key} className="px-5 py-3 text-navy/80 max-w-xs truncate">
                       {c.link && row[c.key] ? (
@@ -168,15 +170,16 @@ export default function SubmissionList({
                       </select>
                     </td>
                   )}
-                  <td className="px-5 py-3 text-right">
+                  <td className="px-5 py-3 text-right sticky right-0 z-10 bg-white group-hover:bg-slate-50 border-l border-black/5 shadow-[-6px_0_8px_-4px_rgba(0,0,0,0.06)]">
                     <div className="flex items-center justify-end gap-1">
                       {rowHref && (
                         <Link
                           href={rowHref(row)}
                           className="p-1.5 rounded-md text-navy/50 hover:text-navy hover:bg-slate-100"
-                          aria-label="View details"
+                          aria-label="Edit"
+                          title="Edit"
                         >
-                          <ChevronRight size={14} />
+                          <Pencil size={14} />
                         </Link>
                       )}
                       <button
@@ -184,6 +187,7 @@ export default function SubmissionList({
                         disabled={deletingId === row._id}
                         className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
                         aria-label="Delete"
+                        title="Delete"
                       >
                         {deletingId === row._id ? (
                           <Loader2 size={14} className="animate-spin" />
