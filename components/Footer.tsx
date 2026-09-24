@@ -173,12 +173,12 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 text-xs text-white/50 text-center">
           <p>© {new Date().getFullYear()} Furqan Saeed Technical Institute. All Rights Reserved.</p>
           <a
-            href="https://faah-technology.vercel.app"
+            href="https://bahutechnology.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-gold transition-colors"
           >
-            Powered by FAAH Technology
+            Powered by Bahu Technology
           </a>
         </div>
       </div>
