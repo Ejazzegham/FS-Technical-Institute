@@ -57,8 +57,6 @@ export default function AdminCoursesPage() {
         { key: "monthlyFee", label: "Monthly Fee", placeholder: "Rs. 3,000/month", helpText: "Shown in the Course Information box on the course page. The admission fee is set once for all courses under Fee Management." },
         { key: "enrolledStudents", label: "Students Enrolled", type: "number", placeholder: "120", helpText: "Total students who've enrolled in this course to date." },
         { key: "completedStudents", label: "Students Completed", type: "number", placeholder: "95", helpText: "Students who successfully completed this course." },
-        { key: "rating", label: "Rating (out of 5)", type: "number", placeholder: "4.8" },
-        { key: "reviewsCount", label: "Number of Reviews", type: "number", placeholder: "42" },
         { key: "overview", label: "Overview", type: "textarea", required: true },
         {
           key: "curriculumGroups",

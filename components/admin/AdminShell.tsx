@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   GraduationCap,
   Image as ImageIcon,
-  Quote,
   BarChart3,
   Video,
   PlayCircle,
@@ -32,7 +31,6 @@ const nav = [
     items: [
       { href: "/admin/courses", label: "Courses", icon: GraduationCap },
       { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
-      { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
       { href: "/admin/stats", label: "Stats", icon: BarChart3 },
       { href: "/admin/live-classes", label: "Live Classes", icon: Video },
       { href: "/admin/recorded-lectures", label: "Recorded Lectures", icon: PlayCircle },

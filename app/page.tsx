@@ -6,13 +6,12 @@ import {
   Users2,
   Wrench,
   Briefcase,
-  Quote,
 } from "lucide-react";
 import StatsBar from "@/components/StatsBar";
 import CourseCard from "@/components/CourseCard";
 import CTABanner from "@/components/CTABanner";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
-import { getStats, getCourses, getTestimonials } from "@/lib/content";
+import { getStats, getCourses } from "@/lib/content";
 
 const heroSlides: HeroSlide[] = [
   {
@@ -130,10 +129,9 @@ const whyChooseUs = [
 ];
 
 export default async function HomePage() {
-  const [stats, courses, testimonials] = await Promise.all([
+  const [stats, courses] = await Promise.all([
     getStats("home"),
     getCourses(),
-    getTestimonials(),
   ]);
   return (
     <>
@@ -218,35 +216,6 @@ export default async function HomePage() {
           subtitle="Join thousands of students who are building successful careers."
           buttonLabel="Apply Now"
         />
-      </section>
-
-      {/* Testimonials */}
-      <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-20">
-        <div className="text-center mb-12">
-          <p className="text-gold-dark text-xs font-bold tracking-widest mb-2">
-            WHAT OUR STUDENTS SAY
-          </p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className="bg-white border border-black/5 rounded-xl p-6 shadow-sm relative"
-            >
-              <Quote size={26} className="text-gold/30 mb-3" />
-              <p className="text-sm text-navy/70 leading-relaxed mb-5">{t.quote}</p>
-              <div className="flex items-center gap-3">
-                <span className="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center text-navy font-semibold text-sm">
-                  {t.name.charAt(0)}
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-navy">{t.name}</p>
-                  <p className="text-xs text-navy/50">{t.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </section>
     </>
   );

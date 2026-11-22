@@ -28,7 +28,6 @@ import {
   MessageCircle,
   Wallet,
   BadgeDollarSign,
-  Star,
   Users2,
   UserCheck,
 } from "lucide-react";
@@ -157,15 +156,8 @@ export default async function CourseDetailPage({
                 </span>
               </div>
 
-              {(course.rating || course.enrolledStudents || course.completedStudents) && (
+              {(course.enrolledStudents || course.completedStudents) && (
                 <div className="flex flex-wrap items-center gap-5 mb-6 text-sm text-white/70">
-                  {course.rating != null && (
-                    <span className="flex items-center gap-1.5">
-                      <Star size={15} className="text-gold fill-gold" />
-                      <span className="font-semibold text-white">{course.rating.toFixed(1)}</span>
-                      {course.reviewsCount ? ` (${course.reviewsCount} reviews)` : " rating"}
-                    </span>
-                  )}
                   {course.enrolledStudents != null && (
                     <span className="flex items-center gap-1.5">
                       <Users2 size={15} className="text-gold" />
