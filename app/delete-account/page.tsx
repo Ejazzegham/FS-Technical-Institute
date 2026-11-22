@@ -6,7 +6,10 @@ export default function DeleteAccountPage() {
       <h1 className="text-3xl font-bold mb-4">Request Account &amp; Data Deletion</h1>
       <p className="mb-4">App: <b>FSTI</b> (Furqan Saeed Technical Institute) &mdash; package <code>com.fsti.app</code>.</p>
 
-      <h2 className="text-xl font-semibold mt-6 mb-2">How to request deletion</h2>
+      <h2 className="text-xl font-semibold mt-6 mb-2">Delete inside the app</h2>
+      <p className="mb-2">Open the FSTI app, go to <b>Profile &rarr; Delete Account</b>, enter your password and confirm. Your account and data are deleted immediately.</p>
+
+      <h2 className="text-xl font-semibold mt-6 mb-2">Or request deletion by email</h2>
       <ol className="list-decimal pl-6 space-y-1">
         <li>Email <a className="text-blue-600 underline" href="mailto:fstechins@gmail.com?subject=Delete%20my%20FSTI%20account">fstechins@gmail.com</a> from your registered email address, with the subject &ldquo;Delete my FSTI account&rdquo;.</li>
         <li>Include your full name and enrollment number.</li>
