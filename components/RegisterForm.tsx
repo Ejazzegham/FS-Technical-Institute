@@ -330,11 +330,11 @@ export default function RegisterForm({ courses = defaultCourses }: { courses?: C
               className="mt-0.5 accent-gold"
             />
             I agree to the{" "}
-            <a href="#" className="text-gold-dark font-medium">
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-gold-dark font-medium">
               Terms &amp; Conditions
             </a>{" "}
             and{" "}
-            <a href="#" className="text-gold-dark font-medium">
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-gold-dark font-medium">
               Privacy Policy
             </a>
           </label>

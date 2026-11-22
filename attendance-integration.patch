@@ -1,0 +1,669 @@
+diff --git a/app/admin/attendance/page.tsx b/app/admin/attendance/page.tsx
+new file mode 100644
+index 0000000..935fde1
+--- /dev/null
++++ b/app/admin/attendance/page.tsx
+@@ -0,0 +1,150 @@
++"use client";
++
++import { useEffect, useState, useCallback, useMemo } from "react";
++import Link from "next/link";
++import { collection, getDocs } from "firebase/firestore";
++import { Loader2, Search, ChevronRight } from "lucide-react";
++import { db } from "@/lib/firebase";
++import { setAttendanceRecord, fetchTodayAttendance, todayIso, type AttendanceStatus } from "@/lib/studentAttendance";
++
++type StudentRow = {
++  uid: string;
++  fullName?: string;
++  enrollmentNumber?: string;
++  course?: string;
++  batch?: string;
++};
++
++export default function AdminAttendancePage() {
++  const [date, setDate] = useState(todayIso());
++  const [students, setStudents] = useState<StudentRow[] | null>(null);
++  const [marks, setMarks] = useState<Record<string, AttendanceStatus | null>>({});
++  const [search, setSearch] = useState("");
++  const [busyUid, setBusyUid] = useState<string | null>(null);
++
++  const loadStudents = useCallback(async () => {
++    setStudents(null);
++    const snap = await getDocs(collection(db, "students"));
++    const list = snap.docs.map((d) => ({ uid: d.id, ...d.data() }) as StudentRow);
++    list.sort((a, b) => (a.fullName || "").localeCompare(b.fullName || ""));
++    setStudents(list);
++
++    // Look up whether each student already has a record for the selected
++    // date, so already-marked students show their current status.
++    const entries = await Promise.all(
++      list.map(async (s) => [s.uid, await fetchTodayAttendance(s.uid, date)] as const)
++    );
++    setMarks(Object.fromEntries(entries));
++  }, [date]);
++
++  useEffect(() => {
++    (async () => {
++      await loadStudents();
++    })();
++  }, [loadStudents]);
++
++  async function mark(uid: string, status: AttendanceStatus) {
++    setBusyUid(uid);
++    try {
++      await setAttendanceRecord(uid, date, status);
++      setMarks((m) => ({ ...m, [uid]: status }));
++    } catch (err) {
++      console.error(err);
++      alert("Couldn't save attendance. Check Firestore rules.");
++    } finally {
++      setBusyUid(null);
++    }
++  }
++
++  const filtered = useMemo(() => {
++    if (!students) return [];
++    const q = search.trim().toLowerCase();
++    if (!q) return students;
++    return students.filter(
++      (s) =>
++        s.fullName?.toLowerCase().includes(q) ||
++        s.enrollmentNumber?.toLowerCase().includes(q) ||
++        s.course?.toLowerCase().includes(q) ||
++        s.batch?.toLowerCase().includes(q)
++    );
++  }, [students, search]);
++
++  return (
++    <div>
++      <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
++        <div>
++          <h1 className="font-display font-bold text-2xl text-navy">Attendance</h1>
++          <p className="text-sm text-navy/50 mt-1">Mark attendance for a batch. Changes are saved instantly, per student.</p>
++        </div>
++        <input
++          type="date"
++          value={date}
++          onChange={(e) => setDate(e.target.value)}
++          max={todayIso()}
++          className="rounded-lg border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
++        />
++      </div>
++
++      <div className="relative mb-4 max-w-sm">
++        <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-navy/30" />
++        <input
++          value={search}
++          onChange={(e) => setSearch(e.target.value)}
++          placeholder="Search by name, enrollment #, course, or batch"
++          className="w-full rounded-lg border border-black/10 pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
++        />
++      </div>
++
++      <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
++        {students === null ? (
++          <div className="flex items-center justify-center py-16 text-navy/40 gap-2 text-sm">
++            <Loader2 size={16} className="animate-spin" /> Loading students…
++          </div>
++        ) : filtered.length === 0 ? (
++          <p className="text-center py-16 text-sm text-navy/40">No students match your search.</p>
++        ) : (
++          <div className="divide-y divide-black/5">
++            {filtered.map((s) => {
++              const mark_ = marks[s.uid] ?? null;
++              const busy = busyUid === s.uid;
++              return (
++                <div key={s.uid} className="flex items-center justify-between px-5 py-3 hover:bg-slate-50">
++                  <div className="min-w-0">
++                    <p className="text-sm font-medium text-navy truncate">{s.fullName || "Unnamed Student"}</p>
++                    <p className="text-xs text-navy/40 truncate">
++                      {s.enrollmentNumber || "—"} · {s.course || "No course"} {s.batch ? `· ${s.batch}` : ""}
++                    </p>
++                  </div>
++                  <div className="flex items-center gap-2 shrink-0">
++                    <button
++                      onClick={() => mark(s.uid, "Present")}
++                      disabled={busy}
++                      className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors disabled:opacity-60 ${
++                        mark_ === "Present" ? "bg-emerald-600 text-white" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
++                      }`}
++                    >
++                      Present
++                    </button>
++                    <button
++                      onClick={() => mark(s.uid, "Absent")}
++                      disabled={busy}
++                      className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors disabled:opacity-60 ${
++                        mark_ === "Absent" ? "bg-red-600 text-white" : "bg-red-50 text-red-700 hover:bg-red-100"
++                      }`}
++                    >
++                      Absent
++                    </button>
++                    {busy && <Loader2 size={14} className="animate-spin text-navy/40" />}
++                    <Link href={`/admin/students/${s.uid}`} className="p-1.5 rounded-md text-navy/40 hover:text-navy hover:bg-slate-100" aria-label="View student">
++                      <ChevronRight size={14} />
++                    </Link>
++                  </div>
++                </div>
++              );
++            })}
++          </div>
++        )}
++      </div>
++    </div>
++  );
++}
+diff --git a/app/admin/students/[id]/page.tsx b/app/admin/students/[id]/page.tsx
+new file mode 100644
+index 0000000..574904e
+--- /dev/null
++++ b/app/admin/students/[id]/page.tsx
+@@ -0,0 +1,281 @@
++"use client";
++
++import { useEffect, useState, useCallback } from "react";
++import { useParams } from "next/navigation";
++import Link from "next/link";
++import { ArrowLeft, Loader2, Save, Check, Plus, Trash2, CalendarCheck } from "lucide-react";
++import {
++  fetchStudent,
++  fetchRecentAttendance,
++  setAttendanceRecord,
++  deleteAttendanceRecord,
++  updateCourseProgress,
++  todayIso,
++  formatIsoDate,
++  type AttendanceRecord,
++  type AttendanceStatus,
++  type StudentSummary,
++} from "@/lib/studentAttendance";
++
++type Student = { uid: string; fullName?: string; enrollmentNumber?: string; course?: string; batch?: string; status?: string } & StudentSummary;
++
++export default function AdminStudentDetailPage() {
++  const params = useParams<{ id: string }>();
++  const uid = params.id;
++
++  const [student, setStudent] = useState<Student | null>(null);
++  const [records, setRecords] = useState<AttendanceRecord[]>([]);
++  const [loading, setLoading] = useState(true);
++
++  const [progressInput, setProgressInput] = useState(0);
++  const [savingProgress, setSavingProgress] = useState(false);
++  const [progressSaved, setProgressSaved] = useState(false);
++
++  const [newDate, setNewDate] = useState(todayIso());
++  const [newStatus, setNewStatus] = useState<AttendanceStatus>("Present");
++  const [addingRecord, setAddingRecord] = useState(false);
++  const [busyDate, setBusyDate] = useState<string | null>(null);
++
++  const load = useCallback(async () => {
++    const [s, r] = await Promise.all([fetchStudent(uid), fetchRecentAttendance(uid)]);
++    setStudent(s as Student | null);
++    setRecords(r);
++    setProgressInput((s as Student | null)?.courseProgress ?? 0);
++    setLoading(false);
++  }, [uid]);
++
++  useEffect(() => {
++    (async () => {
++      await load();
++    })();
++  }, [load]);
++
++  async function handleSaveProgress() {
++    setSavingProgress(true);
++    try {
++      await updateCourseProgress(uid, progressInput);
++      setProgressSaved(true);
++      setTimeout(() => setProgressSaved(false), 1800);
++    } catch (err) {
++      console.error(err);
++      alert("Couldn't save progress. Check Firestore rules.");
++    } finally {
++      setSavingProgress(false);
++    }
++  }
++
++  async function handleAddRecord(e: React.FormEvent) {
++    e.preventDefault();
++    setAddingRecord(true);
++    try {
++      await setAttendanceRecord(uid, newDate, newStatus);
++      await load();
++    } catch (err) {
++      console.error(err);
++      alert("Couldn't save attendance. Check Firestore rules — see ADMIN_INTEGRATION.md in the mobile app repo.");
++    } finally {
++      setAddingRecord(false);
++    }
++  }
++
++  async function handleToggle(recordId: string, status: AttendanceStatus) {
++    setBusyDate(recordId);
++    try {
++      await setAttendanceRecord(uid, recordId, status);
++      await load();
++    } catch (err) {
++      console.error(err);
++      alert("Couldn't update. Check Firestore rules.");
++    } finally {
++      setBusyDate(null);
++    }
++  }
++
++  async function handleDelete(recordId: string) {
++    if (!confirm(`Delete the attendance record for ${recordId}?`)) return;
++    setBusyDate(recordId);
++    try {
++      await deleteAttendanceRecord(uid, recordId);
++      await load();
++    } catch (err) {
++      console.error(err);
++      alert("Couldn't delete. Check Firestore rules.");
++    } finally {
++      setBusyDate(null);
++    }
++  }
++
++  if (loading) {
++    return (
++      <div className="flex items-center justify-center gap-2 text-sm text-navy/40 py-24">
++        <Loader2 size={16} className="animate-spin" /> Loading…
++      </div>
++    );
++  }
++
++  if (!student) {
++    return (
++      <div>
++        <Link href="/admin/students" className="inline-flex items-center gap-1.5 text-sm text-navy/50 hover:text-navy mb-6">
++          <ArrowLeft size={14} /> Back to Students
++        </Link>
++        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">Student not found.</p>
++      </div>
++    );
++  }
++
++  return (
++    <div className="max-w-3xl">
++      <Link href="/admin/students" className="inline-flex items-center gap-1.5 text-sm text-navy/50 hover:text-navy mb-6">
++        <ArrowLeft size={14} /> Back to Students
++      </Link>
++
++      <div className="flex items-start justify-between gap-4 mb-8">
++        <div>
++          <h1 className="font-display font-bold text-2xl text-navy">{student.fullName || "Unnamed Student"}</h1>
++          <p className="text-sm text-navy/50 mt-1">
++            {student.enrollmentNumber || "—"} · {student.course || "No course on file"} {student.batch ? `· ${student.batch}` : ""}
++          </p>
++        </div>
++        {student.status && (
++          <span className="shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full bg-navy/5 text-navy/70">{student.status}</span>
++        )}
++      </div>
++
++      {/* Course progress */}
++      <div className="bg-white rounded-xl border border-black/5 p-6 mb-6">
++        <h2 className="font-semibold text-navy mb-1">Course Progress</h2>
++        <p className="text-xs text-navy/45 mb-4">Shown as a progress bar on the student&apos;s course card in the mobile app.</p>
++        <div className="flex items-center gap-4">
++          <input
++            type="range"
++            min={0}
++            max={100}
++            value={progressInput}
++            onChange={(e) => setProgressInput(Number(e.target.value))}
++            className="flex-1 accent-gold"
++          />
++          <input
++            type="number"
++            min={0}
++            max={100}
++            value={progressInput}
++            onChange={(e) => setProgressInput(Math.max(0, Math.min(100, Number(e.target.value) || 0)))}
++            className="w-20 rounded-lg border border-black/10 px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-gold"
++          />
++          <span className="text-sm text-navy/50">%</span>
++          <button
++            onClick={handleSaveProgress}
++            disabled={savingProgress}
++            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2 rounded-lg transition-colors shrink-0"
++          >
++            {savingProgress ? <Loader2 size={14} className="animate-spin" /> : progressSaved ? <Check size={14} /> : <Save size={14} />}
++            {progressSaved ? "Saved" : "Save"}
++          </button>
++        </div>
++      </div>
++
++      {/* Attendance summary (read-only, computed from records below) */}
++      <div className="bg-white rounded-xl border border-black/5 p-6 mb-6">
++        <h2 className="font-semibold text-navy mb-1">Attendance Summary</h2>
++        <p className="text-xs text-navy/45 mb-4">
++          Recalculated automatically from the daily records below — this is what powers the % ring in the mobile app.
++        </p>
++        <div className="grid grid-cols-3 gap-4">
++          <div className="bg-navy/5 rounded-lg p-4 text-center">
++            <p className="text-2xl font-bold text-navy">{student.attendancePercent ?? 0}%</p>
++            <p className="text-xs text-navy/45 mt-1">Attendance</p>
++          </div>
++          <div className="bg-navy/5 rounded-lg p-4 text-center">
++            <p className="text-2xl font-bold text-navy">{student.attendancePresentDays ?? 0}</p>
++            <p className="text-xs text-navy/45 mt-1">Present Days</p>
++          </div>
++          <div className="bg-navy/5 rounded-lg p-4 text-center">
++            <p className="text-2xl font-bold text-navy">{student.attendanceTotalDays ?? 0}</p>
++            <p className="text-xs text-navy/45 mt-1">Total Days</p>
++          </div>
++        </div>
++      </div>
++
++      {/* Daily attendance records */}
++      <div className="bg-white rounded-xl border border-black/5 p-6">
++        <h2 className="font-semibold text-navy mb-1">Daily Attendance</h2>
++        <p className="text-xs text-navy/45 mb-4">Mark or edit attendance for a specific day. Most recent 30 shown.</p>
++
++        <form onSubmit={handleAddRecord} className="flex items-end gap-3 mb-6 flex-wrap">
++          <div>
++            <label className="block text-xs font-semibold text-navy/60 mb-1.5">Date</label>
++            <input
++              type="date"
++              value={newDate}
++              onChange={(e) => setNewDate(e.target.value)}
++              max={todayIso()}
++              required
++              className="rounded-lg border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
++            />
++          </div>
++          <div>
++            <label className="block text-xs font-semibold text-navy/60 mb-1.5">Status</label>
++            <select
++              value={newStatus}
++              onChange={(e) => setNewStatus(e.target.value as AttendanceStatus)}
++              className="select-compact"
++            >
++              <option value="Present">Present</option>
++              <option value="Absent">Absent</option>
++            </select>
++          </div>
++          <button
++            type="submit"
++            disabled={addingRecord}
++            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2.5 rounded-lg transition-colors"
++          >
++            {addingRecord ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
++            Save Day
++          </button>
++        </form>
++
++        {records.length === 0 ? (
++          <div className="flex flex-col items-center py-10 text-navy/35">
++            <CalendarCheck size={26} />
++            <p className="text-sm mt-3">No attendance records yet.</p>
++          </div>
++        ) : (
++          <div className="divide-y divide-black/5">
++            {records.map((r) => {
++              const { day, label } = formatIsoDate(r.id);
++              const busy = busyDate === r.id;
++              return (
++                <div key={r.id} className="flex items-center justify-between py-3">
++                  <div>
++                    <p className="text-sm font-medium text-navy">{label}</p>
++                    <p className="text-xs text-navy/40">{day}</p>
++                  </div>
++                  <div className="flex items-center gap-2">
++                    <button
++                      onClick={() => handleToggle(r.id, r.status === "Present" ? "Absent" : "Present")}
++                      disabled={busy}
++                      className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors disabled:opacity-60 ${
++                        r.status === "Present" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200" : "bg-red-100 text-red-700 hover:bg-red-200"
++                      }`}
++                    >
++                      {busy ? <Loader2 size={12} className="animate-spin inline" /> : r.status}
++                    </button>
++                    <button
++                      onClick={() => handleDelete(r.id)}
++                      disabled={busy}
++                      className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
++                      aria-label="Delete"
++                    >
++                      <Trash2 size={14} />
++                    </button>
++                  </div>
++                </div>
++              );
++            })}
++          </div>
++        )}
++      </div>
++    </div>
++  );
++}
+diff --git a/app/admin/students/page.tsx b/app/admin/students/page.tsx
+index b3c0cfa..7ef4781 100644
+--- a/app/admin/students/page.tsx
++++ b/app/admin/students/page.tsx
+@@ -6,8 +6,9 @@ export default function AdminStudentsPage() {
+   return (
+     <SubmissionList
+       title="Students"
+-      description="Everyone who completed registration (created a portal account)."
++      description="Everyone who completed registration (created a portal account). Click a row to manage attendance & course progress."
+       collectionName="students"
++      rowHref={(row) => `/admin/students/${row._id}`}
+       columns={[
+         { key: "createdAt", label: "Registered" },
+         { key: "enrollmentNumber", label: "Enrollment #" },
+@@ -17,6 +18,8 @@ export default function AdminStudentsPage() {
+         { key: "course", label: "Course" },
+         { key: "batch", label: "Batch" },
+         { key: "qualification", label: "Qualification" },
++        { key: "attendancePercent", label: "Attendance %" },
++        { key: "courseProgress", label: "Progress %" },
+         { key: "source", label: "Source" },
+         { key: "photoUrl", label: "Photo", link: true },
+         { key: "documentUrl", label: "Document", link: true },
+diff --git a/components/admin/AdminShell.tsx b/components/admin/AdminShell.tsx
+index 2abf98e..db9b8d4 100644
+--- a/components/admin/AdminShell.tsx
++++ b/components/admin/AdminShell.tsx
+@@ -14,6 +14,7 @@ import {
+   Mail,
+   ClipboardList,
+   Users,
++  CalendarCheck,
+   Bell,
+   Settings,
+   Wallet,
+@@ -47,6 +48,7 @@ const nav = [
+       { href: "/admin/submissions/admissions", label: "Admissions", icon: ClipboardList },
+       { href: "/admin/submissions/newsletter", label: "Newsletter", icon: Bell },
+       { href: "/admin/students", label: "Students", icon: Users },
++      { href: "/admin/attendance", label: "Attendance", icon: CalendarCheck },
+     ],
+   },
+   { section: "Setup", items: [{ href: "/admin/seed", label: "Seed Content", icon: DatabaseZap }] },
+diff --git a/components/admin/SubmissionList.tsx b/components/admin/SubmissionList.tsx
+index 0178a10..9829b66 100644
+--- a/components/admin/SubmissionList.tsx
++++ b/components/admin/SubmissionList.tsx
+@@ -1,8 +1,9 @@
+ "use client";
+ 
+ import { useEffect, useState, useCallback } from "react";
++import Link from "next/link";
+ import { collection, getDocs, doc, deleteDoc, updateDoc } from "firebase/firestore";
+-import { Trash2, Loader2, ExternalLink } from "lucide-react";
++import { Trash2, Loader2, ExternalLink, ChevronRight } from "lucide-react";
+ import { db } from "@/lib/firebase";
+ 
+ export type ColumnDef = {
+@@ -29,6 +30,7 @@ export default function SubmissionList({
+   columns,
+   statusField,
+   statusOptions,
++  rowHref,
+ }: {
+   title: string;
+   description?: string;
+@@ -37,6 +39,8 @@ export default function SubmissionList({
+   /** If set, renders an editable status dropdown for this field (e.g. "status" on admissions) */
+   statusField?: string;
+   statusOptions?: string[];
++  /** If set, each row links to this URL (e.g. a per-student detail page) */
++  rowHref?: (row: Row) => string;
+ }) {
+   const [rows, setRows] = useState<Row[] | null>(null);
+   const [error, setError] = useState<string | null>(null);
+@@ -165,18 +169,29 @@ export default function SubmissionList({
+                     </td>
+                   )}
+                   <td className="px-5 py-3 text-right">
+-                    <button
+-                      onClick={() => handleDelete(row._id)}
+-                      disabled={deletingId === row._id}
+-                      className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
+-                      aria-label="Delete"
+-                    >
+-                      {deletingId === row._id ? (
+-                        <Loader2 size={14} className="animate-spin" />
+-                      ) : (
+-                        <Trash2 size={14} />
++                    <div className="flex items-center justify-end gap-1">
++                      {rowHref && (
++                        <Link
++                          href={rowHref(row)}
++                          className="p-1.5 rounded-md text-navy/50 hover:text-navy hover:bg-slate-100"
++                          aria-label="View details"
++                        >
++                          <ChevronRight size={14} />
++                        </Link>
+                       )}
+-                    </button>
++                      <button
++                        onClick={() => handleDelete(row._id)}
++                        disabled={deletingId === row._id}
++                        className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
++                        aria-label="Delete"
++                      >
++                        {deletingId === row._id ? (
++                          <Loader2 size={14} className="animate-spin" />
++                        ) : (
++                          <Trash2 size={14} />
++                        )}
++                      </button>
++                    </div>
+                   </td>
+                 </tr>
+               ))}
+diff --git a/firestore.rules b/firestore.rules
+index 7f8d90a..1d72cca 100644
+--- a/firestore.rules
++++ b/firestore.rules
+@@ -118,6 +118,17 @@ service cloud.firestore {
+       allow create: if request.auth != null && request.auth.uid == uid;
+       allow update: if (request.auth != null && request.auth.uid == uid) || isAdmin();
+       allow delete: if isAdmin();
++
++      // --- Daily attendance records ---
++      // One document per calendar day (ID = "YYYY-MM-DD", field: status).
++      // Written by the admin panel (app/admin/attendance and
++      // app/admin/students/[id]); read by both the student's own mobile
++      // app session and the admin panel. See the mobile app repo's
++      // ADMIN_INTEGRATION.md for the full schema this implements.
++      match /attendance/{date} {
++        allow read: if (request.auth != null && request.auth.uid == uid) || isAdmin();
++        allow write: if isAdmin();
++      }
+     }
+   }
+ }
+diff --git a/lib/studentAttendance.ts b/lib/studentAttendance.ts
+new file mode 100644
+index 0000000..2412898
+--- /dev/null
++++ b/lib/studentAttendance.ts
+@@ -0,0 +1,81 @@
++// Shared read/write helpers for the two fields the mobile app's Student
++// Dashboard & Attendance screens display live:
++//   - students/{uid}.courseProgress            (0-100)
++//   - students/{uid}.attendancePercent/PresentDays/TotalDays (summary)
++//   - students/{uid}/attendance/{YYYY-MM-DD}    (daily records subcollection)
++//
++// See the mobile app repo's ADMIN_INTEGRATION.md for the full schema
++// writeup this was built from.
++
++import { collection, doc, getDoc, getDocs, setDoc, deleteDoc, updateDoc, query, orderBy, limit } from "firebase/firestore";
++import { db } from "@/lib/firebase";
++
++export type AttendanceStatus = "Present" | "Absent";
++export type AttendanceRecord = { id: string /* YYYY-MM-DD */; status: AttendanceStatus };
++
++export type StudentSummary = {
++  courseProgress?: number;
++  attendancePercent?: number;
++  attendancePresentDays?: number;
++  attendanceTotalDays?: number;
++};
++
++export async function fetchStudent(uid: string) {
++  const snap = await getDoc(doc(db, "students", uid));
++  return snap.exists() ? ({ uid, ...snap.data() } as Record<string, unknown> & StudentSummary) : null;
++}
++
++export async function fetchRecentAttendance(uid: string, max = 30): Promise<AttendanceRecord[]> {
++  const q = query(collection(db, "students", uid, "attendance"), orderBy("__name__", "desc"), limit(max));
++  const snap = await getDocs(q);
++  return snap.docs.map((d) => ({ id: d.id, status: (d.data().status as AttendanceStatus) ?? "Present" }));
++}
++
++export async function fetchTodayAttendance(uid: string, isoDate: string): Promise<AttendanceStatus | null> {
++  const snap = await getDoc(doc(db, "students", uid, "attendance", isoDate));
++  return snap.exists() ? ((snap.data().status as AttendanceStatus) ?? "Present") : null;
++}
++
++/** Recompute attendancePercent/PresentDays/TotalDays from every record in
++ * the subcollection, and write the summary back onto the student doc.
++ * Called after every add/edit/delete so the summary never drifts. */
++export async function recomputeAttendanceSummary(uid: string) {
++  const snap = await getDocs(collection(db, "students", uid, "attendance"));
++  const total = snap.size;
++  const present = snap.docs.filter((d) => d.data().status === "Present").length;
++  const percent = total > 0 ? Math.round((present / total) * 100) : 0;
++  await updateDoc(doc(db, "students", uid), {
++    attendancePresentDays: present,
++    attendanceTotalDays: total,
++    attendancePercent: percent,
++  });
++  return { present, total, percent };
++}
++
++export async function setAttendanceRecord(uid: string, isoDate: string, status: AttendanceStatus) {
++  await setDoc(doc(db, "students", uid, "attendance", isoDate), { status });
++  return recomputeAttendanceSummary(uid);
++}
++
++export async function deleteAttendanceRecord(uid: string, isoDate: string) {
++  await deleteDoc(doc(db, "students", uid, "attendance", isoDate));
++  return recomputeAttendanceSummary(uid);
++}
++
++export async function updateCourseProgress(uid: string, progress: number) {
++  const clamped = Math.max(0, Math.min(100, Math.round(progress)));
++  await updateDoc(doc(db, "students", uid), { courseProgress: clamped });
++  return clamped;
++}
++
++export function todayIso() {
++  return new Date().toISOString().slice(0, 10);
++}
++
++const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
++
++export function formatIsoDate(iso: string) {
++  const [y, m, d] = iso.split("-").map(Number);
++  const dt = new Date(y, (m || 1) - 1, d || 1);
++  return { day: WEEKDAYS[dt.getDay()], label: dt.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" }) };
++}

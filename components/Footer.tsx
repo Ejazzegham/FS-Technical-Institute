@@ -172,14 +172,22 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 text-xs text-white/50 text-center">
           <p>© {new Date().getFullYear()} Furqan Saeed Technical Institute. All Rights Reserved.</p>
-          <a
-            href="https://hz-technology.vercel.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gold transition-colors"
-          >
-            Powered by HZ-Technology
-          </a>
+          <div className="flex items-center gap-x-4 gap-y-1 flex-wrap justify-center">
+            <Link href="/privacy" className="hover:text-gold transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-gold transition-colors">
+              Terms of Use
+            </Link>
+            <a
+              href="https://bahutechnology.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gold transition-colors"
+            >
+              Powered by Bahu Technology
+            </a>
+          </div>
         </div>
       </div>
     </footer>
