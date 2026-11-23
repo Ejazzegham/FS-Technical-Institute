@@ -3,7 +3,7 @@ import { recentFeeCollections } from "@/lib/adminData";
 
 export default function RecentFeeCollections() {
   return (
-    <div className="bg-white rounded-xl border border-black/5 shadow-sm p-5">
+    <div className="bg-white rounded-md border border-black/5 shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-display font-bold text-navy text-base">Recent Fee Collections</h3>
         <Link href="/admin/fees/collection" className="text-xs font-semibold text-navy/50 hover:text-navy">
@@ -17,7 +17,7 @@ export default function RecentFeeCollections() {
 
       <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {recentFeeCollections.map((item) => (
-          <li key={item.name + item.time} className="flex items-center gap-3 rounded-lg border border-black/5 p-3">
+          <li key={item.name + item.time} className="flex items-center gap-3 rounded-md border border-black/5 p-3">
             <span className="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center text-navy font-semibold text-xs shrink-0">
               {item.name.charAt(0)}
             </span>

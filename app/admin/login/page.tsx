@@ -51,8 +51,8 @@ function AdminLoginForm() {
 
   return (
     <div className="min-h-screen bg-navy flex items-center justify-center px-6">
-      <div className="w-full max-w-sm bg-white rounded-2xl shadow-xl p-8">
-        <div className="w-11 h-11 rounded-xl bg-navy flex items-center justify-center mb-5">
+      <div className="w-full max-w-sm bg-white rounded-lg shadow-xl p-8">
+        <div className="w-11 h-11 rounded-md bg-navy flex items-center justify-center mb-5">
           <LockKeyhole size={18} className="text-gold" />
         </div>
         <h1 className="font-display font-bold text-xl text-navy mb-1">Admin Login</h1>
@@ -66,7 +66,7 @@ function AdminLoginForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+              className="w-full rounded-md border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
               placeholder="admin@example.com"
             />
           </div>
@@ -77,13 +77,13 @@ function AdminLoginForm() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+              className="w-full rounded-md border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
               placeholder="••••••••"
             />
           </div>
 
           {error && (
-            <p className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
+            <p className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 rounded-md px-3 py-2">
               <ShieldAlert size={14} className="shrink-0" /> {error}
             </p>
           )}
@@ -91,7 +91,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm py-2.5 rounded-lg transition-colors"
+            className="w-full bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm py-2.5 rounded-md transition-colors"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>

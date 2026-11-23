@@ -20,7 +20,7 @@ import {
 } from "@/lib/feePayments";
 
 const inputCls =
-  "rounded-lg border border-black/10 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold";
+  "rounded-md border border-black/10 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold";
 
 export default function AdminFeeRecordsPage() {
   const [payments, setPayments] = useState<FeePayment[] | null>(null);
@@ -108,7 +108,7 @@ export default function AdminFeeRecordsPage() {
         </div>
         <Link
           href="/admin/fees/collection"
-          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark text-navy font-semibold text-sm px-4 py-2.5 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark text-navy font-semibold text-sm px-4 py-2.5 rounded-md transition-colors"
         >
           <Plus size={14} /> Record a payment
         </Link>
@@ -148,7 +148,7 @@ export default function AdminFeeRecordsPage() {
         <button
           onClick={exportCsv}
           disabled={filtered.length === 0}
-          className="inline-flex items-center gap-1.5 border border-black/10 bg-white hover:bg-slate-50 disabled:opacity-50 text-navy font-semibold text-sm px-3.5 py-2 rounded-lg"
+          className="inline-flex items-center gap-1.5 border border-black/10 bg-white hover:bg-slate-50 disabled:opacity-50 text-navy font-semibold text-sm px-3.5 py-2 rounded-md"
         >
           <Download size={14} /> Export CSV
         </button>
@@ -156,7 +156,7 @@ export default function AdminFeeRecordsPage() {
 
       {error && <p className="text-sm text-red-600 whitespace-pre-line mb-3">{error}</p>}
 
-      <div className="bg-white rounded-xl border border-black/5 overflow-x-auto">
+      <div className="bg-white rounded-md border border-black/5 overflow-x-auto">
         {payments === null ? (
           <div className="flex items-center justify-center gap-2 py-12 text-sm text-navy/40">
             <Loader2 size={16} className="animate-spin" /> Loading…
@@ -235,7 +235,7 @@ export default function AdminFeeRecordsPage() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-white rounded-xl border border-black/5 px-5 py-4">
+    <div className="bg-white rounded-md border border-black/5 px-5 py-4">
       <p className="text-xs font-semibold text-navy/40 uppercase tracking-wide">{label}</p>
       <p className="font-display font-bold text-navy text-xl mt-1">{value}</p>
     </div>

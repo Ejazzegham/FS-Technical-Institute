@@ -91,7 +91,7 @@ export default function AdminNotificationsPage() {
         created automatically when you mark a student absent in Attendance.
       </p>
 
-      <form onSubmit={handleSend} className="bg-white rounded-xl border border-black/5 p-6 mb-8 space-y-4">
+      <form onSubmit={handleSend} className="bg-white rounded-md border border-black/5 p-6 mb-8 space-y-4">
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-navy/60 mb-1.5">Type</label>
@@ -123,7 +123,7 @@ export default function AdminNotificationsPage() {
             onChange={(e) => setTitle(e.target.value)}
             required
             placeholder="e.g. Midterm Exam Schedule"
-            className="w-full rounded-lg border border-black/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+            className="w-full rounded-md border border-black/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
           />
         </div>
         <div>
@@ -134,14 +134,14 @@ export default function AdminNotificationsPage() {
             required
             rows={3}
             placeholder="e.g. Midterm exams will be held on 25 May 2026. Please check the portal for your schedule."
-            className="w-full rounded-lg border border-black/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold resize-none"
+            className="w-full rounded-md border border-black/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold resize-none"
           />
         </div>
 
         <button
           type="submit"
           disabled={sending}
-          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-md transition-colors"
         >
           {sending ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
           Send Notification
@@ -149,7 +149,7 @@ export default function AdminNotificationsPage() {
       </form>
 
       <h2 className="font-semibold text-navy mb-3">Recent Notifications</h2>
-      <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-md border border-black/5 overflow-hidden">
         {items === null ? (
           <div className="flex items-center justify-center gap-2 text-sm text-navy/40 py-12">
             <Loader2 size={16} className="animate-spin" /> Loading…
@@ -176,7 +176,7 @@ export default function AdminNotificationsPage() {
                 <button
                   onClick={() => handleDelete(n.id)}
                   disabled={deletingId === n.id}
-                  className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50 shrink-0"
+                  className="p-1.5 rounded text-red-500/70 hover:text-red-600 hover:bg-red-50 shrink-0"
                   aria-label="Delete"
                 >
                   {deletingId === n.id ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}

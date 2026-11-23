@@ -153,15 +153,15 @@ export default function CrudManager({
         </div>
         <button
           onClick={() => setEditing("new")}
-          className="inline-flex items-center gap-1.5 bg-navy hover:bg-navy-light text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 bg-navy hover:bg-navy-light text-white text-sm font-semibold px-4 py-2.5 rounded-md transition-colors shrink-0"
         >
           <Plus size={15} /> Add New
         </button>
       </div>
 
-      {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3 mb-4">{error}</p>}
+      {error && <p className="text-sm text-red-600 bg-red-50 rounded-md px-4 py-3 mb-4">{error}</p>}
 
-      <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-md border border-black/5 overflow-hidden">
         {rows === null ? (
           <div className="flex items-center justify-center py-16 text-navy/40 gap-2 text-sm">
             <Loader2 size={16} className="animate-spin" /> Loading…
@@ -198,7 +198,7 @@ export default function CrudManager({
                     <div className="flex items-center gap-1.5 justify-end">
                       <button
                         onClick={() => setEditing(row)}
-                        className="p-1.5 rounded-md text-navy/50 hover:text-navy hover:bg-black/5"
+                        className="p-1.5 rounded text-navy/50 hover:text-navy hover:bg-black/5"
                         aria-label="Edit"
                       >
                         <Pencil size={14} />
@@ -206,7 +206,7 @@ export default function CrudManager({
                       <button
                         onClick={() => handleDelete(row._id)}
                         disabled={deletingId === row._id}
-                        className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
+                        className="p-1.5 rounded text-red-500/70 hover:text-red-600 hover:bg-red-50"
                         aria-label="Delete"
                       >
                         {deletingId === row._id ? (
@@ -272,7 +272,7 @@ function EditModal({
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto">
+      <div className="bg-white rounded-lg w-full max-w-lg max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-black/5 sticky top-0 bg-white">
           <h2 className="font-display font-bold text-navy">
             {isEditingExisting ? "Edit Entry" : "Add New Entry"}
@@ -357,7 +357,7 @@ function EditModal({
             <button
               type="submit"
               disabled={saving}
-              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-md transition-colors"
             >
               {saving && <Loader2 size={14} className="animate-spin" />}
               {saving ? "Saving…" : "Save"}
@@ -408,10 +408,10 @@ function ImageField({
     <div className="space-y-2">
       {value && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={value} alt="Preview" className="w-full max-h-44 object-cover rounded-lg border border-black/5" />
+        <img src={value} alt="Preview" className="w-full max-h-44 object-cover rounded-md border border-black/5" />
       )}
       <div className="flex items-center gap-2">
-        <label className="inline-flex items-center gap-1.5 cursor-pointer bg-navy hover:bg-navy-light text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors">
+        <label className="inline-flex items-center gap-1.5 cursor-pointer bg-navy hover:bg-navy-light text-white text-xs font-semibold px-3.5 py-2 rounded-md transition-colors">
           {uploading ? <Loader2 size={14} className="animate-spin" /> : <ImagePlus size={14} />}
           {uploading ? "Uploading…" : value ? "Replace image" : "Upload image"}
           <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={onPick} disabled={uploading} />

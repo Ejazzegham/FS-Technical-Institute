@@ -35,7 +35,7 @@ export default function OutlineEditor({
   return (
     <div className="space-y-3">
       {value.map((group, i) => (
-        <div key={i} className="rounded-lg border border-black/10 bg-slate-50/60 p-3.5">
+        <div key={i} className="rounded-md border border-black/10 bg-slate-50/60 p-3.5">
           <div className="flex items-center gap-2 mb-2.5">
             <GripVertical size={14} className="text-navy/25 shrink-0" />
             <input
@@ -43,12 +43,12 @@ export default function OutlineEditor({
               value={group.title}
               onChange={(e) => updateTitle(i, e.target.value)}
               placeholder={headingPlaceholder}
-              className="flex-1 rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold text-navy focus:outline-none focus:ring-2 focus:ring-gold"
+              className="flex-1 rounded border border-black/10 bg-white px-3 py-2 text-sm font-semibold text-navy focus:outline-none focus:ring-2 focus:ring-gold"
             />
             <button
               type="button"
               onClick={() => removeSection(i)}
-              className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50 shrink-0"
+              className="p-1.5 rounded text-red-500/70 hover:text-red-600 hover:bg-red-50 shrink-0"
               aria-label="Remove section"
             >
               <Trash2 size={14} />
@@ -59,7 +59,7 @@ export default function OutlineEditor({
             onChange={(e) => updateItems(i, e.target.value)}
             placeholder={itemsPlaceholder}
             rows={4}
-            className="w-full rounded-md border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+            className="w-full rounded border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
           />
           <p className="text-[11px] text-navy/35 mt-1">Everything below the heading is one item per line.</p>
         </div>
@@ -68,7 +68,7 @@ export default function OutlineEditor({
       <button
         type="button"
         onClick={addSection}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy/70 hover:text-navy border border-dashed border-black/15 hover:border-navy/30 rounded-lg px-4 py-2.5 w-full justify-center transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy/70 hover:text-navy border border-dashed border-black/15 hover:border-navy/30 rounded-md px-4 py-2.5 w-full justify-center transition-colors"
       >
         <Plus size={15} /> Add Heading & Items
       </button>

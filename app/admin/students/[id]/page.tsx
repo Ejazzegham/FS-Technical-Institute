@@ -136,7 +136,7 @@ export default function AdminStudentDetailPage() {
         <Link href="/admin/students" className="inline-flex items-center gap-1.5 text-sm text-navy/50 hover:text-navy mb-6">
           <ArrowLeft size={14} /> Back to Students
         </Link>
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">{loadError || "Student not found."}</p>
+        <p className="text-sm text-red-600 bg-red-50 rounded-md px-4 py-3">{loadError || "Student not found."}</p>
       </div>
     );
   }
@@ -160,7 +160,7 @@ export default function AdminStudentDetailPage() {
       </div>
 
       {/* Course progress */}
-      <div className="bg-white rounded-xl border border-black/5 p-6 mb-6">
+      <div className="bg-white rounded-md border border-black/5 p-6 mb-6">
         <h2 className="font-semibold text-navy mb-1">Course Progress</h2>
         <p className="text-xs text-navy/45 mb-4">Shown as a progress bar on the student&apos;s course card in the mobile app.</p>
         <div className="flex items-center gap-4">
@@ -178,13 +178,13 @@ export default function AdminStudentDetailPage() {
             max={100}
             value={progressInput}
             onChange={(e) => setProgressInput(Math.max(0, Math.min(100, Number(e.target.value) || 0)))}
-            className="w-20 rounded-lg border border-black/10 px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-gold"
+            className="w-20 rounded-md border border-black/10 px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-gold"
           />
           <span className="text-sm text-navy/50">%</span>
           <button
             onClick={handleSaveProgress}
             disabled={savingProgress}
-            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2 rounded-lg transition-colors shrink-0"
+            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2 rounded-md transition-colors shrink-0"
           >
             {savingProgress ? <Loader2 size={14} className="animate-spin" /> : progressSaved ? <Check size={14} /> : <Save size={14} />}
             {progressSaved ? "Saved" : "Save"}
@@ -193,21 +193,21 @@ export default function AdminStudentDetailPage() {
       </div>
 
       {/* Attendance summary (read-only, computed from records below) */}
-      <div className="bg-white rounded-xl border border-black/5 p-6 mb-6">
+      <div className="bg-white rounded-md border border-black/5 p-6 mb-6">
         <h2 className="font-semibold text-navy mb-1">Attendance Summary</h2>
         <p className="text-xs text-navy/45 mb-4">
           Recalculated automatically from the daily records below — this is what powers the % ring in the mobile app.
         </p>
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-navy/5 rounded-lg p-4 text-center">
+          <div className="bg-navy/5 rounded-md p-4 text-center">
             <p className="text-2xl font-bold text-navy">{student.attendancePercent ?? 0}%</p>
             <p className="text-xs text-navy/45 mt-1">Attendance</p>
           </div>
-          <div className="bg-navy/5 rounded-lg p-4 text-center">
+          <div className="bg-navy/5 rounded-md p-4 text-center">
             <p className="text-2xl font-bold text-navy">{student.attendancePresentDays ?? 0}</p>
             <p className="text-xs text-navy/45 mt-1">Present Days</p>
           </div>
-          <div className="bg-navy/5 rounded-lg p-4 text-center">
+          <div className="bg-navy/5 rounded-md p-4 text-center">
             <p className="text-2xl font-bold text-navy">{student.attendanceTotalDays ?? 0}</p>
             <p className="text-xs text-navy/45 mt-1">Total Days</p>
           </div>
@@ -215,7 +215,7 @@ export default function AdminStudentDetailPage() {
       </div>
 
       {/* Daily attendance records */}
-      <div className="bg-white rounded-xl border border-black/5 p-6">
+      <div className="bg-white rounded-md border border-black/5 p-6">
         <h2 className="font-semibold text-navy mb-1">Daily Attendance</h2>
         <p className="text-xs text-navy/45 mb-4">Mark or edit attendance for a specific day. Most recent 30 shown.</p>
 
@@ -228,7 +228,7 @@ export default function AdminStudentDetailPage() {
               onChange={(e) => setNewDate(e.target.value)}
               max={todayIso()}
               required
-              className="rounded-lg border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+              className="rounded-md border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
             />
           </div>
           <div>
@@ -245,7 +245,7 @@ export default function AdminStudentDetailPage() {
           <button
             type="submit"
             disabled={addingRecord}
-            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2.5 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-4 py-2.5 rounded-md transition-colors"
           >
             {addingRecord ? <Loader2 size={14} className="animate-spin" /> : <Plus size={14} />}
             Save Day
@@ -281,7 +281,7 @@ export default function AdminStudentDetailPage() {
                     <button
                       onClick={() => handleDelete(r.id)}
                       disabled={busy}
-                      className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
+                      className="p-1.5 rounded text-red-500/70 hover:text-red-600 hover:bg-red-50"
                       aria-label="Delete"
                     >
                       <Trash2 size={14} />

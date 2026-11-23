@@ -140,7 +140,7 @@ export default function AdminAdmissionDetailPage() {
         <Link href="/admin/submissions/admissions" className="inline-flex items-center gap-1.5 text-sm text-navy/50 hover:text-navy mb-6">
           <ArrowLeft size={14} /> Back to Admissions
         </Link>
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">Application not found — it may have already been deleted.</p>
+        <p className="text-sm text-red-600 bg-red-50 rounded-md px-4 py-3">Application not found — it may have already been deleted.</p>
       </div>
     );
   }
@@ -162,7 +162,7 @@ export default function AdminAdmissionDetailPage() {
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="inline-flex items-center gap-1.5 text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-60 text-sm font-semibold px-3.5 py-2 rounded-lg transition-colors shrink-0"
+          className="inline-flex items-center gap-1.5 text-red-600 border border-red-200 hover:bg-red-50 disabled:opacity-60 text-sm font-semibold px-3.5 py-2 rounded-md transition-colors shrink-0"
         >
           {deleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
           Delete
@@ -184,7 +184,7 @@ export default function AdminAdmissionDetailPage() {
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-white rounded-xl border border-black/5 p-6 space-y-4">
+      <form onSubmit={handleSave} className="bg-white rounded-md border border-black/5 p-6 space-y-4">
         <div className="grid sm:grid-cols-2 gap-4">
           <Field label="Full Name">
             <input value={form.fullName ?? ""} onChange={(e) => set("fullName", e.target.value)} required className="input" />
@@ -273,7 +273,7 @@ export default function AdminAdmissionDetailPage() {
           <button
             type="submit"
             disabled={saving || !dirty}
-            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-50 text-navy font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-50 text-navy font-semibold text-sm px-5 py-2.5 rounded-md transition-colors"
           >
             {saving ? <Loader2 size={14} className="animate-spin" /> : saved ? <Check size={14} /> : <Save size={14} />}
             {saved ? "Saved" : "Save Changes"}

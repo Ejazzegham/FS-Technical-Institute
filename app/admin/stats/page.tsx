@@ -79,13 +79,13 @@ function StatBlock({
   }
 
   return (
-    <div className="bg-white rounded-xl border border-black/5 p-5">
+    <div className="bg-white rounded-md border border-black/5 p-5">
       <div className="flex items-center justify-between mb-1">
         <h2 className="font-semibold text-navy">{title}</h2>
         <button
           onClick={handleSave}
           disabled={saving || !items}
-          className="inline-flex items-center gap-1.5 bg-navy hover:bg-navy-light disabled:opacity-60 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors"
+          className="inline-flex items-center gap-1.5 bg-navy hover:bg-navy-light disabled:opacity-60 text-white text-xs font-semibold px-3.5 py-2 rounded-md transition-colors"
         >
           {saving ? (
             <Loader2 size={13} className="animate-spin" />
@@ -114,7 +114,7 @@ function StatBlock({
                   onChange={(e) =>
                     setItems((prev) => prev!.map((it, idx) => (idx === i ? { ...it, label: e.target.value } : it)))
                   }
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                  className="w-full rounded-md border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
                 />
               </div>
               <div>
@@ -124,7 +124,7 @@ function StatBlock({
                   onChange={(e) =>
                     setItems((prev) => prev!.map((it, idx) => (idx === i ? { ...it, value: e.target.value } : it)))
                   }
-                  className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                  className="w-full rounded-md border border-black/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
                 />
               </div>
             </div>

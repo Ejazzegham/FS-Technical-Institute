@@ -3,7 +3,7 @@ import { recentStudents } from "@/lib/adminData";
 
 export default function RecentStudentsTable() {
   return (
-    <div className="bg-white rounded-xl border border-black/5 shadow-sm p-5 overflow-hidden">
+    <div className="bg-white rounded-md border border-black/5 shadow-sm p-5 overflow-hidden">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-display font-bold text-navy text-base">Recent Students</h3>
         <Link href="/admin/students" className="text-xs font-semibold text-navy/50 hover:text-navy">

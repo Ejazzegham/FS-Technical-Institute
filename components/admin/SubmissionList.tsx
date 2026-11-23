@@ -137,9 +137,9 @@ export default function SubmissionList({
         {rows && <p className="text-sm text-navy/40 shrink-0">{rows.length} total</p>}
       </div>
 
-      {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3 mb-4">{error}</p>}
+      {error && <p className="text-sm text-red-600 bg-red-50 rounded-md px-4 py-3 mb-4">{error}</p>}
 
-      <div className="bg-white rounded-xl border border-black/5 overflow-hidden overflow-x-auto">
+      <div className="bg-white rounded-md border border-black/5 overflow-hidden overflow-x-auto">
         {rows === null ? (
           <div className="flex items-center justify-center py-16 text-navy/40 gap-2 text-sm">
             <Loader2 size={16} className="animate-spin" /> Loading…
@@ -200,7 +200,7 @@ export default function SubmissionList({
                       {rowHref && (
                         <Link
                           href={rowHref(row)}
-                          className="p-1.5 rounded-md text-navy/50 hover:text-navy hover:bg-slate-100"
+                          className="p-1.5 rounded text-navy/50 hover:text-navy hover:bg-slate-100"
                           aria-label="Edit"
                           title="Edit"
                         >
@@ -210,7 +210,7 @@ export default function SubmissionList({
                       <button
                         onClick={() => handleDelete(row._id)}
                         disabled={deletingId === row._id}
-                        className="p-1.5 rounded-md text-red-500/70 hover:text-red-600 hover:bg-red-50"
+                        className="p-1.5 rounded text-red-500/70 hover:text-red-600 hover:bg-red-50"
                         aria-label="Delete"
                         title="Delete"
                       >

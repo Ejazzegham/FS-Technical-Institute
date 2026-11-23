@@ -95,7 +95,7 @@ export default function AdminSidebar({
                 {hasChildren ? (
                   <button
                     onClick={() => setExpanded(isExpanded ? null : link.label)}
-                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                       active ? "bg-gold text-navy" : "text-white/70 hover:bg-white/5 hover:text-white"
                     }`}
                   >
@@ -110,7 +110,7 @@ export default function AdminSidebar({
                   <Link
                     href={link.href}
                     onClick={onNavigate}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                       active ? "bg-gold text-navy" : "text-white/70 hover:bg-white/5 hover:text-white"
                     }`}
                   >
@@ -126,7 +126,7 @@ export default function AdminSidebar({
                         <Link
                           href={child.href}
                           onClick={onNavigate}
-                          className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                          className={`block px-3 py-2 rounded-md text-sm transition-colors ${
                             pathname === child.href
                               ? "text-gold font-semibold"
                               : "text-white/55 hover:text-white"

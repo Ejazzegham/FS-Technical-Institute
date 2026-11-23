@@ -22,7 +22,7 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick: () => void }
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-navy/35" />
           <input
             placeholder="Search anything..."
-            className="w-full rounded-lg bg-slate-100 pl-10 pr-3 py-2.5 text-sm text-navy placeholder:text-navy/35 focus:outline-none focus:ring-2 focus:ring-gold/40"
+            className="w-full rounded-md bg-slate-100 pl-10 pr-3 py-2.5 text-sm text-navy placeholder:text-navy/35 focus:outline-none focus:ring-2 focus:ring-gold/40"
           />
         </div>
 
@@ -52,7 +52,7 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick: () => void }
           </button>
 
           {profileOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg border border-black/5 shadow-lg py-1.5">
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md border border-black/5 shadow-lg py-1.5">
               <Link
                 href="/admin/settings"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-navy/70 hover:bg-slate-50"

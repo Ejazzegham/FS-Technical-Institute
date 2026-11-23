@@ -32,8 +32,8 @@ export default function StatCard({
   const hasData = !/no data/i.test(change);
 
   return (
-    <div className="bg-white rounded-xl border border-black/5 shadow-sm p-5 flex items-start gap-4">
-      <span className={`w-11 h-11 rounded-lg ${bg[color]} flex items-center justify-center shrink-0`}>
+    <div className="bg-white rounded-md border border-black/5 shadow-sm p-5 flex items-start gap-4">
+      <span className={`w-11 h-11 rounded-md ${bg[color]} flex items-center justify-center shrink-0`}>
         <Icon size={19} className="text-white" />
       </span>
       <div className="min-w-0">

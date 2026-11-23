@@ -60,7 +60,7 @@ export default function AdminFeesPage() {
       </p>
       <FeeTabs />
 
-      <div className="bg-white rounded-xl border border-black/5 p-6 max-w-lg mb-8">
+      <div className="bg-white rounded-md border border-black/5 p-6 max-w-lg mb-8">
         {!fees ? (
           <div className="flex items-center gap-2 text-sm text-navy/40 py-6 justify-center">
             <Loader2 size={14} className="animate-spin" /> Loading…
@@ -75,7 +75,7 @@ export default function AdminFeesPage() {
                 value={fees.admissionFee}
                 onChange={(e) => setFees({ ...fees, admissionFee: e.target.value })}
                 placeholder="Rs. 1,000"
-                className="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                className="w-full rounded-md border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
               />
             </div>
             <div>
@@ -86,14 +86,14 @@ export default function AdminFeesPage() {
                 value={fees.feeNote}
                 onChange={(e) => setFees({ ...fees, feeNote: e.target.value })}
                 rows={3}
-                className="w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                className="w-full rounded-md border border-black/10 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
               />
             </div>
 
             <button
               onClick={handleSave}
               disabled={saving}
-              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-md transition-colors"
             >
               {saving ? (
                 <Loader2 size={14} className="animate-spin" />
@@ -119,7 +119,7 @@ export default function AdminFeesPage() {
           Edit in Courses <ArrowRight size={13} />
         </a>
       </div>
-      <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
+      <div className="bg-white rounded-md border border-black/5 overflow-hidden">
         {courses === null ? (
           <div className="flex items-center justify-center py-10 text-navy/40 gap-2 text-sm">
             <Loader2 size={16} className="animate-spin" /> Loading…

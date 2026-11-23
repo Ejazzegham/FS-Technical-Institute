@@ -168,13 +168,13 @@ export default function AdminSeedPage() {
       <button
         onClick={run}
         disabled={running}
-        className="inline-flex items-center gap-2 bg-navy hover:bg-navy-light disabled:opacity-60 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors mb-6"
+        className="inline-flex items-center gap-2 bg-navy hover:bg-navy-light disabled:opacity-60 text-white font-semibold text-sm px-5 py-2.5 rounded-md transition-colors mb-6"
       >
         {running ? <Loader2 size={15} className="animate-spin" /> : <DatabaseZap size={15} />}
         {running ? "Seeding…" : "Run Seed"}
       </button>
 
-      <div className="bg-white rounded-xl border border-black/5 divide-y divide-black/5">
+      <div className="bg-white rounded-md border border-black/5 divide-y divide-black/5">
         {results.map((r) => (
           <div key={r.label} className="flex items-center justify-between px-5 py-3.5 text-sm">
             <span className="text-navy/80">{r.label}</span>

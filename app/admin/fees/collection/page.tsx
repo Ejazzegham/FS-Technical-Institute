@@ -36,7 +36,7 @@ type StudentRow = {
 };
 
 const inputCls =
-  "w-full rounded-lg border border-black/10 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold";
+  "w-full rounded-md border border-black/10 px-3.5 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-gold";
 const labelCls = "block text-xs font-semibold text-navy/60 mb-1.5";
 
 export default function AdminFeeCollectionPage() {
@@ -240,10 +240,10 @@ export default function AdminFeeCollectionPage() {
       <div className="grid lg:grid-cols-5 gap-6">
         {/* ---------- Left: the form ---------- */}
         <div className="lg:col-span-3 space-y-5">
-          <div className="bg-white rounded-xl border border-black/5 p-5">
+          <div className="bg-white rounded-md border border-black/5 p-5">
             <label className={labelCls}>1. Student</label>
             {selected ? (
-              <div className="flex items-center justify-between gap-3 rounded-lg bg-navy/5 px-4 py-3">
+              <div className="flex items-center justify-between gap-3 rounded-md bg-navy/5 px-4 py-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="w-9 h-9 rounded-full bg-navy text-gold flex items-center justify-center shrink-0">
                     <UserRound size={16} />
@@ -274,7 +274,7 @@ export default function AdminFeeCollectionPage() {
                   className={`${inputCls} pl-10`}
                 />
                 {search.trim() && (
-                  <div className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-lg border border-black/10 shadow-lg overflow-hidden">
+                  <div className="absolute z-10 left-0 right-0 mt-1 bg-white rounded-md border border-black/10 shadow-lg overflow-hidden">
                     {matches.length === 0 ? (
                       <p className="px-4 py-3 text-sm text-navy/40">No student found.</p>
                     ) : (
@@ -297,7 +297,7 @@ export default function AdminFeeCollectionPage() {
             )}
           </div>
 
-          <div className={`bg-white rounded-xl border border-black/5 p-5 space-y-4 ${selected ? "" : "opacity-50 pointer-events-none"}`}>
+          <div className={`bg-white rounded-md border border-black/5 p-5 space-y-4 ${selected ? "" : "opacity-50 pointer-events-none"}`}>
             <p className={labelCls + " mb-0"}>2. Payment details</p>
 
             <div className="grid sm:grid-cols-2 gap-4">
@@ -359,7 +359,7 @@ export default function AdminFeeCollectionPage() {
                     key={m}
                     type="button"
                     onClick={() => setMethod(m)}
-                    className={`px-3.5 py-2 rounded-lg text-sm font-semibold border transition-colors ${
+                    className={`px-3.5 py-2 rounded-md text-sm font-semibold border transition-colors ${
                       method === m
                         ? "bg-navy text-white border-navy"
                         : "bg-white text-navy/60 border-black/10 hover:border-navy/30"
@@ -387,7 +387,7 @@ export default function AdminFeeCollectionPage() {
             </label>
 
             {duplicate && (
-              <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-100 text-amber-800 rounded-lg px-4 py-3 text-sm">
+              <div className="flex items-start gap-2.5 bg-amber-50 border border-amber-100 text-amber-800 rounded-md px-4 py-3 text-sm">
                 <AlertTriangle size={16} className="shrink-0 mt-0.5" />
                 <p>
                   A {describePayment(duplicate)} payment is already recorded for this student (
@@ -401,7 +401,7 @@ export default function AdminFeeCollectionPage() {
             <button
               onClick={handleSave}
               disabled={saving || !selected}
-              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
+              className="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-dark disabled:opacity-60 text-navy font-semibold text-sm px-5 py-2.5 rounded-md transition-colors"
             >
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
               Record Payment
@@ -409,14 +409,14 @@ export default function AdminFeeCollectionPage() {
           </div>
 
           {lastSaved && (
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-green-50 border border-green-100 text-green-800 rounded-xl px-5 py-4 text-sm">
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-green-50 border border-green-100 text-green-800 rounded-md px-5 py-4 text-sm">
               <p>
                 <b>Saved.</b> {formatPKR(lastSaved.amount)} from {lastSaved.studentName || "student"} &middot; receipt{" "}
                 <b>{lastSaved.receiptNo}</b>
               </p>
               <button
                 onClick={() => printReceipt(lastSaved)}
-                className="inline-flex items-center gap-1.5 bg-white border border-green-200 hover:bg-green-100 text-green-800 font-semibold px-3.5 py-2 rounded-lg"
+                className="inline-flex items-center gap-1.5 bg-white border border-green-200 hover:bg-green-100 text-green-800 font-semibold px-3.5 py-2 rounded-md"
               >
                 <Printer size={14} /> Print receipt
               </button>
@@ -426,7 +426,7 @@ export default function AdminFeeCollectionPage() {
 
         {/* ---------- Right: history ---------- */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl border border-black/5 overflow-hidden">
+          <div className="bg-white rounded-md border border-black/5 overflow-hidden">
             <div className="px-5 py-4 border-b border-black/5">
               <h2 className="font-semibold text-navy text-sm">
                 {selected ? `${selected.fullName || "Student"} — payment history` : "Recent payments"}
