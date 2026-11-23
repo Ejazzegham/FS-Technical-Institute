@@ -131,6 +131,15 @@ service cloud.firestore {
       }
     }
 
+    // --- Fee payments ---
+    // One document per payment recorded from the admin panel
+    // (app/admin/fees/collection). Only the admin can create, edit or delete;
+    // a student may read just their own payments (for a future portal page).
+    match /fee_payments/{id} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.studentUid);
+      allow write: if isAdmin();
+    }
+
     // --- Notifications ---
     // audience is either "all" (broadcast) or a student's uid (personal:
     // fee reminders, exam schedules, absence alerts). Students can only

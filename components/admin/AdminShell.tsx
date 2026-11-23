@@ -17,6 +17,7 @@ import {
   Bell,
   Settings,
   Wallet,
+  Receipt,
   DatabaseZap,
   LogOut,
   ExternalLink,
@@ -27,6 +28,14 @@ import { getFirebaseAuth } from "@/lib/firebase";
 const nav = [
   { section: "Overview", items: [{ href: "/admin", label: "Dashboard", icon: LayoutDashboard }] },
   {
+    section: "Fee management",
+    items: [
+      { href: "/admin/fees/collection", label: "Collect Fee", icon: Receipt },
+      { href: "/admin/fees/records", label: "Fee Records", icon: Wallet },
+      { href: "/admin/fees", label: "Fee Settings", icon: Settings },
+    ],
+  },
+  {
     section: "Site content",
     items: [
       { href: "/admin/courses", label: "Courses", icon: GraduationCap },
@@ -35,7 +44,6 @@ const nav = [
       { href: "/admin/live-classes", label: "Live Classes", icon: Video },
       { href: "/admin/recorded-lectures", label: "Recorded Lectures", icon: PlayCircle },
       { href: "/admin/certificates", label: "Certificates", icon: Award },
-      { href: "/admin/fees", label: "Fee Management", icon: Wallet },
       { href: "/admin/settings", label: "Contact Info", icon: Settings },
     ],
   },

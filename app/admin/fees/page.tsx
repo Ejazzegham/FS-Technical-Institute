@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
 import { Loader2, Save, Check, Wallet, ArrowRight } from "lucide-react";
+import FeeTabs from "@/components/admin/FeeTabs";
 import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
 import { feeSettings as defaults, type Course } from "@/lib/data";
@@ -53,10 +54,11 @@ export default function AdminFeesPage() {
   return (
     <div>
       <h1 className="font-display font-bold text-2xl text-navy mb-1">Fee Management</h1>
-      <p className="text-sm text-navy/50 mb-6">
+      <p className="text-sm text-navy/50 mb-5">
         Set the one-time admission fee that applies to every course, plus a note shown to
         students. Each course&apos;s own monthly fee is edited on its course entry.
       </p>
+      <FeeTabs />
 
       <div className="bg-white rounded-xl border border-black/5 p-6 max-w-lg mb-8">
         {!fees ? (
