@@ -88,14 +88,10 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               aria-hidden={!active}
             >
               <div className="relative w-full">
-                {/* Full-width blurred backdrop (desktop): keeps the banner edge to edge while the sharp image stays uncropped */}
-                <div className="hidden md:block absolute inset-0 overflow-hidden" aria-hidden="true">
-                  <Image src={slide.image} alt="" fill sizes="100vw" className="object-cover scale-110 blur-2xl opacity-90" />
-                </div>
 
-                <div className="relative mx-auto w-full md:max-w-[1056px]">
+                <div className="relative w-full">
                   {/* Same 12:5 frame for every slide = the artwork's own ratio, so nothing is cropped */}
-                  <div className="relative aspect-[12/5] overflow-hidden hero-stage-mask">
+                  <div className="relative md:aspect-[12/5] aspect-[12/5] overflow-hidden">
                     <Image
                       src={slide.mobileImage ?? slide.image}
                       alt={slide.alt}
@@ -109,7 +105,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       alt={slide.alt}
                       fill
                       priority={i === 0}
-                      sizes="(min-width: 1056px) 1056px, 100vw"
+                      sizes="100vw"
                       className="object-cover hidden md:block"
                     />
                     <div
@@ -124,11 +120,11 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                   </div>
 
                 {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-14">
+                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[52%] lg:w-[48%] px-6 py-7 md:pl-[6vw] md:pr-6 lg:pl-[7vw]">
                   <div
                     key={active ? `txt-${index}` : "idle"}
                     className={
-                      "max-w-md mx-auto text-center md:mx-0 md:text-left" +
+                      "max-w-md xl:max-w-xl mx-auto text-center md:mx-0 md:text-left" +
                       (active ? " hero-stagger" : " opacity-0")
                     }
                   >
@@ -142,7 +138,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                     </p>
                     <h2
                       className={
-                        "font-display font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-tight mb-2 text-white " +
+                        "font-display font-extrabold text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl leading-tight mb-2 text-white " +
                         (light ? "md:text-navy" : "md:text-white")
                       }
                     >

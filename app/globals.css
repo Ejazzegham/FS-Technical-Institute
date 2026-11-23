@@ -39,16 +39,7 @@ h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
 }
 
-/* Hero banners: every hero uses the same 12:5 frame (the artwork's own
-   ratio) so images are never cropped and all pages match. On wide screens the
-   sharp image is capped at 1056px and its edges fade into a blurred copy of
-   itself, so the banner still runs edge to edge with square corners. */
-@media (min-width: 1060px) {
-  .hero-stage-mask {
-    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-  }
-}
+/* Hero banners: full-bleed, 12:5 frame (the artwork's own ratio) so images span the whole viewport and are never cropped. */
 
 /* Gentle fade-up for hero text (no image zoom). */
 @keyframes hero-fade-up {
