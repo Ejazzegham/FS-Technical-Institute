@@ -5,6 +5,7 @@ import Link from "next/link";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { Trash2, Loader2, ExternalLink, Pencil } from "lucide-react";
 import { db, getFirebaseAuth } from "@/lib/firebase";
+import { describeError } from "@/lib/adminClient";
 
 export type ColumnDef = {
   key: string;
@@ -109,7 +110,7 @@ export default function SubmissionList({
       await load();
     } catch (err) {
       console.error(err);
-      alert("Couldn't update status. Check Firestore rules.");
+      alert(`Couldn't update status.\n\n${describeError(err)}`);
     } finally {
       setUpdatingId(null);
     }

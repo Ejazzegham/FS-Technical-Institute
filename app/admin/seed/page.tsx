@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { Loader2, DatabaseZap, CheckCircle2, AlertTriangle } from "lucide-react";
+import { revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
 import {
   courses,
@@ -135,6 +136,7 @@ export default function AdminSeedPage() {
       update(8, { status: "running" });
       await setDoc(doc(db, "site_settings", "fees"), feeSettings);
       update(8, { status: "done" });
+      void revalidateSite();
     } catch (err) {
       console.error(err);
       const i = results.findIndex((r) => r.status === "running");

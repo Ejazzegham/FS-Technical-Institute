@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc, setDoc, collection, getDocs } from "firebase/firestore";
 import { Loader2, Save, Check, Wallet, ArrowRight } from "lucide-react";
+import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
 import { feeSettings as defaults, type Course } from "@/lib/data";
 
@@ -38,11 +39,12 @@ export default function AdminFeesPage() {
     setSaving(true);
     try {
       await setDoc(doc(db, "site_settings", "fees"), fees);
+      void revalidateSite();
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.error(err);
-      alert("Couldn't save. Check Firestore rules — see ADMIN-SETUP.md.");
+      alert(`Couldn't save.\n\n${describeError(err)}`);
     } finally {
       setSaving(false);
     }

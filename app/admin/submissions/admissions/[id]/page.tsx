@@ -6,6 +6,7 @@ import Link from "next/link";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ArrowLeft, Loader2, Save, Check, Trash2, ExternalLink } from "lucide-react";
 import { db, getFirebaseAuth } from "@/lib/firebase";
+import { describeError } from "@/lib/adminClient";
 import { courses, batches, qualifications, religions, bloodGroups } from "@/lib/data";
 
 const statusOptions = ["New", "Contacted", "Enrolled", "Rejected"];
@@ -91,7 +92,7 @@ export default function AdminAdmissionDetailPage() {
       setTimeout(() => setSaved(false), 1800);
     } catch (err) {
       console.error(err);
-      alert("Couldn't save changes. Check Firestore rules.");
+      alert(`Couldn't save changes.\n\n${describeError(err)}`);
     } finally {
       setSaving(false);
     }
@@ -212,6 +213,9 @@ export default function AdminAdmissionDetailPage() {
           <Field label="Course">
             <select value={form.course ?? ""} onChange={(e) => set("course", e.target.value)} className="select-compact w-full">
               <option value="">— Select —</option>
+              {form.course && !courses.some((c) => c.title === form.course) && (
+                <option value={form.course}>{form.course}</option>
+              )}
               {courses.map((c) => (
                 <option key={c.slug} value={c.title}>
                   {c.title}

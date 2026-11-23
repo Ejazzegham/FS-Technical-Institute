@@ -53,7 +53,7 @@ export default function AdminCoursesPage() {
             "graduation-cap",
           ],
         },
-        { key: "image", label: "Course Image Path", placeholder: "/images/courses/your-course.jpg", helpText: "Path under /public, e.g. /images/courses/web-designing-developing.jpg. Leave blank to show an icon instead." },
+        { key: "image", label: "Course Image", type: "image", uploadFolder: "courses", helpText: "Upload a picture, or paste an existing path like /images/courses/web-designing-developing.jpg. Leave empty to show an icon instead." },
         { key: "monthlyFee", label: "Monthly Fee", placeholder: "Rs. 3,000/month", helpText: "Shown in the Course Information box on the course page. The admission fee is set once for all courses under Fee Management." },
         { key: "enrolledStudents", label: "Students Enrolled", type: "number", placeholder: "120", helpText: "Total students who've enrolled in this course to date." },
         { key: "completedStudents", label: "Students Completed", type: "number", placeholder: "95", helpText: "Students who successfully completed this course." },

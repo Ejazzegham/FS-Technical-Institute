@@ -20,10 +20,10 @@ export default function AdminGalleryPage() {
         { key: "caption", label: "Caption", type: "textarea", required: true },
         {
           key: "imageUrl",
-          label: "Image URL",
-          type: "url",
-          placeholder: "https://...",
-          helpText: "Optional — leave blank to use the default placeholder tile.",
+          label: "Photo",
+          type: "image",
+          uploadFolder: "gallery",
+          helpText: "Upload a JPG/PNG/WEBP (max 5 MB). Leave empty to use the default placeholder tile.",
         },
         { key: "order", label: "Display Order", type: "number", helpText: "Lower numbers show first." },
       ]}

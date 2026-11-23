@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Loader2, Save, Check } from "lucide-react";
+import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
 import { stats as defaultHome, aboutStats as defaultAbout, galleryStats as defaultGallery } from "@/lib/data";
 
@@ -66,11 +67,12 @@ function StatBlock({
     setSaving(true);
     try {
       await setDoc(doc(db, "site_stats", docKey), { items });
+      void revalidateSite();
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.error(err);
-      alert("Couldn't save. Check Firestore rules — see ADMIN-SETUP.md.");
+      alert(`Couldn't save.\n\n${describeError(err)}`);
     } finally {
       setSaving(false);
     }

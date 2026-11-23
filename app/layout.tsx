@@ -23,6 +23,11 @@ export const metadata: Metadata = {
     "Furqan Saeed Technical Institute (FSTI) offers quality technical education in Web Development, Graphic Design, Cyber Security, Digital Marketing and MS Office to help you build a successful career.",
 };
 
+// Public pages are pre-built for speed. The admin panel refreshes them
+// instantly after each save (/api/admin/revalidate); this is the safety net
+// so that nothing ever stays stale for longer than a minute.
+export const revalidate = 60;
+
 export default async function RootLayout({
   children,
 }: Readonly<{

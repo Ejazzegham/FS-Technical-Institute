@@ -9,14 +9,17 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { Plus, Pencil, Trash2, X, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Loader2, ImagePlus } from "lucide-react";
 import { db } from "@/lib/firebase";
 import OutlineEditor, { type OutlineGroup } from "@/components/admin/OutlineEditor";
+import { describeError, revalidateSite, uploadImage } from "@/lib/adminClient";
 
 export type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "number" | "select" | "url" | "list" | "outline";
+  type?: "text" | "textarea" | "number" | "select" | "url" | "list" | "outline" | "image";
+  /** For type "image": R2 folder the upload goes into. */
+  uploadFolder?: "gallery" | "courses" | "misc";
   options?: string[];
   required?: boolean;
   placeholder?: string;
@@ -63,9 +66,7 @@ export default function CrudManager({
       setRows(data);
     } catch (err) {
       console.error(err);
-      setError(
-        "Couldn't load data. Make sure Firebase is configured (.env.local) and Firestore rules allow admin reads — see ADMIN-SETUP.md."
-      );
+      setError(`Couldn't load data. ${describeError(err)}`);
       setRows([]);
     }
   }, [collectionName]);
@@ -82,9 +83,10 @@ export default function CrudManager({
     try {
       await deleteDoc(doc(db, collectionName, id));
       await load();
+      void revalidateSite();
     } catch (err) {
       console.error(err);
-      alert("Couldn't delete this entry. Check Firestore rules.");
+      alert(`Couldn't delete this entry.\n\n${describeError(err)}`);
     } finally {
       setDeletingId(null);
     }
@@ -118,6 +120,9 @@ export default function CrudManager({
             .filter((g) => g.title || g.items.length > 0);
         });
 
+      // Firestore rejects `undefined` values — drop them.
+      Object.keys(payload).forEach((k) => payload[k] === undefined && delete payload[k]);
+
       if (existingId) {
         await setDoc(doc(db, collectionName, existingId), payload, { merge: true });
       } else if (idField && payload[idField]) {
@@ -130,9 +135,10 @@ export default function CrudManager({
       }
       setEditing(null);
       await load();
+      void revalidateSite();
     } catch (err) {
       console.error(err);
-      alert("Couldn't save this entry. Check Firestore rules — see ADMIN-SETUP.md.");
+      alert(`Couldn't save this entry.\n\n${describeError(err)}`);
     } finally {
       setSaving(false);
     }
@@ -305,6 +311,12 @@ function EditModal({
                   value={(values[f.key] as OutlineGroup[]) ?? []}
                   onChange={(next) => setValues((v) => ({ ...v, [f.key]: next }))}
                 />
+              ) : f.type === "image" ? (
+                <ImageField
+                  value={(values[f.key] as string) ?? ""}
+                  folder={f.uploadFolder ?? "misc"}
+                  onChange={(url) => setValues((v) => ({ ...v, [f.key]: url }))}
+                />
               ) : f.type === "select" ? (
                 <select
                   required={f.required}
@@ -360,6 +372,64 @@ function EditModal({
           </div>
         </form>
       </div>
+    </div>
+  );
+}
+
+function ImageField({
+  value,
+  folder,
+  onChange,
+}: {
+  value: string;
+  folder: "gallery" | "courses" | "misc";
+  onChange: (url: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setErr(null);
+    setUploading(true);
+    try {
+      onChange(await uploadImage(file, folder));
+    } catch (error) {
+      console.error(error);
+      setErr(error instanceof Error ? error.message : "Upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      {value && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={value} alt="Preview" className="w-full max-h-44 object-cover rounded-lg border border-black/5" />
+      )}
+      <div className="flex items-center gap-2">
+        <label className="inline-flex items-center gap-1.5 cursor-pointer bg-navy hover:bg-navy-light text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors">
+          {uploading ? <Loader2 size={14} className="animate-spin" /> : <ImagePlus size={14} />}
+          {uploading ? "Uploading…" : value ? "Replace image" : "Upload image"}
+          <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" className="hidden" onChange={onPick} disabled={uploading} />
+        </label>
+        {value && !uploading && (
+          <button type="button" onClick={() => onChange("")} className="text-xs font-semibold text-red-500/80 hover:text-red-600">
+            Remove
+          </button>
+        )}
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="…or paste an image URL / path"
+        className="input"
+      />
+      {err && <p className="text-xs text-red-600">{err}</p>}
     </div>
   );
 }
