@@ -3,7 +3,7 @@ import { Noticia_Text, Inter } from "next/font/google";
 import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
 import SplashScreen from "@/components/SplashScreen";
-import { getContactInfo } from "@/lib/content";
+import { getContactInfo, getCourses } from "@/lib/content";
 
 const display = Noticia_Text({
   variable: "--font-display-loaded",
@@ -28,7 +28,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const contactInfo = await getContactInfo();
+  const [contactInfo, courses] = await Promise.all([getContactInfo(), getCourses()]);
+  const footerCourses = courses.map(({ slug, title }) => ({ slug, title }));
   return (
     <html
       lang="en"
@@ -36,7 +37,7 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-white text-navy">
         <SplashScreen />
-        <SiteChrome contactInfo={contactInfo}>{children}</SiteChrome>
+        <SiteChrome contactInfo={contactInfo} courses={footerCourses}>{children}</SiteChrome>
       </body>
     </html>
   );

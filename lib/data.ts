@@ -738,9 +738,9 @@ export const navLinks: { href: string; label: string }[] = [
   { href: "/about", label: "About Us" },
   { href: "/courses", label: "Courses" },
   { href: "/online-class", label: "Online Class" },
-  { href: "/printing-press", label: "Printing Press" },
   { href: "/gallery", label: "Gallery" },
   { href: "/admissions", label: "Admissions" },
   { href: "/verification", label: "Verification" },
   { href: "/contact", label: "Contact" },
+  { href: "/printing-press", label: "Printing Press" },
 ];

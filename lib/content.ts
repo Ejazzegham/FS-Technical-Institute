@@ -53,7 +53,24 @@ async function safeGetDocs(collectionName: string) {
 export async function getCourses(): Promise<Course[]> {
   const docs = await safeGetDocs("site_courses");
   if (!docs || docs.length === 0) return staticCourses;
-  return docs.map((d) => d.data() as Course);
+  return dedupeCourses(docs.map((d) => d.data() as Course));
+}
+
+// The admin panel can end up with the same course saved twice (e.g. one
+// doc keyed by slug and another with an auto id). Keep the first of each
+// slug / title so a course never renders twice on the site.
+function dedupeCourses(list: Course[]): Course[] {
+  const seenSlugs = new Set<string>();
+  const seenTitles = new Set<string>();
+  const norm = (t: string) => (t ?? "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return list.filter((c) => {
+    const slug = (c.slug ?? "").trim().toLowerCase();
+    const title = norm(c.title);
+    if ((slug && seenSlugs.has(slug)) || (title && seenTitles.has(title))) return false;
+    if (slug) seenSlugs.add(slug);
+    if (title) seenTitles.add(title);
+    return true;
+  });
 }
 
 export async function getCourseBySlug(slug: string): Promise<Course | undefined> {

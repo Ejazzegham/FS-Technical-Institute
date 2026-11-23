@@ -3,14 +3,52 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, ArrowRight, Send } from "lucide-react";
 import { socialLinks } from "@/components/SocialIcons";
-import { contactInfo as defaultContactInfo } from "@/lib/data";
+import { contactInfo as defaultContactInfo, courses as staticCourses } from "@/lib/data";
 import type { ContactInfo } from "@/lib/content";
 
-export default function Footer({ contactInfo = defaultContactInfo }: { contactInfo?: ContactInfo }) {
+type FooterCourse = { slug: string; title: string };
+
+const quickLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/courses", label: "Courses" },
+  { href: "/admissions", label: "Admissions" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/verification", label: "Verification" },
+  { href: "/printing-press", label: "Printing Press" },
+  { href: "/contact", label: "Contact" },
+];
+
+const MAX_FOOTER_COURSES = 6;
+
+function ColumnTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="font-display font-bold text-white text-[15px] tracking-wide relative pb-3 mb-5 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:h-[2px] after:w-8 after:rounded-full after:bg-gold">
+      {children}
+    </h4>
+  );
+}
+
+const linkClass =
+  "group inline-flex items-center gap-1.5 text-sm text-white/65 hover:text-gold transition-colors";
+
+export default function Footer({
+  contactInfo = defaultContactInfo,
+  courses,
+}: {
+  contactInfo?: ContactInfo;
+  courses?: FooterCourse[];
+}) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  // Link every course to its own detail page (/courses/<slug>). Uses the live
+  // course list when provided, falling back to the built-in list.
+  const footerCourses = (courses && courses.length > 0 ? courses : staticCourses)
+    .filter((c) => c.slug)
+    .slice(0, MAX_FOOTER_COURSES);
 
   async function handleSubscribe(e: React.FormEvent) {
     e.preventDefault();
@@ -31,11 +69,51 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
   }
 
   return (
-    <footer className="bg-navy text-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-12 md:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-y-9 md:gap-x-8 lg:gap-x-10 divide-y divide-white/10 md:divide-y-0">
+    <footer className="relative bg-navy-dark text-white overflow-hidden">
+      <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-gold to-transparent" />
+
+      {/* Newsletter band */}
+      <div className="border-b border-white/10 bg-navy">
+        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-8 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
+          <div className="max-w-md">
+            <h3 className="font-display font-bold text-xl text-white">Stay in the loop</h3>
+            <p className="text-sm text-white/60 mt-1">
+              Subscribe for updates on new courses, batches and events.
+            </p>
+          </div>
+          <div className="w-full lg:w-auto lg:min-w-[420px]">
+            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2.5">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                aria-label="Email address"
+                className="flex-1 rounded-full px-5 py-3 text-sm text-navy bg-white placeholder:text-navy/40 focus:outline-none focus:ring-2 focus:ring-gold"
+              />
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-dark text-navy text-sm font-semibold px-6 py-3 rounded-full transition-colors disabled:opacity-60"
+              >
+                {status === "loading" ? "Subscribing..." : "Subscribe"}
+                <Send size={14} />
+              </button>
+            </form>
+            <div className="h-5 mt-2 text-xs">
+              {status === "done" && <p className="text-gold">Thanks for subscribing!</p>}
+              {status === "error" && <p className="text-red-400">Something went wrong. Try again.</p>}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main columns */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 py-12 md:py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-y-10 gap-x-10">
         {/* Brand */}
-        <div className="lg:col-span-1 flex flex-col items-center text-center md:items-start md:text-left">
-          <div className="flex flex-col items-center md:flex-row md:items-center gap-3 mb-4">
+        <div className="lg:col-span-4 flex flex-col items-center text-center md:items-start md:text-left">
+          <Link href="/" className="flex items-center gap-3 mb-5">
             <Image
               src="/images/logo-v2.png"
               alt="FSTI logo"
@@ -43,19 +121,19 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
               height={48}
               className="rounded-full object-contain"
             />
-            <span className="leading-tight">
-              <span className="block font-display font-extrabold text-white text-base">
+            <span className="leading-tight text-left">
+              <span className="block font-display font-extrabold text-white text-base tracking-tight">
                 FURQAN SAEED
               </span>
-              <span className="block text-[10px] font-semibold text-gold tracking-widest -mt-1">
+              <span className="block text-[10px] font-semibold text-gold tracking-[0.2em] -mt-0.5">
                 TECHNICAL INSTITUTE
               </span>
             </span>
-          </div>
-          <p className="text-sm text-white/60 leading-relaxed max-w-[280px] md:max-w-none">
+          </Link>
+          <p className="text-sm text-white/60 leading-relaxed max-w-sm">
             Empowering students with in-demand skills and practical knowledge for a better future.
           </p>
-          <div className="flex items-center gap-3 mt-5">
+          <div className="flex items-center gap-2.5 mt-6">
             {socialLinks.map(({ Icon, href, label }) => (
               <a
                 key={label}
@@ -63,7 +141,7 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-white/20 hover:border-gold hover:text-gold hover:bg-white/5 transition-colors"
+                className="w-9 h-9 flex items-center justify-center rounded-full border border-white/15 text-white/70 hover:border-gold hover:text-gold hover:bg-white/5 transition-colors"
               >
                 <Icon size={15} />
               </a>
@@ -72,107 +150,83 @@ export default function Footer({ contactInfo = defaultContactInfo }: { contactIn
         </div>
 
         {/* Quick Links */}
-        <div className="pt-9 md:pt-0 flex flex-col items-center text-center md:items-start md:text-left">
-          <h4 className="font-semibold mb-4 text-[15px] tracking-wide relative pb-2 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:bottom-0 after:h-[2px] after:w-8 after:bg-gold-dark">
-            Quick Links
-          </h4>
-          <ul className="space-y-2.5 text-sm text-white/60">
-            <li><Link href="/" className="hover:text-gold transition-colors">Home</Link></li>
-            <li><Link href="/about" className="hover:text-gold transition-colors">About Us</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Courses</Link></li>
-            <li><Link href="/admissions" className="hover:text-gold transition-colors">Admissions</Link></li>
-            <li><Link href="/gallery" className="hover:text-gold transition-colors">Gallery</Link></li>
-            <li><Link href="/verification" className="hover:text-gold transition-colors">Verification</Link></li>
-            <li><Link href="/contact" className="hover:text-gold transition-colors">Contact</Link></li>
+        <div className="lg:col-span-2 flex flex-col items-center text-center md:items-start md:text-left">
+          <ColumnTitle>Quick Links</ColumnTitle>
+          <ul className="space-y-2.5">
+            {quickLinks.map((l) => (
+              <li key={l.href}>
+                <Link href={l.href} className={linkClass}>
+                  {l.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* Courses */}
-        <div className="pt-9 md:pt-0 flex flex-col items-center text-center md:items-start md:text-left">
-          <h4 className="font-semibold mb-4 text-[15px] tracking-wide relative pb-2 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:bottom-0 after:h-[2px] after:w-8 after:bg-gold-dark">
-            Courses
-          </h4>
-          <ul className="space-y-2.5 text-sm text-white/60">
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Website Designing &amp; Developing</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Graphic Designing</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Mobile App Development</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Social Media Marketing</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">Microsoft Office</Link></li>
-            <li><Link href="/courses" className="hover:text-gold transition-colors">All Courses</Link></li>
+        <div className="lg:col-span-3 flex flex-col items-center text-center md:items-start md:text-left">
+          <ColumnTitle>Our Courses</ColumnTitle>
+          <ul className="space-y-2.5">
+            {footerCourses.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/courses/${c.slug}`} className={linkClass}>
+                  {c.title}
+                </Link>
+              </li>
+            ))}
+            <li className="pt-1">
+              <Link
+                href="/courses"
+                className="group inline-flex items-center gap-1.5 text-sm font-semibold text-gold hover:text-white transition-colors"
+              >
+                View All Courses
+                <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Contact */}
-        <div className="pt-9 md:pt-0 flex flex-col items-center text-center md:items-start md:text-left">
-          <h4 className="font-semibold mb-4 text-[15px] tracking-wide relative pb-2 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:bottom-0 after:h-[2px] after:w-8 after:bg-gold-dark">
-            Contact Us
-          </h4>
-          <ul className="space-y-3.5 text-sm text-white/60 w-full max-w-[240px] md:max-w-none">
+        <div className="lg:col-span-3 flex flex-col items-center text-center md:items-start md:text-left">
+          <ColumnTitle>Contact Us</ColumnTitle>
+          <ul className="space-y-4 text-sm text-white/65 w-full max-w-[280px] md:max-w-none">
             <li className="flex items-start gap-3 justify-center md:justify-start text-left">
-              <span className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                <MapPin size={13} className="text-gold" />
+              <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                <MapPin size={14} className="text-gold" />
               </span>
-              {contactInfo.address}
+              <span className="pt-1 leading-snug">{contactInfo.address}</span>
             </li>
             <li className="flex items-center gap-3 justify-center md:justify-start text-left">
-              <span className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                <Phone size={13} className="text-gold" />
+              <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                <Phone size={14} className="text-gold" />
               </span>
-              {contactInfo.phone}
+              <a href={`tel:${contactInfo.phone}`} className="hover:text-gold transition-colors">
+                {contactInfo.phone}
+              </a>
             </li>
             <li className="flex items-center gap-3 justify-center md:justify-start text-left">
-              <span className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                <Mail size={13} className="text-gold" />
+              <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                <Mail size={14} className="text-gold" />
               </span>
-              {contactInfo.email}
+              <a href={`mailto:${contactInfo.email}`} className="hover:text-gold transition-colors break-all">
+                {contactInfo.email}
+              </a>
             </li>
             <li className="flex items-center gap-3 justify-center md:justify-start text-left">
-              <span className="w-7 h-7 rounded-full bg-white/5 flex items-center justify-center shrink-0">
-                <Clock size={13} className="text-gold" />
+              <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                <Clock size={14} className="text-gold" />
               </span>
               {contactInfo.hours}
             </li>
           </ul>
         </div>
-
-        {/* Newsletter */}
-        <div className="pt-9 md:pt-0 flex flex-col items-center text-center md:items-start md:text-left">
-          <h4 className="font-semibold mb-4 text-[15px] tracking-wide relative pb-2 after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 md:after:left-0 md:after:translate-x-0 after:bottom-0 after:h-[2px] after:w-8 after:bg-gold-dark">
-            Newsletter
-          </h4>
-          <p className="text-sm text-white/60 mb-4 max-w-[260px] md:max-w-none">
-            Subscribe to get updates on new courses and events.
-          </p>
-          <form onSubmit={handleSubscribe} className="flex flex-col gap-2.5 w-full max-w-[280px] md:max-w-none">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full rounded-lg px-3.5 py-2.5 text-sm text-navy bg-white focus:outline-none focus:ring-2 focus:ring-gold"
-            />
-            <button
-              type="submit"
-              disabled={status === "loading"}
-              className="w-full bg-gold hover:bg-gold-dark text-navy text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors disabled:opacity-60"
-            >
-              {status === "loading" ? "..." : "Subscribe"}
-            </button>
-          </form>
-          {status === "done" && (
-            <p className="text-xs text-gold mt-2.5">Thanks for subscribing!</p>
-          )}
-          {status === "error" && (
-            <p className="text-xs text-red-400 mt-2.5">Something went wrong. Try again.</p>
-          )}
-        </div>
       </div>
 
+      {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 py-5 flex flex-col md:flex-row items-center justify-center md:justify-between gap-2 text-xs text-white/50 text-center">
           <p>© {new Date().getFullYear()} Furqan Saeed Technical Institute. All Rights Reserved.</p>
-          <div className="flex items-center gap-x-4 gap-y-1 flex-wrap justify-center">
+          <div className="flex items-center gap-x-5 gap-y-1 flex-wrap justify-center">
             <Link href="/privacy" className="hover:text-gold transition-colors">
               Privacy Policy
             </Link>

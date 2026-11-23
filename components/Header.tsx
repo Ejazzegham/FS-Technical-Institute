@@ -67,10 +67,15 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
     };
   }, [open]);
 
+  // "Printing Press" is a separate business line, so it always sits last
+  // and gets its own highlighted treatment + element id.
+  const mainLinks = navLinks.filter((l) => l.href !== "/printing-press");
+  const pressLink = navLinks.find((l) => l.href === "/printing-press");
+
   return (
     <header className="sticky top-0 z-50">
       {/* Top bar */}
-      <div className="hidden md:flex items-center justify-between bg-navy-dark text-white text-xs px-6 lg:px-10 py-2">
+      <div className="hidden md:flex items-center justify-between bg-navy-dark text-white/90 text-[11px] px-6 lg:px-10 py-1.5">
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-2">
             <Phone size={13} />
@@ -107,61 +112,80 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
       </div>
 
       {/* Main nav */}
-      <div className="bg-white/95 backdrop-blur-sm border-b border-black/5 shadow-[0_1px_2px_rgba(15,30,61,0.04)] px-4 sm:px-6 lg:px-10">
-        <div className="flex items-center justify-between py-2.5 lg:py-3 gap-3">
+      <div className="bg-white/90 backdrop-blur-md border-b border-navy/[0.06] shadow-[0_4px_20px_-12px_rgba(15,30,61,0.25)] px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center justify-between py-2 gap-3 max-w-[1400px] mx-auto">
           <Link href="/" className="flex items-center gap-2.5 lg:gap-3 shrink-0 min-w-0">
             <Image
               src="/images/logo.png"
               alt="Furqan Saeed Technical Institute logo"
               width={44}
               height={44}
-              className="w-9 h-9 lg:w-11 lg:h-11 rounded-full object-contain shrink-0"
+              className="w-8 h-8 lg:w-9 lg:h-9 rounded-full object-contain shrink-0"
             />
             <span className="leading-tight min-w-0">
-              <span className="block font-display font-extrabold text-navy text-[13px] sm:text-base lg:text-lg tracking-tight whitespace-nowrap">
+              <span className="block font-display font-extrabold text-navy text-[13px] sm:text-[15px] lg:text-base tracking-tight whitespace-nowrap">
                 FURQAN SAEED
               </span>
-              <span className="block text-[8.5px] sm:text-[10px] lg:text-[11px] font-semibold text-gold-dark tracking-widest -mt-0.5 whitespace-nowrap">
+              <span className="block text-[8px] sm:text-[9px] lg:text-[9.5px] font-semibold text-gold-dark tracking-[0.2em] -mt-0.5 whitespace-nowrap">
                 TECHNICAL INSTITUTE
               </span>
             </span>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => {
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-7" aria-label="Main navigation">
+            {mainLinks.map((link) => {
               const active = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative pb-1 text-sm font-medium transition-colors whitespace-nowrap ${
-                    active ? "text-gold-dark" : "text-navy/80 hover:text-navy"
+                  className={`group relative py-1.5 text-[13px] font-medium tracking-wide transition-colors whitespace-nowrap ${
+                    active ? "text-navy" : "text-navy/65 hover:text-navy"
                   }`}
                 >
                   {link.label}
-                  {active && (
-                    <span className="absolute -bottom-[13px] left-0 right-0 h-[2px] bg-gold-dark" />
-                  )}
+                  <span
+                    className={`absolute -bottom-0.5 left-0 right-0 h-[2px] rounded-full bg-gold-dark origin-center transition-transform duration-300 ${
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    }`}
+                  />
                 </Link>
               );
             })}
+            {pressLink && (
+              <>
+                <span className="w-px h-4 bg-navy/15" aria-hidden="true" />
+                <Link
+                  id="nav-printing-press"
+                  href={pressLink.href}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[12.5px] font-semibold tracking-wide whitespace-nowrap transition-colors ${
+                    pathname === pressLink.href
+                      ? "bg-gold text-navy border-gold"
+                      : "border-gold-dark/50 text-gold-dark hover:bg-gold hover:text-navy hover:border-gold"
+                  }`}
+                >
+                  <Printer size={13} />
+                  {pressLink.label}
+                </Link>
+              </>
+            )}
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/admissions"
-              className="hidden md:inline-flex items-center gap-2 bg-navy text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-navy-light transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 bg-navy text-white text-[13px] font-semibold px-4 py-2 rounded-full shadow-sm hover:bg-navy-light hover:shadow-md transition-all"
             >
-              Apply Now <ArrowRight size={15} />
+              Apply Now <ArrowRight size={14} />
             </Link>
             <button
-              className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full border border-navy/10 bg-navy/[0.03] text-navy hover:bg-navy hover:text-white hover:border-navy transition-colors"
+              className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded-full border border-navy/10 bg-navy/[0.03] text-navy hover:bg-navy hover:text-white hover:border-navy transition-colors"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
               aria-expanded={open}
               aria-controls="mobile-nav-drawer"
             >
-              <Menu size={19} />
+              <Menu size={17} />
             </button>
           </div>
         </div>
@@ -213,7 +237,7 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
 
         <div className="flex-1 overflow-y-auto px-3 py-4">
           <ul className="flex flex-col gap-0.5">
-            {navLinks.map((link) => {
+            {mainLinks.map((link) => {
               const active = pathname === link.href;
               const Icon = navIcons[link.href] ?? Home;
               return (
@@ -242,6 +266,25 @@ export default function Header({ contactInfo = defaultContactInfo }: { contactIn
                 </li>
               );
             })}
+            {pressLink && (
+              <li className="mt-1.5 pt-1.5 border-t border-black/5">
+                <Link
+                  id="mobile-nav-printing-press"
+                  href={pressLink.href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-3 pl-4 pr-3 py-2.5 rounded-xl text-[14.5px] font-semibold transition-colors ${
+                    pathname === pressLink.href
+                      ? "bg-gold/20 text-gold-dark"
+                      : "bg-gold/10 text-gold-dark hover:bg-gold/20"
+                  }`}
+                >
+                  <span className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-gold-dark/15 text-gold-dark">
+                    <Printer size={15} />
+                  </span>
+                  {pressLink.label}
+                </Link>
+              </li>
+            )}
           </ul>
 
           <div className="h-px bg-black/5 my-3 mx-1" />

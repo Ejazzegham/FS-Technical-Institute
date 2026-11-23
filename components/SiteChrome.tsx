@@ -11,9 +11,11 @@ const CHROMELESS_PREFIXES = ["/login", "/register", "/admin", "/portal"];
 export default function SiteChrome({
   children,
   contactInfo,
+  courses,
 }: {
   children: React.ReactNode;
   contactInfo?: ContactInfo;
+  courses?: { slug: string; title: string }[];
 }) {
   const pathname = usePathname();
   const chromeless = CHROMELESS_PREFIXES.some((p) => pathname?.startsWith(p));
@@ -26,7 +28,7 @@ export default function SiteChrome({
     <>
       <Header contactInfo={contactInfo} />
       <main className="flex-1">{children}</main>
-      <Footer contactInfo={contactInfo} />
+      <Footer contactInfo={contactInfo} courses={courses} />
       <WhatsAppButton contactInfo={contactInfo} />
     </>
   );
