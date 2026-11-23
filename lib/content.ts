@@ -31,6 +31,22 @@ import {
 export type Testimonial = { id?: string; name: string; role: string; quote: string };
 export type StatItem = { label: string; value: string };
 export type GalleryItem = { id: string; category: GalleryCategory; caption: string; imageUrl?: string };
+export type SiteEvent = {
+  id: string;
+  title: string;
+  badge?: string;
+  description?: string;
+  mediaType?: "Image" | "Video" | "Text only";
+  imageUrl?: string;
+  videoUrl?: string;
+  eventDate?: string;
+  venue?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  expiresAt?: string;
+  status?: "Live" | "Hidden";
+  order?: number;
+};
 export type ContactInfo = typeof staticContactInfo;
 export type FeeSettings = typeof staticFeeSettings;
 
@@ -154,4 +170,19 @@ export async function getFeeSettings(): Promise<FeeSettings> {
     console.error("content: failed to read fee settings", err);
   }
   return staticFeeSettings;
+}
+
+// Events & highlights shown in the home-page spotlight. There is no static
+// fallback — if nothing is published the section simply doesn't render.
+export async function getEvents(): Promise<SiteEvent[]> {
+  const docs = await safeGetDocs("site_events");
+  if (!docs) return [];
+  return docs
+    .map((d) => ({ id: d.id, ...(d.data() as Omit<SiteEvent, "id">) }))
+    .filter((e) => e.status !== "Hidden" && e.title)
+    .sort((a, b) => {
+      const o = (a.order ?? 0) - (b.order ?? 0);
+      if (o !== 0) return o;
+      return (a.eventDate || "9999").localeCompare(b.eventDate || "9999");
+    });
 }

@@ -5,16 +5,22 @@ import { verifyAdminRequest } from "@/lib/verifyAdmin";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
-const ALLOWED: Record<string, string> = {
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_VIDEO_BYTES = 50 * 1024 * 1024; // 50 MB
+const ALLOWED_IMAGES: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
   "image/webp": "webp",
   "image/gif": "gif",
 };
-const FOLDERS = new Set(["gallery", "courses", "misc"]);
+const ALLOWED_VIDEOS: Record<string, string> = {
+  "video/mp4": "mp4",
+  "video/webm": "webm",
+  "video/quicktime": "mov",
+};
+const FOLDERS = new Set(["gallery", "courses", "events", "misc"]);
 
-// Admin-only image upload -> Cloudflare R2. Returns the public URL.
+// Admin-only image/video upload -> Cloudflare R2. Returns the public URL.
 export async function POST(req: NextRequest) {
   try {
     const auth = await verifyAdminRequest(req);
@@ -42,12 +48,19 @@ export async function POST(req: NextRequest) {
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file received." }, { status: 400 });
     }
-    const ext = ALLOWED[file.type];
+    const isVideo = String(form.get("kind") || "image") === "video";
+    const ext = (isVideo ? ALLOWED_VIDEOS : ALLOWED_IMAGES)[file.type];
     if (!ext) {
-      return NextResponse.json({ error: "Only JPG, PNG, WEBP or GIF images are allowed." }, { status: 400 });
+      return NextResponse.json(
+        { error: isVideo ? "Only MP4, WEBM or MOV videos are allowed." : "Only JPG, PNG, WEBP or GIF images are allowed." },
+        { status: 400 }
+      );
     }
-    if (file.size > MAX_BYTES) {
-      return NextResponse.json({ error: "Image is too large (max 5 MB)." }, { status: 400 });
+    if (file.size > (isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES)) {
+      return NextResponse.json(
+        { error: isVideo ? "Video is too large (max 50 MB). Compress it, or paste a YouTube link instead." : "Image is too large (max 5 MB)." },
+        { status: 400 }
+      );
     }
 
     const base = file.name.replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "image";

@@ -9,18 +9,20 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
-import { Plus, Pencil, Trash2, X, Loader2, ImagePlus } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Loader2, ImagePlus, Video as VideoIcon } from "lucide-react";
 import { db } from "@/lib/firebase";
 import OutlineEditor, { type OutlineGroup } from "@/components/admin/OutlineEditor";
-import { describeError, revalidateSite, uploadImage } from "@/lib/adminClient";
+import { describeError, revalidateSite, uploadMedia, type UploadFolder } from "@/lib/adminClient";
 
 export type FieldDef = {
   key: string;
   label: string;
-  type?: "text" | "textarea" | "number" | "select" | "url" | "list" | "outline" | "image";
-  /** For type "image": R2 folder the upload goes into. */
-  uploadFolder?: "gallery" | "courses" | "misc";
+  type?: "text" | "textarea" | "number" | "select" | "url" | "list" | "outline" | "image" | "video" | "datetime";
+  /** For type "image" / "video": R2 folder the upload goes into. */
+  uploadFolder?: UploadFolder;
   options?: string[];
+  /** Initial value when creating a new entry (e.g. status "Live"). */
+  defaultValue?: string | number;
   required?: boolean;
   placeholder?: string;
   helpText?: string;
@@ -262,7 +264,7 @@ function EditModal({
       } else if (f.type === "outline") {
         v[f.key] = Array.isArray(raw) ? (raw as OutlineGroup[]) : [];
       } else {
-        v[f.key] = (raw as string | number) ?? (f.type === "number" ? 0 : "");
+        v[f.key] = (raw as string | number) ?? f.defaultValue ?? (f.type === "number" ? 0 : "");
       }
     });
     return v;
@@ -317,6 +319,12 @@ function EditModal({
                   folder={f.uploadFolder ?? "misc"}
                   onChange={(url) => setValues((v) => ({ ...v, [f.key]: url }))}
                 />
+              ) : f.type === "video" ? (
+                <VideoField
+                  value={(values[f.key] as string) ?? ""}
+                  folder={f.uploadFolder ?? "misc"}
+                  onChange={(url) => setValues((v) => ({ ...v, [f.key]: url }))}
+                />
               ) : f.type === "select" ? (
                 <select
                   required={f.required}
@@ -335,7 +343,7 @@ function EditModal({
                 </select>
               ) : (
                 <input
-                  type={f.type === "number" ? "number" : f.type === "url" ? "url" : "text"}
+                  type={f.type === "number" ? "number" : f.type === "url" ? "url" : f.type === "datetime" ? "datetime-local" : "text"}
                   required={f.required}
                   disabled={idField === f.key && isEditingExisting}
                   value={(values[f.key] as string | number) ?? ""}
@@ -382,7 +390,7 @@ function ImageField({
   onChange,
 }: {
   value: string;
-  folder: "gallery" | "courses" | "misc";
+  folder: UploadFolder;
   onChange: (url: string) => void;
 }) {
   const [uploading, setUploading] = useState(false);
@@ -395,7 +403,7 @@ function ImageField({
     setErr(null);
     setUploading(true);
     try {
-      onChange(await uploadImage(file, folder));
+      onChange(await uploadMedia(file, folder, "image"));
     } catch (error) {
       console.error(error);
       setErr(error instanceof Error ? error.message : "Upload failed.");
@@ -427,6 +435,64 @@ function ImageField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="…or paste an image URL / path"
+        className="input"
+      />
+      {err && <p className="text-xs text-red-600">{err}</p>}
+    </div>
+  );
+}
+
+function VideoField({
+  value,
+  folder,
+  onChange,
+}: {
+  value: string;
+  folder: UploadFolder;
+  onChange: (url: string) => void;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const isDirectFile = /\.(mp4|webm|mov)(\?|$)/i.test(value);
+
+  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setErr(null);
+    setUploading(true);
+    try {
+      onChange(await uploadMedia(file, folder, "video"));
+    } catch (error) {
+      console.error(error);
+      setErr(error instanceof Error ? error.message : "Upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      {value && isDirectFile && (
+        <video src={value} controls preload="metadata" className="w-full max-h-52 rounded-md border border-black/5 bg-black" />
+      )}
+      <div className="flex items-center gap-2">
+        <label className="inline-flex items-center gap-1.5 cursor-pointer bg-navy hover:bg-navy-light text-white text-xs font-semibold px-3.5 py-2 rounded-md transition-colors">
+          {uploading ? <Loader2 size={14} className="animate-spin" /> : <VideoIcon size={14} />}
+          {uploading ? "Uploading… (large files take a while)" : value ? "Replace video" : "Upload video"}
+          <input type="file" accept="video/mp4,video/webm,video/quicktime" className="hidden" onChange={onPick} disabled={uploading} />
+        </label>
+        {value && !uploading && (
+          <button type="button" onClick={() => onChange("")} className="text-xs font-semibold text-red-500/80 hover:text-red-600">
+            Remove
+          </button>
+        )}
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="…or paste a YouTube link / direct .mp4 URL"
         className="input"
       />
       {err && <p className="text-xs text-red-600">{err}</p>}

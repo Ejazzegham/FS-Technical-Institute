@@ -32,13 +32,21 @@ export async function revalidateSite(): Promise<void> {
   }
 }
 
-/** Upload an image to R2 via the admin-only API route. Returns its public URL. */
-export async function uploadImage(file: File, folder: "gallery" | "courses" | "misc"): Promise<string> {
+export type UploadFolder = "gallery" | "courses" | "events" | "misc";
+
+/** Upload an image or video to R2 via the admin-only API route. Returns its public URL. */
+export async function uploadMedia(file: File, folder: UploadFolder, kind: "image" | "video" = "image"): Promise<string> {
   const body = new FormData();
   body.append("file", file);
   body.append("folder", folder);
+  body.append("kind", kind);
   const res = await fetch("/api/admin/upload", { method: "POST", headers: await authHeader(), body });
   const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
   if (!res.ok || !data.url) throw new Error(data.error || "Upload failed.");
   return data.url;
+}
+
+/** Upload an image to R2 via the admin-only API route. Returns its public URL. */
+export function uploadImage(file: File, folder: UploadFolder): Promise<string> {
+  return uploadMedia(file, folder, "image");
 }

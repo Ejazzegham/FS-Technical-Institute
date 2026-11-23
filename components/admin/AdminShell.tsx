@@ -26,6 +26,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirebaseAuth } from "@/lib/firebase";
@@ -43,6 +44,7 @@ const nav = [
   {
     section: "Site content",
     items: [
+      { href: "/admin/events", label: "Events & Highlights", icon: Sparkles },
       { href: "/admin/courses", label: "Courses", icon: GraduationCap },
       { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
       { href: "/admin/stats", label: "Stats", icon: BarChart3 },

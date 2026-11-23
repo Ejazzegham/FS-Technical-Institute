@@ -11,7 +11,8 @@ import StatsBar from "@/components/StatsBar";
 import CourseCard from "@/components/CourseCard";
 import CTABanner from "@/components/CTABanner";
 import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
-import { getStats, getCourses } from "@/lib/content";
+import EventSpotlight from "@/components/EventSpotlight";
+import { getStats, getCourses, getEvents } from "@/lib/content";
 
 const heroSlides: HeroSlide[] = [
   {
@@ -129,14 +130,18 @@ const whyChooseUs = [
 ];
 
 export default async function HomePage() {
-  const [stats, courses] = await Promise.all([
+  const [stats, courses, events] = await Promise.all([
     getStats("home"),
     getCourses(),
+    getEvents(),
   ]);
   return (
     <>
       {/* Hero */}
       <HeroSlider slides={heroSlides} />
+
+      {/* Events & highlights — managed from /admin/events */}
+      <EventSpotlight events={events} />
 
       <StatsBar stats={stats} />
 

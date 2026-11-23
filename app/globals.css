@@ -277,3 +277,46 @@ h1, h2, h3, h4, .font-display {
 .admin-root .select-compact {
   border-radius: 0.3rem;
 }
+
+
+/* ---------- Event spotlight (home page) ---------- */
+@keyframes ev-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes ev-ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes ev-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes ev-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ev-pop {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.ev-border {
+  background: linear-gradient(110deg, #f0a93b, #fff1cf, #d98f1f, #f0a93b);
+  background-size: 200% 100%;
+  animation: ev-shimmer 5s linear infinite;
+}
+.ev-ping { animation: ev-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+.ev-float { animation: ev-float 4s ease-in-out infinite; }
+.ev-rise { animation: ev-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.ev-pop { animation: ev-pop 0.25s ease-out both; }
+.ev-gold-text {
+  background: linear-gradient(110deg, #f0a93b, #ffe2a6, #f0a93b);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ev-shimmer 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ev-border, .ev-ping, .ev-float, .ev-rise, .ev-pop, .ev-gold-text { animation: none !important; }
+}
