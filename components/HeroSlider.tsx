@@ -73,67 +73,63 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
       aria-roledescription="carousel"
       aria-label="Admissions and programs"
     >
-      <div
-        className="flex transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
-        style={{ transform: `translateX(-${index * 100}%)` }}
-      >
+      {/* Slides are stacked and cross-fade (no sliding, no zooming). */}
+      <div className="grid">
         {slides.map((slide, i) => {
           const active = i === index;
           const light = slide.theme === "light";
           return (
-            <article key={slide.image} className="w-full shrink-0" aria-hidden={!active}>
-              <div className="relative w-full md:aspect-[12/5] md:max-h-[480px]">
-                {/* Image */}
-                <div className="relative aspect-[12/5] md:aspect-auto md:absolute md:inset-0 md:h-full overflow-hidden">
-                  <div
-                    key={active ? `kb-${index}` : "idle"}
-                    className={"absolute inset-0" + (active ? " hero-kenburns" : "")}
-                  >
+            <article
+              key={slide.image}
+              className={
+                "col-start-1 row-start-1 w-full transition-opacity duration-1000 ease-in-out " +
+                (active ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0")
+              }
+              aria-hidden={!active}
+            >
+              <div className="relative w-full">
+                {/* Full-width blurred backdrop (desktop): keeps the banner edge to edge while the sharp image stays uncropped */}
+                <div className="hidden md:block absolute inset-0 overflow-hidden" aria-hidden="true">
+                  <Image src={slide.image} alt="" fill sizes="100vw" className="object-cover scale-110 blur-2xl opacity-90" />
+                </div>
+
+                <div className="relative mx-auto w-full md:max-w-[1056px]">
+                  {/* Same 12:5 frame for every slide = the artwork's own ratio, so nothing is cropped */}
+                  <div className="relative aspect-[12/5] overflow-hidden hero-stage-mask">
                     <Image
                       src={slide.mobileImage ?? slide.image}
                       alt={slide.alt}
                       fill
                       priority={i === 0}
                       sizes="100vw"
-                      className={
-                        "object-cover block md:hidden" + (slide.mobileImage ? "" : " hero-media")
-                      }
-                      style={
-                        slide.mobileImage
-                          ? undefined
-                          : ({ "--hero-focus": slide.focus ?? "center" } as React.CSSProperties)
-                      }
+                      className="object-cover block md:hidden"
                     />
                     <Image
                       src={slide.image}
                       alt={slide.alt}
                       fill
                       priority={i === 0}
-                      sizes="100vw"
+                      sizes="(min-width: 1056px) 1056px, 100vw"
                       className="object-cover hidden md:block"
-                      style={{ objectPosition: slide.focus ?? "center" }}
                     />
+                    <div
+                      className={
+                        "hidden md:block absolute inset-0 pointer-events-none " +
+                        (light
+                          ? "bg-gradient-to-r from-white/95 from-0% via-white/55 via-32% to-white/0 to-58%"
+                          : "bg-gradient-to-r from-navy/90 from-0% via-navy/50 via-32% to-navy/0 to-58%")
+                      }
+                    />
+                    <div className="md:hidden absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
                   </div>
-                  {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
-                  <div
-                    className={
-                      "hidden md:block absolute inset-0 pointer-events-none " +
-                      (light
-                        ? "bg-gradient-to-r from-white/95 from-0% via-white/55 via-32% to-white/0 to-58%"
-                        : "bg-gradient-to-r from-navy/90 from-0% via-navy/50 via-32% to-navy/0 to-58%")
-                    }
-                  />
-                  {/* Mobile scrim: just enough to settle the image under the panel above it */}
-                  <div className="md:hidden absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
-                </div>
 
                 {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-16">
+                <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-14">
                   <div
                     key={active ? `txt-${index}` : "idle"}
                     className={
                       "max-w-md mx-auto text-center md:mx-0 md:text-left" +
-                      (active ? " hero-fade-up" : "")
+                      (active ? " hero-stagger" : " opacity-0")
                     }
                   >
                     <p
@@ -184,6 +180,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
                       )}
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </article>

@@ -133,6 +133,12 @@ export default function Footer({
           <p className="text-sm text-white/60 leading-relaxed max-w-sm">
             Empowering students with in-demand skills and practical knowledge for a better future.
           </p>
+          <p className="text-sm text-white/60 leading-relaxed max-w-sm mt-3">
+            Furqan Saeed Technical Institute offers job-oriented professional courses in IT, software and web
+            development, graphic design, digital marketing, freelancing and more. With experienced instructors,
+            hands-on projects, separate classes for boys and girls, and flexible online classes, we help
+            students build real skills and start their careers with confidence.
+          </p>
           <div className="flex items-center gap-2.5 mt-6">
             {socialLinks.map(({ Icon, href, label }) => (
               <a

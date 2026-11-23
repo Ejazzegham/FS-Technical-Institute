@@ -36,12 +36,29 @@ export default function AdminStudentDetailPage() {
   const [addingRecord, setAddingRecord] = useState(false);
   const [busyDate, setBusyDate] = useState<string | null>(null);
 
+  const [loadError, setLoadError] = useState<string | null>(null);
+
   const load = useCallback(async () => {
-    const [s, r] = await Promise.all([fetchStudent(uid), fetchRecentAttendance(uid)]);
-    setStudent(s as Student | null);
-    setRecords(r);
-    setProgressInput((s as Student | null)?.courseProgress ?? 0);
-    setLoading(false);
+    // Load the student and the attendance records independently, so a
+    // problem with one (e.g. attendance permissions) can't leave the page
+    // stuck on "Loading…" forever.
+    try {
+      const s = await fetchStudent(uid);
+      setStudent(s as Student | null);
+      setProgressInput((s as Student | null)?.courseProgress ?? 0);
+      setLoadError(null);
+    } catch (err) {
+      console.error("student load failed", err);
+      setLoadError("Couldn't load this student. Check your connection and that you're signed in as admin.");
+    }
+    try {
+      setRecords(await fetchRecentAttendance(uid));
+    } catch (err) {
+      console.error("attendance load failed", err);
+      setRecords([]);
+    } finally {
+      setLoading(false);
+    }
   }, [uid]);
 
   useEffect(() => {
@@ -119,7 +136,7 @@ export default function AdminStudentDetailPage() {
         <Link href="/admin/students" className="inline-flex items-center gap-1.5 text-sm text-navy/50 hover:text-navy mb-6">
           <ArrowLeft size={14} /> Back to Students
         </Link>
-        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">Student not found.</p>
+        <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">{loadError || "Student not found."}</p>
       </div>
     );
   }

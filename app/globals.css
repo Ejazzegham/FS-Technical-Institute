@@ -39,40 +39,36 @@ h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
 }
 
-/* Hero media (HeroSlider + PageHero): images are framed dead-center on
-   mobile, where the photo sits full-width above stacked, centered text.
-   Each slide's tuned crop (--hero-focus) only kicks in at md+, where the
-   image sits behind a left-aligned text panel and needs to keep its
-   subject clear of that panel. */
-.hero-media {
-  object-position: center;
-}
-@media (min-width: 768px) {
-  .hero-media {
-    object-position: var(--hero-focus, center);
+/* Hero banners: every hero uses the same 12:5 frame (the artwork's own
+   ratio) so images are never cropped and all pages match. On wide screens the
+   sharp image is capped at 1056px and its edges fade into a blurred copy of
+   itself, so the banner still runs edge to edge with square corners. */
+@media (min-width: 1060px) {
+  .hero-stage-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
   }
 }
 
-/* Homepage hero slider: slow ambient zoom on the active slide + a gentle
-   fade-up for its text panel each time it becomes active. */
-@keyframes hero-kenburns {
-  from { transform: scale(1); }
-  to { transform: scale(1.06); }
-}
+/* Gentle fade-up for hero text (no image zoom). */
 @keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.hero-kenburns {
-  animation: hero-kenburns 7s ease-out forwards;
-}
 .hero-fade-up {
-  animation: hero-fade-up 0.7s ease-out both;
+  animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: 0.15s;
 }
+.hero-stagger > * {
+  animation: hero-fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-stagger > *:nth-child(1) { animation-delay: 0.25s; }
+.hero-stagger > *:nth-child(2) { animation-delay: 0.4s; }
+.hero-stagger > *:nth-child(3) { animation-delay: 0.55s; }
+.hero-stagger > *:nth-child(4) { animation-delay: 0.7s; }
 @media (prefers-reduced-motion: reduce) {
-  .hero-kenburns,
-  .hero-fade-up {
+  .hero-fade-up,
+  .hero-stagger > * {
     animation: none !important;
   }
 }

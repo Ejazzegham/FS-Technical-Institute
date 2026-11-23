@@ -1,11 +1,21 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock, BarChart3 } from "lucide-react";
-import type { Course } from "@/lib/data";
+import { courses as staticCourses, type Course } from "@/lib/data";
 import { courseIconMap, courseGradients, courseChipColors } from "@/lib/courseVisuals";
 
 export default function CourseCard({ course, detailed = false }: { course: Course; detailed?: boolean }) {
   const Icon = courseIconMap[course.icon];
+
+  // If the saved image URL is dead (e.g. a deleted upload), fall back to the
+  // built-in image for this course instead of showing a broken-image icon.
+  const fallbackImage = staticCourses.find((c) => c.slug === course.slug)?.image;
+  const [src, setSrc] = useState<string | undefined>(course.image || fallbackImage);
+  const [imgFailed, setImgFailed] = useState(false);
+  const showImage = !!src && !imgFailed;
 
   return (
     <div className="flip-card rounded-2xl h-80 group">
@@ -20,16 +30,20 @@ export default function CourseCard({ course, detailed = false }: { course: Cours
               at every breakpoint/column count, not just the ones we happened to test. */}
           <div
             className={`relative w-full flex-1 min-h-0 overflow-hidden ${
-              course.image ? "bg-white" : `bg-gradient-to-br ${courseGradients[course.icon]} flex items-center justify-center`
+              showImage ? "bg-white" : `bg-gradient-to-br ${courseGradients[course.icon]} flex items-center justify-center`
             }`}
           >
-            {course.image ? (
+            {showImage ? (
               <Image
-                src={course.image}
+                src={src!}
                 alt={course.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 20vw"
                 className="object-contain"
+                onError={() => {
+                  if (fallbackImage && src !== fallbackImage) setSrc(fallbackImage);
+                  else setImgFailed(true);
+                }}
               />
             ) : (
               <Icon size={48} className="text-white/25" />

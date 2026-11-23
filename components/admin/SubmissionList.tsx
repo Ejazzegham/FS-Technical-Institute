@@ -2,10 +2,16 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore";
 import { Trash2, Loader2, ExternalLink, Pencil } from "lucide-react";
 import { db, getFirebaseAuth } from "@/lib/firebase";
 import { describeError } from "@/lib/adminClient";
+
+// Records in these collections have no linked Firebase Auth account or
+// uploaded files, so they can be deleted straight from the browser (the
+// Firestore rules already allow the admin to delete). This doesn't depend on
+// the Firebase Admin SDK being configured on the server.
+const DIRECT_DELETE_COLLECTIONS = ["newsletter_subscribers", "contact_requests"];
 
 export type ColumnDef = {
   key: string;
@@ -79,6 +85,11 @@ export default function SubmissionList({
     if (!confirm("Delete this record? This can't be undone.")) return;
     setDeletingId(id);
     try {
+      if (DIRECT_DELETE_COLLECTIONS.includes(collectionName)) {
+        await deleteDoc(doc(db, collectionName, id));
+        setRows((prev) => (prev ? prev.filter((r) => r._id !== id) : prev));
+        return;
+      }
       // Goes through the server (not a plain client-side deleteDoc) so the
       // linked Firebase Auth account and any uploaded files get removed
       // too, not just the Firestore document — see /api/admin/delete-record.
@@ -96,7 +107,7 @@ export default function SubmissionList({
       await load();
     } catch (err) {
       console.error(err);
-      alert(`Couldn't delete. ${err instanceof Error ? err.message : "Please try again."}`);
+      alert(`Couldn't delete.\n\n${describeError(err)}`);
     } finally {
       setDeletingId(null);
     }

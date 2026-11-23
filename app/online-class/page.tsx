@@ -28,7 +28,7 @@ export default async function OnlineClassPage() {
     <>
       {/* Hero */}
       <PageHero
-        breadcrumb="Home > Online Class"
+        breadcrumb="Home > Online Classes"
         title={
           <>
             Learn From Anywhere,

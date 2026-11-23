@@ -44,7 +44,6 @@ export default function PageHero({
   mobileImage,
   alt,
   theme = "light",
-  focus = "center",
   primaryCta,
   secondaryCta,
   chips,
@@ -52,44 +51,50 @@ export default function PageHero({
   const light = theme === "light";
 
   return (
-    <section className="relative w-full overflow-hidden bg-navy rounded-b-[3rem]">
-      <div className="relative w-full md:aspect-[12/5] md:max-h-[480px]">
-        {/* Image */}
-        <div className="relative aspect-[12/5] md:aspect-auto md:absolute md:inset-0 md:h-full overflow-hidden">
-          <Image
-            src={mobileImage ?? image}
-            alt={alt}
-            fill
-            priority
-            sizes="100vw"
-            className={"object-cover block md:hidden" + (mobileImage ? "" : " hero-media")}
-            style={mobileImage ? undefined : ({ "--hero-focus": focus } as React.CSSProperties)}
-          />
-          <Image
-            src={image}
-            alt={alt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover hidden md:block"
-            style={{ objectPosition: focus }}
-          />
-          {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
-          <div
-            className={
-              "hidden md:block absolute inset-0 pointer-events-none " +
-              (light
-                ? "bg-gradient-to-r from-white/95 from-0% via-white/55 via-32% to-white/0 to-58%"
-                : "bg-gradient-to-r from-navy/90 from-0% via-navy/50 via-32% to-navy/0 to-58%")
-            }
-          />
-          {/* Mobile scrim: settles the image under the panel above it */}
-          <div className="md:hidden absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
+    <section className="relative w-full overflow-hidden bg-navy">
+      <div className="relative w-full">
+        {/* Soft full-width backdrop (desktop only): the same artwork, blurred, so the
+            banner always spans edge to edge while the sharp image below stays uncropped. */}
+        <div className="hidden md:block absolute inset-0 overflow-hidden" aria-hidden="true">
+          <Image src={image} alt="" fill sizes="100vw" className="object-cover scale-110 blur-2xl opacity-90" />
         </div>
 
+        {/* Stage: every hero shares this exact 12:5 frame (the artwork's own ratio),
+            so nothing is ever cropped and all pages match. */}
+        <div className="relative mx-auto w-full md:max-w-[1056px]">
+          <div className="relative aspect-[12/5] overflow-hidden hero-stage-mask">
+            <Image
+              src={mobileImage ?? image}
+              alt={alt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover block md:hidden"
+            />
+            <Image
+              src={image}
+              alt={alt}
+              fill
+              priority
+              sizes="(min-width: 1056px) 1056px, 100vw"
+              className="object-cover hidden md:block"
+            />
+            {/* Desktop scrim: reinforces contrast just behind the text, then clears so the graphic stays vivid */}
+            <div
+              className={
+                "hidden md:block absolute inset-0 pointer-events-none " +
+                (light
+                  ? "bg-gradient-to-r from-white/95 from-0% via-white/55 via-32% to-white/0 to-58%"
+                  : "bg-gradient-to-r from-navy/90 from-0% via-navy/50 via-32% to-navy/0 to-58%")
+              }
+            />
+            {/* Mobile scrim */}
+            <div className="md:hidden absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
+          </div>
+
         {/* Text panel: overlaid on the image at md+, a solid navy card below it on mobile */}
-        <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-16">
-          <div className="max-w-md mx-auto text-center md:mx-0 md:text-left">
+        <div className="relative bg-navy md:bg-transparent md:absolute md:inset-y-0 md:left-0 md:flex md:items-center md:w-[58%] lg:w-[54%] px-6 py-7 md:px-10 lg:px-14">
+          <div className="max-w-md mx-auto text-center md:mx-0 md:text-left hero-fade-up">
             <p
               className={
                 "text-[11px] mb-3 text-white/50 " + (light ? "md:text-navy/40" : "md:text-white/50")
@@ -169,6 +174,7 @@ export default function PageHero({
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
 

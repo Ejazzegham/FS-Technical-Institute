@@ -737,7 +737,7 @@ export const navLinks: { href: string; label: string }[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
   { href: "/courses", label: "Courses" },
-  { href: "/online-class", label: "Online Class" },
+  { href: "/online-class", label: "Online Classes" },
   { href: "/gallery", label: "Gallery" },
   { href: "/admissions", label: "Admissions" },
   { href: "/verification", label: "Verification" },

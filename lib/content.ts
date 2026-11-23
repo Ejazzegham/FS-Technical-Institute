@@ -53,7 +53,15 @@ async function safeGetDocs(collectionName: string) {
 export async function getCourses(): Promise<Course[]> {
   const docs = await safeGetDocs("site_courses");
   if (!docs || docs.length === 0) return staticCourses;
-  return dedupeCourses(docs.map((d) => d.data() as Course));
+  return dedupeCourses(docs.map((d) => withDefaultImage(d.data() as Course)));
+}
+
+// A course saved without an image falls back to the built-in picture for
+// the same slug, so a course card never loses its image.
+function withDefaultImage(c: Course): Course {
+  if (c.image) return c;
+  const fallback = staticCourses.find((s) => s.slug === c.slug)?.image;
+  return fallback ? { ...c, image: fallback } : c;
 }
 
 // The admin panel can end up with the same course saved twice (e.g. one
@@ -76,7 +84,7 @@ function dedupeCourses(list: Course[]): Course[] {
 export async function getCourseBySlug(slug: string): Promise<Course | undefined> {
   try {
     const snap = await getDoc(doc(db, "site_courses", slug));
-    if (snap.exists()) return snap.data() as Course;
+    if (snap.exists()) return withDefaultImage(snap.data() as Course);
   } catch (err) {
     console.error("content: failed to read course", slug, err);
   }
