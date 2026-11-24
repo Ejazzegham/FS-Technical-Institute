@@ -4,16 +4,15 @@ import { useEffect, useState } from "react";
 import { Phone, Mail, MapPin, Clock, MessageCircleMore } from "lucide-react";
 import { usePortal } from "@/components/portal/PortalContext";
 import ContactForm from "@/components/ContactForm";
-import { contactInfo as defaultContactInfo } from "@/lib/data";
-import { getContactInfo, type ContactInfo } from "@/lib/content";
+import { getContactInfo, EMPTY_CONTACT, type ContactInfo } from "@/lib/content";
 import { whatsappLink } from "@/lib/portalUtils";
 
 export default function PortalSupportPage() {
   const { student } = usePortal();
-  const [contactInfo, setContactInfo] = useState<ContactInfo>(defaultContactInfo);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>(EMPTY_CONTACT);
 
   useEffect(() => {
-    getContactInfo().then(setContactInfo).catch(() => setContactInfo(defaultContactInfo));
+    getContactInfo().then(setContactInfo).catch(() => setContactInfo(EMPTY_CONTACT));
   }, []);
 
   return (

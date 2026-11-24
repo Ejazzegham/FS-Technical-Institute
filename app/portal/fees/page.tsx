@@ -3,18 +3,19 @@
 import { useEffect, useState } from "react";
 import { Wallet, BadgeDollarSign, Info, Phone, MapPin } from "lucide-react";
 import { usePortal } from "@/components/portal/PortalContext";
-import { courses, contactInfo as defaultContactInfo, feeSettings as defaultFeeSettings } from "@/lib/data";
-import { getFeeSettings, getContactInfo, type FeeSettings, type ContactInfo } from "@/lib/content";
+import { getFeeSettings, getContactInfo, EMPTY_FEES, EMPTY_CONTACT, type FeeSettings, type ContactInfo } from "@/lib/content";
+import { useCourses } from "@/lib/useCourses";
 
 export default function PortalFeesPage() {
   const { student } = usePortal();
+  const courses = useCourses();
   const course = courses.find((c) => c.title === student?.course);
-  const [fees, setFees] = useState<FeeSettings>(defaultFeeSettings);
-  const [contactInfo, setContactInfo] = useState<ContactInfo>(defaultContactInfo);
+  const [fees, setFees] = useState<FeeSettings>(EMPTY_FEES);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>(EMPTY_CONTACT);
 
   useEffect(() => {
-    getFeeSettings().then(setFees).catch(() => setFees(defaultFeeSettings));
-    getContactInfo().then(setContactInfo).catch(() => setContactInfo(defaultContactInfo));
+    getFeeSettings().then(setFees).catch(() => setFees(EMPTY_FEES));
+    getContactInfo().then(setContactInfo).catch(() => setContactInfo(EMPTY_CONTACT));
   }, []);
 
   return (

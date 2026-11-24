@@ -11,7 +11,7 @@ import { describeError } from "@/lib/adminClient";
 // uploaded files, so they can be deleted straight from the browser (the
 // Firestore rules already allow the admin to delete). This doesn't depend on
 // the Firebase Admin SDK being configured on the server.
-const DIRECT_DELETE_COLLECTIONS = ["newsletter_subscribers", "contact_requests"];
+const DIRECT_DELETE_COLLECTIONS = ["newsletter_subscribers", "contact_requests", "demo_requests"];
 
 export type ColumnDef = {
   key: string;

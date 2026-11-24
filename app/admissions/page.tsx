@@ -9,13 +9,13 @@ import {
 } from "lucide-react";
 import AdmissionForm from "@/components/AdmissionForm";
 import PageHero from "@/components/PageHero";
-import { admissionProcess, requiredDocuments } from "@/lib/data";
-import { getCourses } from "@/lib/content";
+import { getCourses, getAdmissionsContent } from "@/lib/content";
 
 const docIcons = [FileText, ImageIcon, ShieldCheck, MapPinned];
 
 export default async function AdmissionsPage() {
-  const courses = await getCourses();
+  const [courses, admissions] = await Promise.all([getCourses(), getAdmissionsContent()]);
+  const { process: admissionProcess, documents: requiredDocuments, batches } = admissions;
   return (
     <>
       {/* Hero */}
@@ -34,7 +34,7 @@ export default async function AdmissionsPage() {
 
       {/* Form + process */}
       <section id="admission-form" className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-20 grid lg:grid-cols-2 gap-8">
-        <AdmissionForm courses={courses} />
+        <AdmissionForm courses={courses} batches={batches} />
 
         <div className="space-y-8">
           <div className="bg-white rounded-2xl border border-black/5 shadow-sm p-6 md:p-7">

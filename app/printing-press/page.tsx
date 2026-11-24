@@ -1,146 +1,39 @@
 import Image from "next/image";
-import { Printer, LayoutTemplate, Layers, Scissors, Stamp, Truck, PenTool, Phone, MapPin } from "lucide-react";
+import { Printer, LayoutTemplate, PenTool, Phone, MapPin } from "lucide-react";
 import PrintingPressSlider from "@/components/PrintingPressSlider";
-import HeroSlider, { type HeroSlide } from "@/components/HeroSlider";
-import { getContactInfo } from "@/lib/content";
-
-// Kept independent from the shared site contact number so it stays fixed
-// even if the institute's main phone number (header/footer/contact page)
-// changes in the future.
-const PRESS_PHONE = "+92346-7640392";
-
-const pressHeroSlides: HeroSlide[] = [
-  {
-    image: "/images/printing-press/hero-1-panaflex.png",
-    mobileImage: "/images/printing-press/hero-1-panaflex-mobile.png",
-    alt: "Panaflex printing machine producing a large flex banner",
-    eyebrow: "LARGE FORMAT PRINTING",
-    title: "Panaflex & Banner Printing",
-    description:
-      "Vibrant, weatherproof banners, hoardings and signage — printed sharp and built to last.",
-    theme: "light",
-    focus: "65% center",
-    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
-    secondaryCta: { label: "View Services", href: "#services" },
-  },
-  {
-    image: "/images/printing-press/hero-2-offset.png",
-    mobileImage: "/images/printing-press/hero-2-offset-mobile.png",
-    alt: "Offset printing press producing colorful printed sheets",
-    eyebrow: "OFFSET PRINTING",
-    title: "High-Volume Offset Printing",
-    description:
-      "Crisp, consistent color for brochures, stationery and bulk print runs — production-scale quality.",
-    theme: "light",
-    focus: "65% center",
-    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
-    secondaryCta: { label: "View Services", href: "#services" },
-  },
-  {
-    image: "/images/printing-press/hero-3-digital.png",
-    mobileImage: "/images/printing-press/hero-3-digital-mobile.png",
-    alt: "Digital printing machine producing full-color printed sheets",
-    eyebrow: "DIGITAL PRINTING",
-    title: "Precision Digital Printing",
-    description:
-      "Sharp detail and fast turnaround for short runs, proofs, and full-color photo-quality prints.",
-    theme: "light",
-    focus: "65% center",
-    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
-    secondaryCta: { label: "View Services", href: "#services" },
-  },
-  {
-    image: "/images/printing-press/hero-4-embossing.png",
-    mobileImage: "/images/printing-press/hero-4-embossing-mobile.png",
-    alt: "Furqan Saeed Printing Press embossing and stamp-making machine",
-    eyebrow: "STAMP & SEAL MAKING",
-    title: "Custom Stamps, Seals & Embossing",
-    description:
-      "Precision-engineered stamps and embossed finishes for certificates, ID cards and official documents.",
-    theme: "light",
-    focus: "62% center",
-    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
-    secondaryCta: { label: "View Services", href: "#services" },
-  },
-  {
-    image: "/images/printing-press/hero-5-press.png",
-    mobileImage: "/images/printing-press/hero-5-press-mobile.png",
-    alt: "Furqan Saeed Printing Press large-format press and finishing equipment",
-    eyebrow: "FURQAN SAEED PRINTING PRESS",
-    title: "Complete Printing Solutions, Under One Roof",
-    description:
-      "From design to finishing — professional printing equipment delivering quality and precision on every job.",
-    theme: "light",
-    focus: "65% center",
-    primaryCta: { label: "Call Now: " + PRESS_PHONE, href: "tel:" + PRESS_PHONE.replace(/\s/g, "") },
-    secondaryCta: { label: "View Services", href: "#services" },
-  },
-];
-
-const highlights = [
-  { icon: Printer, label: "High Quality Printing" },
-  { icon: LayoutTemplate, label: "Large Format Printing" },
-  { icon: Layers, label: "Paper & Card Printing" },
-  { icon: Scissors, label: "Paper Cutting Services" },
-  { icon: Stamp, label: "Stamp & Seal Making" },
-  { icon: Truck, label: "Fast Delivery On Time" },
-  { icon: PenTool, label: "Designing Support" },
-];
-
-const printingServices = [
-  "Visiting cards & business cards",
-  "Letterheads & envelopes",
-  "Brochures, flyers & pamphlets",
-  "Posters, catalogs & magazines",
-  "Booklets, books, notebooks & registers",
-  "Forms, invoices, receipts & vouchers",
-  "Certificates & ID cards",
-  "Invitation, wedding & greeting cards",
-  "Calendars, stickers & labels",
-  "Product packaging, folders & files",
-  "Menus, danglers & tags",
-  "Promotional materials",
-];
-
-const largeFormatServices = [
-  "Panaflex / Flex printing",
-  "Vinyl printing & banners",
-  "Hoardings & shop signs",
-  "Promotional boards & event backdrops",
-  "Wall graphics & vehicle branding",
-  "Window graphics",
-  "Roll-up banners & standees",
-  "Billboard printing",
-];
-
-const finishingServices = [
-  "Graphic & layout designing",
-  "Logo placement & image editing",
-  "Lamination & cutting",
-  "Binding, spiral & hard binding",
-  "Folding, creasing & perforation",
-  "Stitching & mounting",
-];
+import HeroSlider from "@/components/HeroSlider";
+import { getContactInfo, getHeroSlides, getPrintingPressContent } from "@/lib/content";
+import { iconFor } from "@/lib/iconMap";
 
 export default async function PrintingPressPage() {
-  const contactInfo = await getContactInfo();
+  const [contactInfo, pressHeroSlides, press] = await Promise.all([
+    getContactInfo(),
+    getHeroSlides("press"),
+    getPrintingPressContent(),
+  ]);
+  // The press keeps its own phone, independent of the institute's main number.
+  const PRESS_PHONE = press.phone;
+  const { highlights, printingServices, largeFormatServices, finishingServices } = press;
 
   return (
     <>
       {/* Hero */}
-      <HeroSlider slides={pressHeroSlides} />
+      {pressHeroSlides.length > 0 && <HeroSlider slides={pressHeroSlides} />}
 
       {/* Highlights strip */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 mt-6 md:mt-8">
         <div className="bg-white rounded-2xl border border-black/5 shadow-sm px-4 md:px-8 py-6 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
-          {highlights.map(({ icon: Icon, label }) => (
+          {highlights.map(({ icon, label }) => {
+            const Icon = iconFor(icon);
+            return (
             <div key={label} className="flex flex-col items-center text-center gap-2">
               <span className="w-11 h-11 rounded-full border-2 border-navy/10 flex items-center justify-center text-navy">
                 <Icon size={18} />
               </span>
               <p className="text-[11px] font-semibold text-navy/70 leading-tight">{label}</p>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -180,7 +73,7 @@ export default async function PrintingPressPage() {
 
       {/* Slider */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-20">
-        <PrintingPressSlider />
+        <PrintingPressSlider slides={press.sliderImages} />
       </section>
 
       {/* Services */}

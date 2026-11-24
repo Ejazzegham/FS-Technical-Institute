@@ -1,22 +1,13 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
-import { contactInfo as defaultContactInfo } from "@/lib/data";
 import type { ContactInfo } from "@/lib/content";
 
 // Persistent floating WhatsApp button shown on every public page (via
 // SiteChrome). Always links to the same FSTI WhatsApp number used
-// throughout the site (lib/data.ts -> contactInfo.whatsapp), so updating
-// the number in one place updates this button too.
-export default function WhatsAppButton({
-  contactInfo = defaultContactInfo,
-}: {
-  contactInfo?: ContactInfo;
-}) {
-  // Defensive: fall back to the known-good number if a caller ever passes a
-  // contactInfo object that's missing `whatsapp` (e.g. a partially-saved
-  // Firestore doc) — .replace() on undefined would otherwise crash here.
-  const digits = (contactInfo?.whatsapp || defaultContactInfo.whatsapp).replace(/[^\d]/g, "");
+// throughout the site (Firestore site_settings/contact -> whatsapp).
+export default function WhatsAppButton({ contactInfo }: { contactInfo?: ContactInfo }) {
+  const digits = (contactInfo?.whatsapp ?? "").replace(/[^\d]/g, "");
   if (!digits) return null;
 
   const href = `https://wa.me/${digits}?text=${encodeURIComponent(

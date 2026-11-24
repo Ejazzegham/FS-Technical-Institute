@@ -14,7 +14,7 @@ import {
   Languages,
   GraduationCap,
 } from "lucide-react";
-import type { Course } from "@/lib/data";
+import type { Course } from "@/lib/types";
 
 /**
  * Single source of truth for how each course "icon" key is represented visually

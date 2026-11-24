@@ -31,20 +31,30 @@ export function YoutubeIcon({ size = 16, ...props }: IconProps) {
   );
 }
 
-export const socialLinks = [
-  {
-    label: "Facebook",
-    Icon: FacebookIcon,
-    href: "https://www.facebook.com/people/Furqan-Saeed-Technical-Institute/61591534803467/",
-  },
-  {
-    label: "Twitter",
-    Icon: TwitterIcon,
-    href: "https://x.com/fstechins",
-  },
-  {
-    label: "YouTube",
-    Icon: YoutubeIcon,
-    href: "https://www.youtube.com/@FurqanSaeedTechnicalInstitute",
-  },
-];
+export type SocialLink = { label: string; href: string };
+
+function GenericLinkIcon({ size = 16, ...props }: IconProps) {
+  return (
+    <svg {...base(size)} {...props}>
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" fill="none" stroke="currentColor" strokeWidth="1.4" />
+    </svg>
+  );
+}
+
+/** Attach an icon to each admin-managed social link (matched by label). */
+export function resolveSocialLinks(links: SocialLink[] = []) {
+  return links
+    .filter((l) => l.href)
+    .map((l) => {
+      const k = l.label.toLowerCase();
+      const Icon = k.includes("facebook")
+        ? FacebookIcon
+        : k.includes("twitter") || k === "x"
+        ? TwitterIcon
+        : k.includes("youtube")
+        ? YoutubeIcon
+        : GenericLinkIcon;
+      return { ...l, Icon };
+    });
+}

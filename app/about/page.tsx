@@ -1,66 +1,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Target, Eye, Gem, Check, ArrowRight, GraduationCap } from "lucide-react";
-import { getStats } from "@/lib/content";
+import { getStats, getAboutContent } from "@/lib/content";
 import PageHero from "@/components/PageHero";
 
-const missionVisionValues = [
-  {
-    icon: Target,
-    title: "Our Mission",
-    desc: "To deliver quality technical education and practical training that empowers students to achieve their career goals and become responsible professionals.",
-  },
-  {
-    icon: Eye,
-    title: "Our Vision",
-    desc: "To be a leading technical institute, recognized for excellence in education, innovation, and producing skilled professionals for a better tomorrow.",
-  },
-  {
-    icon: Gem,
-    title: "Our Values",
-    list: ["Quality Education", "Practical Learning", "Student Success", "Integrity & Innovation"],
-  },
-];
-
-const commitments = [
-  "Experienced and Certified Instructors",
-  "Modern Labs & Advanced Tools",
-  "Industry-Oriented Curriculum",
-  "Hands-on Practical Training",
-  "Career Guidance & Support",
-];
-
-const leadership = [
-  {
-    name: "Mr. Mian Furqan Saeed",
-    role: "Admin",
-    image: "/images/team/admin-furqan-saeed.jpg",
-    bio: [
-      "Mr. Mian Furqan Saeed is a dedicated and responsible administrator who plays an important role in the smooth and effective management of the institute. He focuses on maintaining professional standards, student support, administrative coordination, and a positive learning environment.",
-      "With his organized approach and commitment to excellence, Mr. Mian Furqan Saeed helps ensure that the institute's academic and administrative activities run efficiently. His goal is to support students and staff while contributing to the continued growth and success of FS Technical Institute.",
-    ],
-  },
-  {
-    name: "Mr. Muhammad Mubashir Mukhtar",
-    role: "Principal",
-    image: "/images/team/principal-mubashir-mukhtar.jpg",
-    bio: [
-      "Mr. Muhammad Mubashir Mukhtar is a dedicated and visionary Computer/IT Principal committed to providing quality technical education and practical digital skills. With a strong focus on computer education, professional IT training, and skill development, he encourages students to learn, innovate, and prepare for the demands of the modern digital world.",
-      "Under his leadership, the institute aims to create a professional learning environment where students can develop practical computer skills, confidence, and career-ready expertise. His mission is to empower students with knowledge and skills that help them build a successful future in the technology-driven world.",
-    ],
-  },
-];
-
 export default async function AboutPage() {
-  const aboutStats = await getStats("about");
+  const [aboutStats, about] = await Promise.all([getStats("about"), getAboutContent()]);
+  const missionVisionValues = [
+    { icon: Target, title: "Our Mission", desc: about.mission, list: undefined as string[] | undefined },
+    { icon: Eye, title: "Our Vision", desc: about.vision, list: undefined as string[] | undefined },
+    { icon: Gem, title: "Our Values", desc: "", list: about.values },
+  ];
+  const { commitments, leadership } = about;
   return (
     <>
       {/* Hero */}
       <PageHero
         breadcrumb="Home > About Us"
         title="About Us"
-        tagline="Empowering Students. Building Futures."
-        description="Furqan Saeed Technical Institute is dedicated to providing quality technical education and practical training to help students gain in-demand skills and build successful careers."
+        tagline={about.heroTagline}
+        description={about.heroDescription}
         image="/images/about-hero.png"
         mobileImage="/images/about-hero-mobile.png"
         alt="Furqan Saeed Technical Institute — student-focused, quality education, practical learning and career growth"
@@ -73,22 +32,10 @@ export default async function AboutPage() {
       {/* Who we are */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <p className="text-gold-dark text-xs font-bold tracking-widest mb-2">WHO WE ARE</p>
-          <h2 className="font-display font-bold text-navy text-2xl md:text-3xl mb-5 leading-snug">
-            Shaping Futures Through
-            <br />
-            Quality Education
-          </h2>
-          <p className="text-sm text-navy/60 leading-relaxed mb-4">
-            At Furqan Saeed Technical Institute, we believe in empowering individuals through
-            quality education, practical training, and continuous learning. Our
-            industry-focused courses are designed to equip students with the skills and
-            confidence needed to succeed in today&apos;s competitive world.
-          </p>
-          <p className="text-sm text-navy/60 leading-relaxed">
-            We are committed to building a community of learners, innovators, and
-            professionals who are ready to make a difference in the world.
-          </p>
+          <p className="text-gold-dark text-xs font-bold tracking-widest mb-2">{about.whoEyebrow}</p>
+          <h2 className="font-display font-bold text-navy text-2xl md:text-3xl mb-5 leading-snug">{about.whoTitle}</h2>
+          <p className="text-sm text-navy/60 leading-relaxed mb-4">{about.whoText1}</p>
+          <p className="text-sm text-navy/60 leading-relaxed">{about.whoText2}</p>
         </div>
         <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-gradient-to-br from-slate-800 to-navy-dark">
           <Image
@@ -105,13 +52,8 @@ export default async function AboutPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-20">
         <div className="text-center max-w-xl mx-auto mb-12">
           <p className="text-gold-dark text-xs font-bold tracking-widest mb-2">OUR LEADERSHIP</p>
-          <h2 className="font-display font-bold text-navy text-2xl md:text-3xl mb-4 leading-snug">
-            Meet the People Behind FSTI
-          </h2>
-          <p className="text-sm text-navy/55 leading-relaxed">
-            Guided by experienced leadership committed to academic excellence, professional
-            standards, and student success.
-          </p>
+          <h2 className="font-display font-bold text-navy text-2xl md:text-3xl mb-4 leading-snug">{about.leadershipTitle}</h2>
+          <p className="text-sm text-navy/55 leading-relaxed">{about.leadershipText}</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
           {leadership.map((member) => (
@@ -119,6 +61,7 @@ export default async function AboutPage() {
               key={member.name}
               className="bg-white rounded-2xl border border-black/5 shadow-sm overflow-hidden flex flex-col sm:flex-row"
             >
+              {member.image && (
               <div className="relative aspect-[4/5] sm:aspect-auto sm:w-[42%] sm:min-h-[320px] shrink-0">
                 <Image
                   src={member.image}
@@ -128,6 +71,7 @@ export default async function AboutPage() {
                   className="object-cover"
                 />
               </div>
+              )}
               <div className="p-6 md:p-7 flex flex-col justify-center">
                 <p className="text-gold-dark text-xs font-bold tracking-widest mb-1 uppercase">
                   {member.role}

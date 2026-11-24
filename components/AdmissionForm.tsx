@@ -17,17 +17,17 @@ import {
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseAuth, db } from "@/lib/firebase";
-import {
-  courses as defaultCourses,
-  batches,
-  qualifications,
-  religions,
-  bloodGroups,
-  type Course,
-} from "@/lib/data";
+import { qualifications, religions, bloodGroups } from "@/lib/formOptions";
+import type { Course } from "@/lib/types";
 import PremiumSelect from "@/components/PremiumSelect";
 
-export default function AdmissionForm({ courses = defaultCourses }: { courses?: Course[] }) {
+export default function AdmissionForm({
+  courses = [],
+  batches = [],
+}: {
+  courses?: Course[];
+  batches?: string[];
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [photoName, setPhotoName] = useState<string | null>(null);

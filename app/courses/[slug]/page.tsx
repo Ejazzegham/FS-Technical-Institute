@@ -33,8 +33,8 @@ import {
 } from "lucide-react";
 import CourseCard from "@/components/CourseCard";
 import CTABanner from "@/components/CTABanner";
-import { courses, courseHighlights, type Course } from "@/lib/data";
-import { getCourses, getCourseBySlug, getContactInfo, getFeeSettings } from "@/lib/content";
+import type { Course } from "@/lib/types";
+import { getCourses, getCourseBySlug, getContactInfo, getFeeSettings, getCourseHighlights } from "@/lib/content";
 import { detectCurriculumGroups, detectPracticeGroups } from "@/lib/curriculum-grouping";
 
 const iconMap: Record<Course["icon"], typeof Code2> = {
@@ -72,7 +72,7 @@ const gradients: Record<string, string> = {
 };
 
 export async function generateStaticParams() {
-  return courses.map((course) => ({ slug: course.slug }));
+  return (await getCourses()).map((course) => ({ slug: course.slug }));
 }
 
 export async function generateMetadata({
@@ -95,11 +95,12 @@ export default async function CourseDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [course, allCourses, contactInfo, feeSettings] = await Promise.all([
+  const [course, allCourses, contactInfo, feeSettings, courseHighlights] = await Promise.all([
     getCourseBySlug(slug),
     getCourses(),
     getContactInfo(),
     getFeeSettings(),
+    getCourseHighlights(),
   ]);
   if (!course) notFound();
 
@@ -120,8 +121,16 @@ export default async function CourseDetailPage({
       ? course.practiceGroups
       : detectPracticeGroups(course.projects);
 
+  const courseLd = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: course.title,
+    description: course.overview || course.description,
+    provider: { "@type": "EducationalOrganization", name: "Furqan Saeed Technical Institute" },
+  };
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(courseLd) }} />
       {/* Hero */}
       <section className="relative bg-navy overflow-hidden">
         <div className="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />

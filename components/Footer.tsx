@@ -4,22 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { MapPin, Phone, Mail, Clock, ArrowRight, Send } from "lucide-react";
-import { socialLinks } from "@/components/SocialIcons";
-import { contactInfo as defaultContactInfo, courses as staticCourses } from "@/lib/data";
+import { resolveSocialLinks, type SocialLink } from "@/components/SocialIcons";
 import type { ContactInfo } from "@/lib/content";
 
 type FooterCourse = { slug: string; title: string };
-
-const quickLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/courses", label: "Courses" },
-  { href: "/admissions", label: "Admissions" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/verification", label: "Verification" },
-  { href: "/printing-press", label: "Printing Press" },
-  { href: "/contact", label: "Contact" },
-];
 
 const MAX_FOOTER_COURSES = 6;
 
@@ -35,18 +23,23 @@ const linkClass =
   "group inline-flex items-center gap-1.5 text-sm text-white/65 hover:text-gold transition-colors";
 
 export default function Footer({
-  contactInfo = defaultContactInfo,
+  contactInfo,
   courses,
+  quickLinks = [],
+  social = [],
 }: {
-  contactInfo?: ContactInfo;
+  contactInfo: ContactInfo;
   courses?: FooterCourse[];
+  quickLinks?: { href: string; label: string }[];
+  social?: SocialLink[];
 }) {
+  const socialLinks = resolveSocialLinks(social);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
 
   // Link every course to its own detail page (/courses/<slug>). Uses the live
   // course list when provided, falling back to the built-in list.
-  const footerCourses = (courses && courses.length > 0 ? courses : staticCourses)
+  const footerCourses = (courses ?? [])
     .filter((c) => c.slug)
     .slice(0, MAX_FOOTER_COURSES);
 

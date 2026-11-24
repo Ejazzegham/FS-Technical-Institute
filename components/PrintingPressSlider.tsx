@@ -4,22 +4,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const slides = [
-  { src: "/images/printing-press/s1.png", alt: "Printing press — brand collateral and large-format printing" },
-  { src: "/images/printing-press/s2.png", alt: "Printing press — stamp and seal making" },
-  { src: "/images/printing-press/s3.png", alt: "Printing press — paper cutting services" },
-  { src: "/images/printing-press/s4.png", alt: "Printing press — Panaflex and banner printing" },
-];
 
-export default function PrintingPressSlider() {
+export default function PrintingPressSlider({ slides }: { slides: { src: string; alt: string }[] }) {
   const [active, setActive] = useState(0);
+  const count = slides.length;
 
   useEffect(() => {
+    if (count <= 1) return;
     const timer = setInterval(() => {
-      setActive((i) => (i + 1) % slides.length);
+      setActive((i) => (i + 1) % count);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [count]);
+
+  if (count === 0) return null;
 
   const prev = () => setActive((i) => (i - 1 + slides.length) % slides.length);
   const next = () => setActive((i) => (i + 1) % slides.length);

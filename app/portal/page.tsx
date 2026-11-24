@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 import { usePortal } from "@/components/portal/PortalContext";
 import StudentAvatar from "@/components/portal/StudentAvatar";
-import { courses } from "@/lib/data";
 import { getLiveClasses, getRecordedLectures } from "@/lib/content";
-import type { LiveClass, RecordedLecture } from "@/lib/data";
+import type { LiveClass, RecordedLecture } from "@/lib/types";
+import { useCourses } from "@/lib/useCourses";
 import { courseIconMap, courseChipColors } from "@/lib/courseVisuals";
 import { firstName, formatTimestamp } from "@/lib/portalUtils";
 
@@ -33,6 +33,7 @@ const quickLinks = [
 
 export default function PortalDashboard() {
   const { student } = usePortal();
+  const courses = useCourses();
   const [liveClasses, setLiveClasses] = useState<LiveClass[]>([]);
   const [recordedLectures, setRecordedLectures] = useState<RecordedLecture[]>([]);
   const [loading, setLoading] = useState(true);

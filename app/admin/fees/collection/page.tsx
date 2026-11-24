@@ -6,7 +6,7 @@ import { Loader2, Search, Check, X, Printer, AlertTriangle, UserRound } from "lu
 import FeeTabs from "@/components/admin/FeeTabs";
 import { describeError } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
-import { courses as staticCourses, feeSettings as defaultFeeSettings, type Course } from "@/lib/data";
+import type { Course } from "@/lib/types";
 import { createNotification } from "@/lib/notifications";
 import {
   addFeePayment,
@@ -42,7 +42,7 @@ const labelCls = "block text-xs font-semibold text-navy/60 mb-1.5";
 export default function AdminFeeCollectionPage() {
   const [students, setStudents] = useState<StudentRow[] | null>(null);
   const [courseFees, setCourseFees] = useState<Record<string, number>>({});
-  const [admissionFee, setAdmissionFee] = useState(parseFeeAmount(defaultFeeSettings.admissionFee));
+  const [admissionFee, setAdmissionFee] = useState(0);
   const [recent, setRecent] = useState<FeePayment[] | null>(null);
 
   const [search, setSearch] = useState("");
@@ -76,13 +76,9 @@ export default function AdminFeeCollectionPage() {
       }
     })();
 
-    // Course monthly fees: prefer what the admin edited in Firestore,
-    // fall back to the built-in defaults.
+    // Course monthly fees, straight from the admin-managed courses.
     (async () => {
       const fees: Record<string, number> = {};
-      staticCourses.forEach((c) => {
-        fees[c.title] = parseFeeAmount(c.monthlyFee);
-      });
       try {
         const snap = await getDocs(collection(db, "site_courses"));
         snap.docs.forEach((d) => {
@@ -90,7 +86,7 @@ export default function AdminFeeCollectionPage() {
           if (c.title) fees[c.title] = parseFeeAmount(c.monthlyFee);
         });
       } catch {
-        /* keep defaults */
+        /* leave fees empty */
       }
       setCourseFees(fees);
     })();

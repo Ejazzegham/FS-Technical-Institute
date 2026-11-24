@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheck, Clock, FileCheck2, Headphones } from "lucide-react";
 import RegisterForm from "@/components/RegisterForm";
-import { getCourses } from "@/lib/content";
+import { getCourses, getAdmissionsContent } from "@/lib/content";
 
 const trustStrip = [
   { icon: ShieldCheck, title: "Secure", subtitle: "& Reliable" },
@@ -12,7 +12,7 @@ const trustStrip = [
 ];
 
 export default async function RegisterPage() {
-  const courses = await getCourses();
+  const [courses, admissions] = await Promise.all([getCourses(), getAdmissionsContent()]);
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <div className="flex-1 max-w-5xl mx-auto w-full px-6 py-10">
@@ -35,7 +35,7 @@ export default async function RegisterPage() {
           </p>
         </div>
 
-        <RegisterForm courses={courses} />
+        <RegisterForm courses={courses} batches={admissions.batches} />
       </div>
 
       <div className="bg-navy">

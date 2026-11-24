@@ -38,3 +38,38 @@ shows — it's a convenience layer. Someone could bypass it entirely (e.g. by
 calling Firestore directly), so the Firestore rules are what actually stop
 an unauthorized account from reading or writing admin data, regardless of
 what the UI does.
+
+---
+
+## Content now lives in Firestore (no hardcoded site data)
+
+The public site no longer ships with built-in content. Every page reads from
+Firestore, and the starter content exists in exactly one place:
+`lib/seedData.ts`, which only `/admin/seed` imports.
+
+**After deploying (or on a fresh Firebase project):**
+
+1. Publish the updated `firestore.rules` (new: `site_content`, `site_faqs`,
+   `site_instructors`, `demo_requests`).
+2. Sign in at `/admin/login` → **Setup → Seed Content → Run Seed**. By default
+   it skips anything that already has data, so it never overwrites edits.
+3. Edit text, banners, menus and links in **Page Content**; FAQs and Faculty
+   have their own pages; demo-class bookings arrive under **Demo Requests**.
+
+If a collection is empty the related section is simply hidden.
+
+Optional: set `NEXT_PUBLIC_SITE_URL` (e.g. `https://your-domain.com`) so the
+sitemap, canonical URLs and structured data use your real domain.
+
+## New premium features
+
+| Feature | Route | Managed in |
+| --- | --- | --- |
+| Free demo class booking | `/demo-class` | Admin → Demo Requests |
+| Course Finder quiz | `/course-finder` | uses your live courses |
+| Fee Calculator (printable) | `/fee-calculator` | Courses + Fee Settings |
+| Faculty page | `/faculty` | Admin → Faculty |
+| FAQ page + home FAQ (with Google FAQ markup) | `/faq` | Admin → FAQs |
+| Site search (Ctrl/Cmd+K or `/`) | every page | automatic |
+| Announcement bar | every page | Page Content → Announcement bar |
+| SEO: sitemap, robots, structured data | `/sitemap.xml` | automatic |
