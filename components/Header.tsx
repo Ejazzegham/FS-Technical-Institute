@@ -23,7 +23,8 @@ import {
   PhoneCall,
   type LucideIcon,
 } from "lucide-react";
-import { resolveSocialLinks, type SocialLink } from "@/components/SocialIcons";
+import { socialLinks } from "@/components/SocialIcons";
+import { navLinks, contactInfo as defaultContactInfo } from "@/lib/data";
 import type { ContactInfo } from "@/lib/content";
 
 // Icon per nav link, keyed by href, so the mobile drawer reads as a proper
@@ -40,16 +41,7 @@ const navIcons: Record<string, LucideIcon> = {
   "/contact": PhoneCall,
 };
 
-export default function Header({
-  contactInfo,
-  navLinks = [],
-  social = [],
-}: {
-  contactInfo: ContactInfo;
-  navLinks?: { href: string; label: string }[];
-  social?: SocialLink[];
-}) {
-  const socialLinks = resolveSocialLinks(social);
+export default function Header({ contactInfo = defaultContactInfo }: { contactInfo?: ContactInfo }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);

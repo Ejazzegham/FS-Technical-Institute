@@ -4,15 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Clock, BarChart3 } from "lucide-react";
-import type { Course } from "@/lib/types";
+import { courses as staticCourses, type Course } from "@/lib/data";
 import { courseIconMap, courseGradients, courseChipColors } from "@/lib/courseVisuals";
 
 export default function CourseCard({ course, detailed = false }: { course: Course; detailed?: boolean }) {
   const Icon = courseIconMap[course.icon];
 
-  // If the saved image URL is dead (e.g. a deleted upload) the card falls
-  // back to the gradient + icon instead of a broken-image icon.
-  const src = course.image;
+  // If the saved image URL is dead (e.g. a deleted upload), fall back to the
+  // built-in image for this course instead of showing a broken-image icon.
+  const fallbackImage = staticCourses.find((c) => c.slug === course.slug)?.image;
+  const [src, setSrc] = useState<string | undefined>(course.image || fallbackImage);
   const [imgFailed, setImgFailed] = useState(false);
   const showImage = !!src && !imgFailed;
 
@@ -39,7 +40,10 @@ export default function CourseCard({ course, detailed = false }: { course: Cours
                 fill
                 sizes="(max-width: 768px) 100vw, 20vw"
                 className="object-contain"
-                onError={() => setImgFailed(true)}
+                onError={() => {
+                  if (fallbackImage && src !== fallbackImage) setSrc(fallbackImage);
+                  else setImgFailed(true);
+                }}
               />
             ) : (
               <Icon size={48} className="text-white/25" />

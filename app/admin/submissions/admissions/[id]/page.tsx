@@ -7,9 +7,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { ArrowLeft, Loader2, Save, Check, Trash2, ExternalLink } from "lucide-react";
 import { db, getFirebaseAuth } from "@/lib/firebase";
 import { describeError } from "@/lib/adminClient";
-import { qualifications, religions, bloodGroups } from "@/lib/formOptions";
-import { getCourses, getAdmissionsContent } from "@/lib/content";
-import type { Course } from "@/lib/types";
+import { courses, batches, qualifications, religions, bloodGroups } from "@/lib/data";
 
 const statusOptions = ["New", "Contacted", "Enrolled", "Rejected"];
 
@@ -45,13 +43,6 @@ export default function AdminAdmissionDetailPage() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [batches, setBatches] = useState<string[]>([]);
-
-  useEffect(() => {
-    getCourses().then(setCourses);
-    getAdmissionsContent().then((a) => setBatches(a.batches));
-  }, []);
 
   const load = useCallback(async () => {
     const snap = await getDoc(doc(db, "admissions", id));

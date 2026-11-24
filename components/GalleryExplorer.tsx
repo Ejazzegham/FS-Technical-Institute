@@ -10,8 +10,7 @@ import {
   Trophy,
   Image as ImageIcon,
 } from "lucide-react";
-import { galleryCategories } from "@/lib/formOptions";
-import type { GalleryCategory } from "@/lib/types";
+import { galleryCategories, type GalleryCategory } from "@/lib/data";
 import type { GalleryItem } from "@/lib/content";
 
 const categoryIcons: Record<GalleryCategory, typeof Presentation> = {

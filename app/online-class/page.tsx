@@ -12,21 +12,18 @@ import JoinLiveClass from "@/components/JoinLiveClass";
 import RecordedLecturesGrid from "@/components/RecordedLecturesGrid";
 import CTABanner from "@/components/CTABanner";
 import PageHero from "@/components/PageHero";
-import { getLiveClasses, getRecordedLectures, getOnlineClassContent, getCourses } from "@/lib/content";
-import type { Course } from "@/lib/types";
+import { onlineClassFeatures, courses } from "@/lib/data";
+import { getLiveClasses, getRecordedLectures } from "@/lib/content";
 import { courseIconMap, courseChipColors } from "@/lib/courseVisuals";
 
 const featureIcons = [Video, FileText, BookOpen, ClipboardList, MessagesSquare];
 
+function courseFor(slug: string) {
+  return courses.find((c) => c.slug === slug);
+}
+
 export default async function OnlineClassPage() {
-  const [liveClasses, recordedLectures, online, courses] = await Promise.all([
-    getLiveClasses(),
-    getRecordedLectures(),
-    getOnlineClassContent(),
-    getCourses(),
-  ]);
-  const onlineClassFeatures = online.features;
-  const courseFor = (slug: string): Course | undefined => courses.find((c) => c.slug === slug);
+  const [liveClasses, recordedLectures] = await Promise.all([getLiveClasses(), getRecordedLectures()]);
   return (
     <>
       {/* Hero */}
@@ -56,7 +53,7 @@ export default async function OnlineClassPage() {
       <section className="max-w-7xl mx-auto px-6 lg:px-10 mt-8 md:mt-10 mb-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           {onlineClassFeatures.map((f, i) => {
-            const Icon = featureIcons[i % featureIcons.length];
+            const Icon = featureIcons[i];
             return (
               <div
                 key={f.title}
@@ -145,7 +142,7 @@ export default async function OnlineClassPage() {
 
       {/* Recorded lectures */}
       <section className="max-w-7xl mx-auto px-6 lg:px-10 pb-16">
-        <RecordedLecturesGrid recordedLectures={recordedLectures} courses={courses} />
+        <RecordedLecturesGrid recordedLectures={recordedLectures} />
       </section>
 
       <section className="pb-20">

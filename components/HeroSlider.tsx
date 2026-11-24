@@ -4,9 +4,25 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import type { HeroSlide } from "@/lib/types";
 
-export type { HeroSlide };
+export type HeroSlide = {
+  image: string;
+  /** Optional mobile-specific crop/composition, shown below the md breakpoint
+   *  instead of `image`. Falls back to `image` (centered) when omitted. */
+  mobileImage?: string;
+  alt: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  /** "light" = image has a bright area behind the text on desktop (use navy text).
+   *  "dark"  = image is dark behind the text on desktop (use white text). */
+  theme: "light" | "dark";
+  /** CSS object-position for the image, tuned per photo so the subject stays
+   *  in frame when cropped taller on mobile. Defaults to "center". */
+  focus?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+};
 
 const AUTOPLAY_MS = 6500;
 

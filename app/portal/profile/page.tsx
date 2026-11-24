@@ -27,7 +27,7 @@ import {
 import { usePortal } from "@/components/portal/PortalContext";
 import StudentAvatar from "@/components/portal/StudentAvatar";
 import PremiumSelect from "@/components/PremiumSelect";
-import { religions, bloodGroups } from "@/lib/formOptions";
+import { religions, bloodGroups } from "@/lib/data";
 import { formatTimestamp } from "@/lib/portalUtils";
 
 export default function ProfilePage() {

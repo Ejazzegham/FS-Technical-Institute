@@ -44,10 +44,7 @@ const nav = [
   {
     section: "Site content",
     items: [
-      { href: "/admin/page-content", label: "Page Content", icon: LayoutDashboard },
       { href: "/admin/events", label: "Events & Highlights", icon: Sparkles },
-      { href: "/admin/faqs", label: "FAQs", icon: ClipboardList },
-      { href: "/admin/instructors", label: "Faculty", icon: Users },
       { href: "/admin/courses", label: "Courses", icon: GraduationCap },
       { href: "/admin/gallery", label: "Gallery", icon: ImageIcon },
       { href: "/admin/stats", label: "Stats", icon: BarChart3 },
@@ -61,7 +58,6 @@ const nav = [
     section: "Submissions",
     items: [
       { href: "/admin/submissions/contact", label: "Contact Messages", icon: Mail },
-      { href: "/admin/submissions/demo-requests", label: "Demo Requests", icon: CalendarCheck },
       { href: "/admin/submissions/admissions", label: "Admissions", icon: ClipboardList },
       { href: "/admin/submissions/newsletter", label: "Newsletter", icon: Bell },
       { href: "/admin/students", label: "Students", icon: Users },

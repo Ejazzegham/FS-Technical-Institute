@@ -13,7 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import CourseCard from "@/components/CourseCard";
-import type { Course } from "@/lib/types";
+import type { Course } from "@/lib/data";
 
 const categories: { label: Course["category"] | "All Courses"; icon: typeof Code2 }[] = [
   { label: "IT & Programming", icon: Code2 },

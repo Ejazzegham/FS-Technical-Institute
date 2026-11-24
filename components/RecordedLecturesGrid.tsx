@@ -2,24 +2,26 @@
 
 import { useState } from "react";
 import { Play, ArrowRight } from "lucide-react";
-import type { Course, RecordedLecture } from "@/lib/types";
+import type { RecordedLecture } from "@/lib/data";
+import { courses } from "@/lib/data";
 import { courseGradients } from "@/lib/courseVisuals";
+
+function courseFor(slug: string) {
+  return courses.find((c) => c.slug === slug);
+}
 
 export default function RecordedLecturesGrid({
   recordedLectures,
-  courses,
   defaultActive = "All Courses",
   hideHeading = false,
   showFooterLink = true,
 }: {
   recordedLectures: RecordedLecture[];
-  courses: Course[];
   defaultActive?: string;
   hideHeading?: boolean;
   showFooterLink?: boolean;
 }) {
   const [active, setActive] = useState<string>(defaultActive);
-  const courseFor = (slug: string) => courses.find((c) => c.slug === slug);
 
   // Tabs are generated from the actual courses these lectures belong to, so the
   // labels here always match the names shown on the Courses page.

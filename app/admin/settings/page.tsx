@@ -5,10 +5,9 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Loader2, Save, Check } from "lucide-react";
 import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
-import type { ContactInfo } from "@/lib/types";
+import { contactInfo as defaults } from "@/lib/data";
 
-const defaults: ContactInfo = { phone: "", whatsapp: "", email: "", address: "", hours: "" };
-
+type ContactInfo = typeof defaults;
 
 export default function AdminSettingsPage() {
   const [info, setInfo] = useState<ContactInfo | null>(null);

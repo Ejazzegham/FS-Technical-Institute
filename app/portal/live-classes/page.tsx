@@ -4,13 +4,17 @@ import { useEffect, useState } from "react";
 import { Video } from "lucide-react";
 import { usePortal } from "@/components/portal/PortalContext";
 import JoinLiveClass from "@/components/JoinLiveClass";
+import { courses } from "@/lib/data";
 import { getLiveClasses } from "@/lib/content";
-import type { Course, LiveClass } from "@/lib/types";
-import { useCourses } from "@/lib/useCourses";
+import type { LiveClass } from "@/lib/data";
 import { courseIconMap, courseChipColors } from "@/lib/courseVisuals";
 
-function ClassRow({ lc, courses }: { lc: LiveClass; courses: Course[] }) {
-  const course = courses.find((c) => c.slug === lc.courseSlug);
+function courseFor(slug: string) {
+  return courses.find((c) => c.slug === slug);
+}
+
+function ClassRow({ lc }: { lc: LiveClass }) {
+  const course = courseFor(lc.courseSlug);
   const Icon = course ? courseIconMap[course.icon] : Video;
   return (
     <div className="py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
@@ -46,7 +50,6 @@ function ClassRow({ lc, courses }: { lc: LiveClass; courses: Course[] }) {
 
 export default function PortalLiveClassesPage() {
   const { student } = usePortal();
-  const courses = useCourses();
   const [liveClasses, setLiveClasses] = useState<LiveClass[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -101,7 +104,7 @@ export default function PortalLiveClassesPage() {
             ) : (
               <div className="divide-y divide-black/5">
                 {mine.map((lc) => (
-                  <ClassRow key={lc.id} lc={lc} courses={courses} />
+                  <ClassRow key={lc.id} lc={lc} />
                 ))}
               </div>
             )}
@@ -112,7 +115,7 @@ export default function PortalLiveClassesPage() {
               <h2 className="font-display font-bold text-navy text-lg mb-4">Other Live Classes</h2>
               <div className="divide-y divide-black/5 opacity-80">
                 {others.map((lc) => (
-                  <ClassRow key={lc.id} lc={lc} courses={courses} />
+                  <ClassRow key={lc.id} lc={lc} />
                 ))}
               </div>
             </div>

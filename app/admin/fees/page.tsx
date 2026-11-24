@@ -6,10 +6,9 @@ import { Loader2, Save, Check, Wallet, ArrowRight } from "lucide-react";
 import FeeTabs from "@/components/admin/FeeTabs";
 import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
-import type { Course, FeeSettings } from "@/lib/types";
+import { feeSettings as defaults, type Course } from "@/lib/data";
 
-
-const defaults: FeeSettings = { admissionFee: "", feeNote: "" };
+type FeeSettings = typeof defaults;
 
 export default function AdminFeesPage() {
   const [fees, setFees] = useState<FeeSettings | null>(null);

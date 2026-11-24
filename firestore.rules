@@ -59,19 +59,6 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
-    // Page text, hero slides, navigation, social links, announcement bar...
-    match /site_content/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-    match /site_faqs/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
-    match /site_instructors/{id} {
-      allow read: if true;
-      allow write: if isAdmin();
-    }
 
     // --- Software & tools reference list ---
     // Internal admin reference only (not used anywhere on the public site),
@@ -98,10 +85,6 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
     match /admissions/{id} {
-      allow create: if true;
-      allow read, update, delete: if isAdmin();
-    }
-    match /demo_requests/{id} {
       allow create: if true;
       allow read, update, delete: if isAdmin();
     }

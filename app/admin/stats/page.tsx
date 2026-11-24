@@ -5,15 +5,14 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Loader2, Save, Check } from "lucide-react";
 import { describeError, revalidateSite } from "@/lib/adminClient";
 import { db } from "@/lib/firebase";
+import { stats as defaultHome, aboutStats as defaultAbout, galleryStats as defaultGallery } from "@/lib/data";
 
 type StatItem = { label: string; value: string };
 
-const blankStats = (): StatItem[] => Array.from({ length: 4 }, () => ({ label: "", value: "" }));
-
 const BLOCKS: { statKey: "home" | "about" | "gallery"; title: string; defaults: StatItem[]; hint: string }[] = [
-  { statKey: "home", title: "Homepage Stats", defaults: blankStats(), hint: "The 4-number strip under the homepage hero." },
-  { statKey: "about", title: "About Page Stats", defaults: blankStats(), hint: "The 4-number strip on the About page." },
-  { statKey: "gallery", title: "Gallery Page Stats", defaults: blankStats(), hint: "The 4-number strip on the Gallery page." },
+  { statKey: "home", title: "Homepage Stats", defaults: defaultHome, hint: "The 4-number strip under the homepage hero." },
+  { statKey: "about", title: "About Page Stats", defaults: defaultAbout, hint: "The 4-number strip on the About page." },
+  { statKey: "gallery", title: "Gallery Page Stats", defaults: defaultGallery, hint: "The 4-number strip on the Gallery page." },
 ];
 
 export default function AdminStatsPage() {

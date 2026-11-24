@@ -3,21 +3,19 @@
 import { useEffect, useState } from "react";
 import { usePortal } from "@/components/portal/PortalContext";
 import RecordedLecturesGrid from "@/components/RecordedLecturesGrid";
-import { getRecordedLectures, getCourses } from "@/lib/content";
-import type { Course, RecordedLecture } from "@/lib/types";
+import { getRecordedLectures } from "@/lib/content";
+import type { RecordedLecture } from "@/lib/data";
 
 export default function PortalRecordedLecturesPage() {
   const { student } = usePortal();
   const [lectures, setLectures] = useState<RecordedLecture[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([getRecordedLectures(), getCourses()]).then(([rl, cs]) => {
+    getRecordedLectures().then((rl) => {
       if (!cancelled) {
         setLectures(rl);
-        setCourses(cs);
         setLoading(false);
       }
     });
@@ -46,7 +44,6 @@ export default function PortalRecordedLecturesPage() {
         ) : (
           <RecordedLecturesGrid
             recordedLectures={lectures}
-            courses={courses}
             defaultActive={student?.course || "All Courses"}
             showFooterLink={false}
           />

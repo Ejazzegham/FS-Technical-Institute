@@ -31,7 +31,7 @@ export default async function ContactPage() {
     {
       icon: Clock,
       title: "Office Hours",
-      lines: [contactInfo.hours],
+      lines: ["Mon - Sat: 9:00 AM - 6:00 PM", "Sunday: Closed"],
     },
   ];
 
